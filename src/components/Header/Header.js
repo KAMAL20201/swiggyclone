@@ -1,15 +1,26 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import SignIn from "./SignIn";
 
 function Header(props) {
   const [query, setQuery] = useState("");
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  const closeSidebar = () => {
+    setIsSidebarOpen(false);
+  };
 
   function handleInputChange(event) {
     const query = event.target.value.toLowerCase();
     setQuery(query);
     props.getInputData(query);
   }
+
 
   return (
     <Top>
@@ -41,7 +52,7 @@ function Header(props) {
           <span className="offers-text">Offers</span>
         </Link>
         
-        <Link to="/help" >
+        <Link to="/help">
           <img
             alt="logo"
             src="https://img.freepik.com/free-icon/question_318-933114.jpg?size=338&ext=jpg&uid=R15594633&ga=GA1.1.1185902625.1677912760&semt=sph"
@@ -50,7 +61,7 @@ function Header(props) {
           <span className="offers-text">Help</span>
         </Link>
       
-        <Link to="/" >
+        <Link to="/signin">
           <img
             alt="logo"
             src="https://img.freepik.com/free-icon/user_318-932533.jpg?size=338&ext=jpg&uid=R15594633&ga=GA1.2.1185902625.1677912760&semt=sph"
@@ -68,7 +79,6 @@ function Header(props) {
           <span className="offers-text">Cart</span>
         </Link>
      
-       
       </Right>
     </Top>
   );

@@ -8,6 +8,7 @@ import App from "./App";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import RestaurantMenu from "./components/Menu/RestaurantMenu";
 import NewOffers from "./components/Header/Offers/NewOffers";
+import SignIn from "./components/Header/SignIn";
 const appRoutes = createBrowserRouter([
   {
     path: "/",
@@ -17,6 +18,11 @@ const appRoutes = createBrowserRouter([
   {
     path: "/offers",
     element: <Offers />,
+    
+  },
+  {
+    path: "/signin",
+    element: <SignIn />,
     
   },
   {

@@ -56,7 +56,7 @@ function MainFoodMenu(props) {
                     </>
                   )}
                 </Header>
-                {showMenu === index &&
+                { showMenu === index && 
                   item?.card?.card?.itemCards?.map((fooditem) => {
                     return (
                       <Cards>

@@ -9,6 +9,7 @@ import "./App.css";
 
 function App() {
   const [inputData, setInputData] = useState("");
+ 
   const [restaurantdata, setRestaurantdata] = useState([]);
 
   useEffect(() => {
@@ -21,6 +22,7 @@ function App() {
     );
     const json = await data.json();
     setRestaurantdata(json?.data?.cards[2]?.data?.data?.cards);
+    
   }
 
   const inputHandler = (data) => {
@@ -34,7 +36,7 @@ function App() {
    
       <div className="App">
         <Header getInputData={inputHandler} />
-        <Content newRestaurantData={restaurantdata} newInputData={inputData} />,
+        <Content  newRestaurantData={restaurantdata} newInputData={inputData} />,
         <Footer />
       </div>
   
