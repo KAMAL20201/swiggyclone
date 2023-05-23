@@ -62,7 +62,7 @@ const SignIn = () => {
       </Form>
 
       <SwitchButton onClick={handleToggleSignUp}>
-        {isSignUp ? 'Sign In' : 'New User? Sign Up Here'}
+        {isSignUp ? 'Already have an account? Sign In' : 'New User? Sign Up Here'}
       </SwitchButton>
       {message && <Message>{message}</Message>}
     </Container>
@@ -109,10 +109,10 @@ const Button = styled.button`
 `;
 
 const SwitchButton = styled.button`
-  margin-top: 10px;
+  margin: 10px 0px 0px 25%;
   padding: 5px;
   background-color: transparent;
   border: none;
-  color: blue;
+  color: black;
   cursor: pointer;
 `;
