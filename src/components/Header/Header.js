@@ -5,15 +5,6 @@ import SignIn from "./SignIn";
 
 function Header(props) {
   const [query, setQuery] = useState("");
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
-
-  const closeSidebar = () => {
-    setIsSidebarOpen(false);
-  };
 
   function handleInputChange(event) {
     const query = event.target.value.toLowerCase();
