@@ -10,6 +10,7 @@ import RestaurantMenu from "./components/Menu/RestaurantMenu";
 import NewOffers from "./components/Header/Offers/NewOffers";
 import SignIn from "./components/Header/SignIn";
 import Cart from "./components/Header/Cart";
+import { CardProvider } from "./contexts/AddToCartConext";
 const appRoutes = createBrowserRouter([
   {
     path: "/",
@@ -45,9 +46,9 @@ const appRoutes = createBrowserRouter([
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
+  <CardProvider>
    <RouterProvider router={appRoutes}/>
-  </React.StrictMode>
+  </CardProvider>
 );
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

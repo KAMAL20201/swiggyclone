@@ -1,14 +1,23 @@
 import React, { useState } from "react";
+import { createPortal } from "react-dom";
 import styled from "styled-components";
 import { restaurantCardURL } from "../../config.js";
+import { useContext } from "react";
+import { CardContext } from "../../contexts/AddToCartConext.js";
+import AddedToCart from "./AddedToCart.js";
 function MainFoodMenu(props) {
   const { MenuDetails } = props;
 
+
   //we go to our own itemsByCategory
-  const [showMenu, setShowMenu] = useState(true);
+  const [showMenu, setShowMenu] = useState(0);
   const [showSubMenu, setShowSubMenu] = useState(false);
+  const [showMeMenu,setMenu]=useState(true);
+
+  const {currentCardInfo,updateCardInfo}=useContext(CardContext);
 
   function MenuHandler(index) {
+    setMenu(!showMeMenu);
     setShowMenu((prevState) => {
       if (prevState === index) {
         return null; // toggle off if already selected
@@ -27,6 +36,23 @@ function MainFoodMenu(props) {
       }
     });
   }
+
+  const handleAddButtonClick=(fooditem)=>{
+    const  name=fooditem?.card?.info?.name;
+    const price=fooditem?.card?.info?.price;
+  
+     console.log(name,price);
+     if( price){
+       updateCardInfo(name, price);
+     }
+     else{
+      const variantPrice=fooditem?.card?.info?.defaultPrice;
+      updateCardInfo(name, variantPrice);
+     }
+    console.log(currentCardInfo);
+  }
+
+  
 
   return (
     <Container>
@@ -66,6 +92,7 @@ function MainFoodMenu(props) {
                         </ItemInfo>
 
                         <Image>
+                         {fooditem?.card?.info?.imageId!==null && 
                           <img
                             height="100px"
                             src={
@@ -73,6 +100,8 @@ function MainFoodMenu(props) {
                             }
                             alt=""
                           />
+                         }
+                          <Button onClick={()=>handleAddButtonClick(fooditem)}>ADD</Button>
                         </Image>
                       </Cards>
                     );
@@ -122,6 +151,7 @@ function MainFoodMenu(props) {
                                     }
                                     alt=""
                                   />
+                                    <Button onClick={()=>handleAddButtonClick(fooditem)}>ADD</Button>
                                 </Image>
                               </Cards>
                             );
@@ -135,12 +165,25 @@ function MainFoodMenu(props) {
           );
         }
       )}
+   {currentCardInfo.length>1 && createPortal(<AddedToCart/>,document.body)}
     </Container>
   );
 }
 
 export default MainFoodMenu;
 
+
+const Button=styled.button`
+position:relative;
+left:16%;
+bottom:5%;
+padding:0px 20px;
+color:green;
+font-weight:600;
+font-size:12px;
+width:100px;
+height:30px;
+`;
 const Container = styled.div`
   margin-top: 30px;
 `;
@@ -169,6 +212,8 @@ const Cards = styled.div`
 `;
 const Image = styled.div`
   margin: 25px 0px 10px 0px;
+  display: flex;
+  flex-direction:column;
   img {
     border-radius: 10px;
   }

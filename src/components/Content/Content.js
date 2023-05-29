@@ -3,10 +3,14 @@ import RestauCard from "./RestauCard";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import useOnline from "../myHooks/useOnline";
+import { useContext } from "react";
+import { CardContext } from "../../contexts/AddToCartConext";
 function Content(props) {
   const {  newRestaurantData, newInputData } = props;
 
   const [filterdata, setFilterData] = useState(newRestaurantData);
+
+
 
   useEffect(() => {
     const filteredData = newRestaurantData.filter((restaurant) => {
