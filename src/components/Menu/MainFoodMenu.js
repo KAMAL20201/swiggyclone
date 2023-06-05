@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { createPortal } from "react-dom";
 import styled from "styled-components";
 import { restaurantCardURL } from "../../config.js";
-import { useContext } from "react";
-import { CardContext } from "../../contexts/AddToCartConext.js";
 import AddedToCart from "./AddedToCart.js";
+import { useDispatch } from "react-redux";
+import { cartActions } from "../../store/cart-slice.js";
 function MainFoodMenu(props) {
+
+  const dispatch=useDispatch();
   const { MenuDetails } = props;
 
 
@@ -13,8 +15,6 @@ function MainFoodMenu(props) {
   const [showMenu, setShowMenu] = useState(0);
   const [showSubMenu, setShowSubMenu] = useState(false);
   const [showMeMenu,setMenu]=useState(true);
-
-  const {currentCardInfo,updateCardInfo}=useContext(CardContext);
 
   function MenuHandler(index) {
     setMenu(!showMeMenu);
@@ -38,18 +38,19 @@ function MainFoodMenu(props) {
   }
 
   const handleAddButtonClick=(fooditem)=>{
-    const  name=fooditem?.card?.info?.name;
+    const id=fooditem?.card?.info?.id;
+    const name=fooditem?.card?.info?.name;
     const price=fooditem?.card?.info?.price;
+    const description=fooditem?.card?.info?.description;
   
-     console.log(name,price);
-     if( price){
-       updateCardInfo(name, price);
+     if(price){
+      dispatch(cartActions.addToCart({id,name,price,description}));
      }
      else{
-      const variantPrice=fooditem?.card?.info?.defaultPrice;
-      updateCardInfo(name, variantPrice);
+      const price=fooditem?.card?.info?.defaultPrice;
+      dispatch(cartActions.addToCart({id,name,price,description}));
      }
-    console.log(currentCardInfo);
+    
   }
 
   
@@ -165,7 +166,7 @@ function MainFoodMenu(props) {
           );
         }
       )}
-   {currentCardInfo.length>1 && createPortal(<AddedToCart/>,document.body)}
+     createPortal(<AddedToCart/>,document.body);
     </Container>
   );
 }

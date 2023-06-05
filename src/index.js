@@ -7,10 +7,12 @@ import Help from "./components/Header/Help"
 import App from "./App";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import RestaurantMenu from "./components/Menu/RestaurantMenu";
-import NewOffers from "./components/Header/Offers/NewOffers";
 import SignIn from "./components/Header/SignIn";
 import Cart from "./components/Header/Cart";
-import { CardProvider } from "./contexts/AddToCartConext";
+import { Provider } from "react-redux";
+import store from "./store";
+
+
 const appRoutes = createBrowserRouter([
   {
     path: "/",
@@ -45,11 +47,7 @@ const appRoutes = createBrowserRouter([
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(
-  <CardProvider>
-   <RouterProvider router={appRoutes}/>
-  </CardProvider>
-);
+root.render( <Provider store={store}><RouterProvider router={appRoutes}/> </Provider>);
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals

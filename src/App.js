@@ -1,10 +1,8 @@
-import { useState, useEffect,useContext } from "react";
-
+import { useState, useEffect } from "react";
 import Header from "./components/Header/Header";
 import Content from "./components/Content/Content";
 import Footer from "./components/Footer/Footer";
 import Shimmer from "./components/Shimmer/Shimmer";
-import {  CardProvider,CardContext } from "./contexts/AddToCartConext";
 import "./App.css";
 
 function App() {
@@ -35,13 +33,13 @@ function App() {
   return restaurantdata.length === 0 ? (
     <Shimmer />
   ) : (
-      <CardProvider>
+      
       <div className="App">
         <Header getInputData={inputHandler} />
         <Content  newRestaurantData={restaurantdata} newInputData={inputData} />,
         <Footer />
       </div>
-      </CardProvider>
+      
   
   );
 }

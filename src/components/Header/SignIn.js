@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import styled from 'styled-components';
+import Footer from '../Footer/Footer';
 import Header from './Header';
 
 const SignIn = () => {
@@ -66,6 +67,7 @@ const SignIn = () => {
       </SwitchButton>
       {message && <Message>{message}</Message>}
     </Container>
+    <Footer/>
     </>
   );
 };

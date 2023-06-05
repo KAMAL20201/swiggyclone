@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import Footer from '../Footer/Footer'
 import Header from './Header'
 
 function Help() {
@@ -24,6 +25,7 @@ function Help() {
         </List>
       </MainContent>
       </Container>
+      <Footer/>
     </>
   )
 }

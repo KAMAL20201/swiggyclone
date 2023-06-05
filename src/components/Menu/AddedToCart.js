@@ -1,19 +1,19 @@
 import React from 'react'
-import { useContext } from 'react'
 import styled from 'styled-components'
-import { CardContext } from '../../contexts/AddToCartConext'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import { useSelector } from "react-redux";
+
 
 
 function AddedToCart() {
-
-    const {currentCardInfo,updateCardInfo}=useContext(CardContext);
-    const totalAmount = currentCardInfo.reduce((accumulator, currentObject) => {
+  const cartItems = useSelector((state) => state.cart.cartItems);
+   
+    const totalAmount = cartItems.reduce((accumulator, currentObject) => {
         return accumulator + currentObject.price;
       }, 0);
   return (
     <Container>
-      <p>{currentCardInfo.length-1} items | &#8377;{totalAmount/100.00}</p>
+      <p>{cartItems.length} items | &#8377;{totalAmount/100.00}</p>
       <Link to='/cart'><p>View Cart</p></Link>
     </Container>
   )
