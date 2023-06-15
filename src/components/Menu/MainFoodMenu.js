@@ -5,8 +5,10 @@ import { restaurantCardURL } from "../../config.js";
 import AddedToCart from "./AddedToCart.js";
 import { useDispatch } from "react-redux";
 import { cartActions } from "../../store/cart-slice.js";
+import  {useSelector} from 'react-redux';
 function MainFoodMenu(props) {
 
+  const totalquantity=useSelector(state=>state.cart.totalQuantity)
   const dispatch=useDispatch();
   const { MenuDetails } = props;
 
@@ -166,7 +168,7 @@ function MainFoodMenu(props) {
           );
         }
       )}
-     createPortal(<AddedToCart/>,document.body);
+     {totalquantity>0 && createPortal(<AddedToCart/>,document.body)};
     </Container>
   );
 }
