@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react'
+import {useState,useEffect} from 'react'
 
 const useRestauMenu = (resid) => {
     const [RestauMenu, setRestaurantMenu] = useState({});
@@ -9,11 +9,13 @@ const useRestauMenu = (resid) => {
       }, []);
     
       async function getRestaurantMenu() {
-        const data = await fetch(
-          "https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=30.7333148&lng=76.7794179&restaurantId="+resid+"&submitAction=ENTER" 
-        
+        const response = await fetch(
+          "https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=30.7333148&lng=76.7794179&restaurantId="+resid+"&submitAction=ENTER"         
         );
-        const json = await data.json();
+        if(!response.ok){
+          return;
+        }
+        const json = await response.json();
           
         
         setRestaurantMenu(json?.data);

@@ -87,13 +87,15 @@ export default Offers;
 
 const Banner = styled.div`
   width: 100%;
-  height: 280px;
+  height: 25vw;
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: #005062;
   img {
     padding: 30px;
+    width:16vw;
+    height:12vw;
   }
 `;
 
@@ -103,13 +105,13 @@ const BannerContent = styled.div`
   h1 {
     color: white;
     margin: 0px;
-    font-size: 50px;
+    font-size: 5vw;
   }
   h4 {
     color: white;
     margin: 0px;
     opacity: 0.7;
-    font-size: 20px;
+    font-size: 3vw;
     font-weight:500;
   }
 `;
@@ -124,11 +126,19 @@ const Button = styled.button`
   background-color: white;
   font-size: 20px;
   padding: 10px;
-  margin: 20px 0px;
+  margin: 1.2vw 0px;
   opacity: ${(props) => (props.active ? "1" : "0.4")};
   font-weight: 600;
   cursor: pointer;
   &:first-child {
     margin-left: 45px;
   }
+  @media (max-width: 600px) {
+    font-size: 15px;
+  }
+  @media (max-width: 600px) {
+    font-size: 11px;
+  }
 `;
+
+

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styled, { keyframes } from "styled-components";
 import Header from "./Header";
-import { Link } from "react-router-dom";
 import Footer from "../Footer/Footer";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";

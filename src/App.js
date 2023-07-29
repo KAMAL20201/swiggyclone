@@ -30,7 +30,7 @@ function App() {
   };
 
  
-  return restaurantdata.length === 0 ? (
+  return restaurantdata?.length === 0 ? (
     <Shimmer />
   ) : (
       
