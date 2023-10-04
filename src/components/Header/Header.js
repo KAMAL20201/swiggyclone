@@ -112,14 +112,14 @@ function Header(props) {
           </>
         )}
 
-        <NavLink to="/offers">
+        {/* <NavLink to="/offers">
           <img
             alt="logo"
             src="https://img.freepik.com/free-icon/discount_318-902372.jpg?size=338&ext=jpg&uid=R15594633&ga=GA1.1.1185902625.1677912760&semt=sph"
             height="25px"
           />
           <span className="offers-text">Offers</span>
-        </NavLink>
+        </NavLink> */}
 
         <NavLink to="/help">
           <img

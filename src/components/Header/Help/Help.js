@@ -1,7 +1,8 @@
 import React from "react";
+import { Link, NavLink, Outlet } from "react-router-dom";
 import styled from "styled-components";
-import Footer from "../Footer/Footer";
-import Header from "./Header";
+import Footer from "../../Footer/Footer";
+import Header from "../Header";
 
 function Help() {
   return (
@@ -15,15 +16,18 @@ function Help() {
         </Head>
         <MainContent>
           <List>
-            <li>Help With Orders</li>
-            <li>General Issues</li>
-            <li>Partner Onboarding</li>
-            <li>Legal, Terms & Conditions</li>
-            <li>FAQs</li>
+            <NavLink to="" end>
+              Partner Onboarding
+            </NavLink>
+            <NavLink to="/help/legal">Legal, Terms & Conditions</NavLink>
+            <NavLink to="/help/faqs">FAQs</NavLink>
           </List>
+          <Content>
+            <Outlet />
+          </Content>
         </MainContent>
       </Container>
-      <Footer />
+      <Footer/>
     </>
   );
 }
@@ -33,23 +37,36 @@ export default Help;
 const List = styled.div`
   width: 20%;
   margin: 0px 0px;
-  height: 100%;
+
   background: rgb(237, 237, 235);
   display: flex;
   flex-direction: column;
-  li {
+  a {
     font-size: 16px;
     list-style-type: none;
+    text-decoration: none;
+    color:black;
     margin-left: 20px;
     margin-top: 30px;
     padding: 10px;
+    &.active{
+     color: #fc8019
+    }
   }
+  
 `;
+
+const Content = styled.div`
+  width:100%;
+  height:100%;
+`;
+
 const Container = styled.div`
   background: #37718e;
   width: 100%;
   height: 100%;
-  overflow-x:hidden;
+  overflow-x: hidden;
+  overflow-y: hidden;
 `;
 const Head = styled.div`
   h1 {
@@ -68,5 +85,6 @@ const MainContent = styled.div`
   background-color: white;
   margin-left: 50px;
   width: 90%;
-  height: 500px;
+  height: 100%;
+  display:flex;
 `;

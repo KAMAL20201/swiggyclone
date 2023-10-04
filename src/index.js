@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import Offers from "./components/Header/Offers/Offers";
-import Help from "./components/Header/Help";
+import Help from "./components/Header/Help/Help";
 import App from "./App";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import RestaurantMenu from "./components/Menu/RestaurantMenu";
@@ -16,16 +16,17 @@ import Error from "./components/Errors/Error";
 import Forgot from "./components/Header/Forgot";
 import SignInLayout from "./components/Header/SignInLayout";
 import NewPassword from "./components/Header/NewPassword";
+import PartnerOnboard from "./components/Header/Help/PartnerOnboard";
+import Legals from './components/Header/Help/Legals';
+import Faqs from "./components/Header/Help/Faqs";
+
+
 
 const appRoutes = createBrowserRouter([
   {
     path: "/",
     element: <App />,
     errorElement:<Error/>
-  },
-  {
-    path: "/offers",
-    element: <Offers />,
   },
   {
     path: "/signup",
@@ -56,7 +57,16 @@ const appRoutes = createBrowserRouter([
     element: <Help />,
     children:[
       {
-      path:"orders",
+       index: true,
+        element: <PartnerOnboard/>
+      },
+      {
+        path: "legal",
+        element: <Legals/>
+      },
+      {
+        path: "faqs",
+        element: <Faqs/>
       }
     ]
   },

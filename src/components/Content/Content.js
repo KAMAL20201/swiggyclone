@@ -8,14 +8,15 @@ function Content(props) {
   const { newRestaurantData, newInputData } = props;
 
   const [filterdata, setFilterData] = useState(newRestaurantData);
-  const [clickedFilters, setClickedFilters] = useState([]);
+  const [clickedFilters, setClickedFilters] = useState([]);       
+  console.log(filterdata);
 
   useEffect(() => {
     const filteredData = newRestaurantData?.filter((restaurant) => {
-      const nameMatch = restaurant.data.name
+      const nameMatch = restaurant.info.name
         .toLowerCase()
         .includes(newInputData.toLowerCase());
-      const cuisineMatch = restaurant.data.cuisines.some((cuisine) => {
+      const cuisineMatch = restaurant.info.cuisines.some((cuisine) => {
         return cuisine.toLowerCase().includes(newInputData.toLowerCase());
       });
       return nameMatch || cuisineMatch;
@@ -144,10 +145,10 @@ function Content(props) {
         {filterdata?.map((restaurant) => {
           return (
             <Link
-              to={"restaurant/" + restaurant.data.id}
-              key={restaurant.data.id}
+              to={"restaurant/" + restaurant.info.id}
+              key={restaurant.info.id}
             >
-              <RestauCard {...restaurant.data} />
+              <RestauCard {...restaurant.info} />
             </Link>
           );
         })}
