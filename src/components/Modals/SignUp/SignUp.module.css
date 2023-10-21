@@ -1,0 +1,166 @@
+.signUpContainer {
+  position: absolute;
+  right: 0px;
+  height: 100%;
+  background: #fff;
+  transition: transform 0.3s ease-out;
+  width: 30%;
+  padding: 0px 30px;
+}
+
+/* SignUp.module.css */
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999; /* Ensure the backdrop appears above other content */
+}
+
+.loginButtonContainer {
+  margin-top: 20px;
+}
+
+.loginButton {
+  width: 100%;
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-block;
+  text-align: center;
+  border: none;
+  line-height: 50px;
+  font-size: 14px;
+  font-weight: 600;
+  height: 50px;
+  padding: 0 2rem;
+  color: #fc8019;
+  letter-spacing: 0;
+  color: #fff;
+  background-color: #fc8019;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12);
+  text-transform: uppercase;
+}
+.loginHeader {
+  display: flex;
+  padding-top: 30px;
+  margin-bottom: 69px;
+  z-index: 1;
+  justify-content: space-between;
+}
+
+.closeIcon {
+  color: #535665;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 20px;
+}
+.backIcon {
+
+  color: #535665;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.foodIcon {
+  height: 100px;
+  width: 100px;
+}
+
+.createAccount {
+  font-size: 14px;
+}
+
+.createAccount::after {
+  display: flex;
+  content: "";
+  position: relative;
+  bottom: -22px;
+  left: 0;
+  width: 30px;
+  border: 1px solid #000;
+}
+
+.createAccountLink {
+  font-weight: 500;
+  cursor: pointer;
+  color: #fc8019;
+  text-decoration: none;
+}
+
+.form_group {
+  border: 1px solid #d4d5d9;
+  padding: 0;
+  display: block;
+  position: relative;
+  transform: translateZ(0);
+}
+
+.form_group:focus-within .label {
+  transform: translateY(-70%);
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  color: #7e808c !important;
+}
+
+
+.input {
+  background-color: transparent;
+  line-height: normal;
+  border: none;
+  outline: none;
+  height: 70px;
+  width: 100%;
+  font-size: 17px;
+  margin: 0;
+  padding: 0 20px;
+  padding-top: 22px;
+  box-shadow: none;
+  box-sizing: border-box;
+  border-radius: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 500;
+}
+
+.labelTransformed {
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  color: #7e808c !important;
+  -ms-transform: translateY(-70%);
+  transform: translateY(-70%);
+}
+
+.label {
+  position: absolute;
+  left: 0;
+  bottom: 24px;
+  padding-left: 20px;
+  line-height: 20px;
+  font-size: 17px;
+  cursor: text;
+  transition: 0.2s ease;
+  width: 100%;
+  color: #93959f;
+  will-change: transform, color, font-size;
+  pointer-events: none;
+  font-weight: 400;
+}
+
+.termsContainer {
+  font-size: 12px;
+  color: #686b78;
+  margin-top: 6px;
+  font-weight: 500;
+}
+
+.terms {
+  color: #282c3f;
+}

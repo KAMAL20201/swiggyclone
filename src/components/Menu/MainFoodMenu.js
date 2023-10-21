@@ -5,18 +5,18 @@ import { restaurantCardURL } from "../../config.js";
 import AddedToCart from "./AddedToCart.js";
 import { useDispatch } from "react-redux";
 import { cartActions } from "../../store/cart-slice.js";
-import  {useSelector} from 'react-redux';
+import { useSelector } from "react-redux";
+import { css } from "styled-components";
 function MainFoodMenu(props) {
-
-  const totalquantity=useSelector(state=>state.cart.totalQuantity)
-  const dispatch=useDispatch();
+  const totalquantity = useSelector((state) => state.cart.totalQuantity);
+  const dispatch = useDispatch();
   const { MenuDetails } = props;
 
+  const newMenu = MenuDetails?.cards?.filter((card) => card?.groupedCard);
 
-  //we go to our own itemsByCategory
   const [showMenu, setShowMenu] = useState(0);
   const [showSubMenu, setShowSubMenu] = useState(false);
-  const [showMeMenu,setMenu]=useState(true);
+  const [showMeMenu, setMenu] = useState(true);
 
   function MenuHandler(index) {
     setMenu(!showMeMenu);
@@ -39,27 +39,23 @@ function MainFoodMenu(props) {
     });
   }
 
-  const handleAddButtonClick=(fooditem)=>{
-    const id=fooditem?.card?.info?.id;
-    const name=fooditem?.card?.info?.name;
-    const price=fooditem?.card?.info?.price;
-    const description=fooditem?.card?.info?.description;
-  
-     if(price){
-      dispatch(cartActions.addToCart({id,name,price,description}));
-     }
-     else{
-      const price=fooditem?.card?.info?.defaultPrice;
-      dispatch(cartActions.addToCart({id,name,price,description}));
-     }
-    
-  }
+  const handleAddButtonClick = (fooditem) => {
+    const id = fooditem?.card?.info?.id;
+    const name = fooditem?.card?.info?.name;
+    const price = fooditem?.card?.info?.price;
+    const description = fooditem?.card?.info?.description;
 
-  
+    if (price) {
+      dispatch(cartActions.addToCart({ id, name, price, description }));
+    } else {
+      const price = fooditem?.card?.info?.defaultPrice;
+      dispatch(cartActions.addToCart({ id, name, price, description }));
+    }
+  };
 
   return (
     <Container>
-      {MenuDetails?.cards[2].groupedCard.cardGroupMap.REGULAR.cards.map(
+      {newMenu[0].groupedCard?.cardGroupMap?.REGULAR?.cards.map(
         (item, index) => {
           return (
             (item?.card?.card?.categories || item?.card?.card?.itemCards) && (
@@ -85,7 +81,7 @@ function MainFoodMenu(props) {
                     </>
                   )}
                 </Header>
-                { showMenu === index && 
+                {showMenu === index &&
                   item?.card?.card?.itemCards?.map((fooditem) => {
                     return (
                       <Cards>
@@ -95,16 +91,23 @@ function MainFoodMenu(props) {
                         </ItemInfo>
 
                         <Image>
-                         {fooditem?.card?.info?.imageId!==null && 
-                          <img
-                            height="100px"
-                            src={
-                              restaurantCardURL + fooditem?.card?.info?.imageId
-                            }
-                            alt=""
-                          />
-                         }
-                          <Button onClick={()=>handleAddButtonClick(fooditem)}>ADD</Button>
+                          {fooditem?.card?.info?.imageId && (
+                            <img
+                              height="100px"
+                              src={
+                                restaurantCardURL +
+                                fooditem?.card?.info?.imageId
+                              }
+                              alt={fooditem?.card?.info?.name}
+                            />
+                          )}
+
+                          <Button
+                            hasImageId={fooditem?.card?.info?.imageId}
+                            onClick={() => handleAddButtonClick(fooditem)}
+                          >
+                            ADD
+                          </Button>
                         </Image>
                       </Cards>
                     );
@@ -115,7 +118,7 @@ function MainFoodMenu(props) {
                       <>
                         <SubMenu
                           style={{ cursor: "pointer" }}
-                          onClick={() => SubMenuhandler(index,categoryindex)}
+                          onClick={() => SubMenuhandler(index, categoryindex)}
                         >
                           <p>
                             {category?.title} ({category?.itemCards?.length})
@@ -140,21 +143,32 @@ function MainFoodMenu(props) {
                                     <p>
                                       {
                                         fooditem?.card?.info?.variantsV2
-                                          ?.variantGroups[0]?.variations[0]?.price
+                                          ?.variantGroups[0]?.variations[0]
+                                          ?.price
                                       }
                                     </p>
                                   )}
                                 </ItemInfo>
                                 <Image>
-                                  <img
-                                    height="100px"
-                                    src={
-                                      restaurantCardURL +
-                                      fooditem?.card?.info?.imageId
+                                  {fooditem?.card?.info?.imageId && (
+                                    <img
+                                      height="100px"
+                                      src={
+                                        restaurantCardURL +
+                                        fooditem?.card?.info?.imageId
+                                      }
+                                      alt=""
+                                    />
+                                  )}
+
+                                  <Button
+                                    hasImageId={fooditem?.card?.info?.imageId}
+                                    onClick={() =>
+                                      handleAddButtonClick(fooditem)
                                     }
-                                    alt=""
-                                  />
-                                    <Button onClick={()=>handleAddButtonClick(fooditem)}>ADD</Button>
+                                  >
+                                    ADD
+                                  </Button>
                                 </Image>
                               </Cards>
                             );
@@ -168,24 +182,28 @@ function MainFoodMenu(props) {
           );
         }
       )}
-     {totalquantity>0 && createPortal(<AddedToCart/>,document.body)};
+      {totalquantity > 0 && createPortal(<AddedToCart />, document.body)};
     </Container>
   );
 }
 
 export default MainFoodMenu;
 
-
-const Button=styled.button`
-position:relative;
-left:16%;
-bottom:5%;
-padding:0px 20px;
-color:green;
-font-weight:600;
-font-size:12px;
-width:100px;
-height:30px;
+const Button = styled.button`
+  position: relative;
+  left: 16%;
+  bottom: 10%;
+  padding: 0px 20px;
+  color: green;
+  font-weight: 600;
+  font-size: 12px;
+  width: 100px;
+  height: 30px;
+  ${(props) =>
+    !props.hasImageId &&
+    css`
+      left: -33%;
+    `}
 `;
 const Container = styled.div`
   margin-top: 30px;
@@ -216,13 +234,15 @@ const Cards = styled.div`
 const Image = styled.div`
   margin: 25px 0px 10px 0px;
   display: flex;
-  flex-direction:column;
+  flex-direction: column;
   img {
     border-radius: 10px;
+    width: 158px;
   }
 `;
 const ItemInfo = styled.div``;
 const SubMenu = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
 `;

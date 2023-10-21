@@ -32,6 +32,12 @@ background-color:#60b246;
 display:flex;
 justify-content:space-between;
 margin:auto;
+@media (max-width:600px) {
+  width: 70%;
+}
+@media (max-width:450px) {
+  width: 90%;
+}
 p{
     padding: 0px 20px;
     color:white;

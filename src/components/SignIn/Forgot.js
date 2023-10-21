@@ -20,7 +20,7 @@ function Forgot() {
         const {data, error}=await supabase.auth.resetPasswordForEmail(email, {
             redirectTo: 'http://localhost:3000/signin/reset',
         })
-          console.log(data);
+
           if (error) {
             setErrorMsg(error.message);
             setResetting(false);

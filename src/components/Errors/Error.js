@@ -1,14 +1,18 @@
-import React from 'react'
-import { useRouteError } from 'react-router-dom'
+import React from "react";
+import classes from "./Error.module.css";
+import ErrorImage  from "../../assets/download.png";
+
 function Error() {
-    const err=useRouteError();
-    console.log(err);
+
+
   return (
-    <div>
-        <h1>OOPS!! Something went wrong</h1>
-      <h2>{err.status + ": "+err.statusText}</h2>
+    <div className={classes.errorCon}>
+    <img src={ErrorImage} alt="error" width={"70%"} height={"50%"}/>
+      <h1 className={classes.errorHead}>We'll be back shortly</h1>
+      <p className={classes.errorPara}>We are fixing a temporary glitch. Sorry for the inconvenience.</p>
+      <a href={"/"} className={classes.back}>Go Back</a>
     </div>
-  )
+  );
 }
 
-export default Error
+export default Error;

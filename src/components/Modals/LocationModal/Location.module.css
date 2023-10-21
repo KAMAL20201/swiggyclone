@@ -1,0 +1,126 @@
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999; /* Ensure the backdrop appears above other content */
+}
+
+.locationContainer {
+  position: absolute;
+  left: 0px;
+  height: 100%;
+  background: #fff;
+  transition: transform 0.3s ease-out;
+  width: 25%;
+  padding: 0px 50px 0px 100px;
+}
+
+.closeIcon {
+  color: #535665;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 25px;
+  padding-top: 32px;
+
+}
+
+.locationInputContainer {
+  border: 1px solid #d4d5d9;
+  padding: 0;
+  display: block;
+  position: relative;
+  transform: translateZ(0);
+  margin-top: 25px;
+}
+
+.locationInput {
+  height: 50px;
+  padding-top: 0;
+  font-size: 1.15rem;
+  padding-right: 72px;
+  background-color: transparent;
+  line-height: normal;
+  border: none;
+  outline: none;
+  width: 100%;
+  margin: 0;
+  padding: 0 20px;
+  box-shadow: none;
+  box-sizing: border-box;
+  border-radius: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 500;
+
+}
+
+.locationInput::placeholder {
+  color: #9e9fa5;
+  font-size: 15px;
+}
+
+.currentLocationContainer { 
+  padding: 0;
+  border: 1px solid #d4d5d9;
+  margin-top: 20px;
+  cursor: pointer;
+}
+.currentLocationContainer:hover .currentLocationText{
+  color: #fc8019;
+}
+
+.currentLocation { 
+  display: table;
+    table-layout: fixed;
+    padding: 22px 24px;
+}
+
+.currentLocationIcon {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: left;
+  font-size: 18px;
+  width: 32px;
+  height: 32px;
+  padding-top: 0;
+  padding-left: 1px;
+  color: #535665;
+}
+
+.currentLocationIcon svg {
+  height: 20px;
+  width: 20px;
+}
+
+.currentLocationText {
+  margin: 4px 0;
+  font-size: 14px;
+  letter-spacing: 0.1em;
+
+}
+
+.usingGps {
+  margin: 0;
+  font-size: 12px;
+  color:rgba(0, 0, 0, 0.4);
+  font-weight: 300;
+}
+
+.suggestionContainer{
+  padding: 0;
+  margin-top: 20px;
+  cursor: pointer;
+  overflow-y: scroll;
+  height: 400px;
+}
+
+.suggestion {
+  border-bottom: 1px solid #d4d5d9;
+}

@@ -1,0 +1,44 @@
+.errorCon {
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+     align-items: center;
+     height: 100vh;
+     background-color: white;
+     margin: auto auto;
+     font-family: ProximaNova,arial,Helvetica Neue,sans-serif;
+     width: 33%;
+}
+
+.errorHead {
+    color: #282c3f;
+    font-size: 32px;
+    font-weight: 600;
+    margin: 35px 0 14px;
+}
+
+.errorPara {
+    color: #686b78;
+    font-size: 16px;
+}
+
+
+.back{
+    text-decoration: none;
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+    border: none;
+    letter-spacing: 0;
+    color: #fff;
+    background-color: #fc8019;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12);
+    height: 40px;
+    line-height: 40px;
+    padding: 0 20px;
+    width: auto;
+    margin-top: 25px;
+    font-size: 15px;
+    font-weight: 600;
+    outline: none;
+}

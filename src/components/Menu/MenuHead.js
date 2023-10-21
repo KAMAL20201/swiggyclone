@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 function MenuHead(props) {
     const { RestMenu } = props; //RestMenu json.data
-    console.log(RestMenu?.cards[0]?.card?.card?.info?.city);
+    
   return (
     <MenuHeads>
           <RestauInfo>

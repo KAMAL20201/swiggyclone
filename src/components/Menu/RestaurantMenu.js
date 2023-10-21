@@ -23,11 +23,13 @@ function RestaurantMenu() {
   ) : (
     <Container>
       <Header />
-      <Menu>
-      <MenuHead RestMenu={RestauMenu} />
-      <MenuSubHead RestInfo={RestauMenu} />
-      <MainFoodMenu MenuDetails={RestauMenu} />
-      </Menu>
+      <MenuWrapper>
+        <Menu>
+          <MenuHead RestMenu={RestauMenu} />
+          <MenuSubHead RestInfo={RestauMenu} />
+          <MainFoodMenu MenuDetails={RestauMenu} />
+        </Menu>
+      </MenuWrapper>
       <Footer />
     </Container>
   );
@@ -35,6 +37,11 @@ function RestaurantMenu() {
 
 export default RestaurantMenu;
 
+const MenuWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -43,11 +50,12 @@ const Container = styled.div`
 const Menu = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 0px 260px;
+  width: 60%;
+
+  @media (max-width: 900px) {
+    width: 80%;
+  }
+  @media (max-width: 600px) {
+    width: 90%;
+  }
 `;
-
-
-
-
-
-

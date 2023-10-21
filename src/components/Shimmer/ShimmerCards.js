@@ -7,7 +7,7 @@ function ShimmerCards() {
         <Main/>
         <FirstLine/>
         <SecondLine/>
-      </Container>
+      </Container>  
     </>
   )
 }
@@ -22,6 +22,23 @@ width:17%;
 height:220px;
 flex-direction:column;
 justify-content:space-between;
+flex-wrap:wrap;
+
+@media (max-width: 1200px) {
+  width: 20%;
+  height: 200px;
+
+}
+@media (max-width: 900px) {
+  width: 25%;
+  height: 180px;
+  margin: 55px 20px 30px 50px;
+}
+@media (max-width: 720px) {
+  width: 22%;
+  height: 180px;
+  margin: 55px 20px 30px 50px;
+}
 
 `;
 const Main=styled.div`

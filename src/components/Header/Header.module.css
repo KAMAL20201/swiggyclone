@@ -1,0 +1,121 @@
+.navLink:hover svg {
+  fill: #fc8019;
+}
+.navLink:active svg {
+  fill: #fc8019;
+}
+.cart:hover svg {
+  stroke: #fc8019;
+}
+.SearchIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.SearchIcon svg {
+  @media (max-width: 600px) {
+    display: none;
+  }
+}
+.SearchIcon:hover svg {
+  fill: #fc8019;
+}
+.SearchIcon:hover input {
+  border: 1px solid #fc8019;
+}
+
+.login svg {
+  margin-right: 5px;
+}
+.login:hover svg {
+  fill: #fc8019;
+}
+.login:hover .SignInText {
+  color: #fc8019;
+}
+.login {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #333;
+  cursor: pointer;
+}
+.searchInput {
+  min-height: 20px;
+}
+
+.searchInput::placeholder {
+  font-size: 12px;
+}
+
+.cartItemsNumber {
+  font-size: 16px;
+  font-weight: 500;
+  position: relative;
+  right: 19px;
+}
+
+.SignInText {
+  margin-right: 5px;
+  font-weight: 600;
+  font-size: 12px;
+  color: black;
+  @media (max-width: 600px) {
+    display: none;
+    font-size: 10px;
+  }
+}
+
+.locationContainer {
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+  margin-left: 50px;
+  max-width: 300px;
+  height: 30px;
+  cursor: pointer;
+  margin-bottom: -1px;
+  padding-right: 10px;
+}
+
+.other {
+  font-weight: 700;
+  color: #3d4152;
+  float: left;
+  display: block;
+  min-width: 30px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+
+.location {
+  display: block;
+  padding-left: 5px;
+  margin-left: 5px;
+  color: #686b78;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  font-weight: 300;
+  font-size: 14px;
+}
+
+.downArrow {
+  height: 15px;
+  width: 15px;
+  position: relative;
+  right: -12px;
+top: 1px;
+  color: #fc8019;
+  font-weight: 700;
+}
+
+.downArrow svg{
+  height: 14px;
+  width: 14px;
+ 
+  fill: #fc8019;
+  font-weight: 700;
+}

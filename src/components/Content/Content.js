@@ -4,12 +4,13 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import useOnline from "../myHooks/useOnline";
 
+
 function Content(props) {
   const { newRestaurantData, newInputData } = props;
 
   const [filterdata, setFilterData] = useState(newRestaurantData);
   const [clickedFilters, setClickedFilters] = useState([]);       
-  console.log(filterdata);
+
 
   useEffect(() => {
     const filteredData = newRestaurantData?.filter((restaurant) => {
@@ -153,6 +154,7 @@ function Content(props) {
           );
         })}
       </RestaurantCards>
+
     </Container>
   );
 }
@@ -174,11 +176,17 @@ const FilterContainer = styled.div`
 `;
 
 const RestaurantCards = styled.div`
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Creates four equal columns */
+      gap: 10px;
 
+
+  @media (max-width: 900px) {
+    grid-template-columns: repeat(3, 1fr);
+   
+  }
   @media (max-width: 450px) {
-    flex-direction: column;
+    grid-template-columns: repeat(1, 1fr);
    
   }
 
@@ -225,7 +233,7 @@ const Container = styled.div`
     margin:0px;
   }
   a {
-    width: 25%;
+    width: 100%;
     display: flex;
     text-decoration: none;
     color: black;

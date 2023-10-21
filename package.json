@@ -1,16 +1,23 @@
 {
-  "homepage": "https://KAMAL20201.github.io/swiggyclone",
   "name": "demo-react",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.14.12",
+    "@mui/material": "^5.14.12",
     "@reduxjs/toolkit": "^1.9.5",
     "@supabase/supabase-js": "^2.26.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "cities-list": "^1.0.3",
+    "clsx": "^2.0.0",
+    "country-state-city": "^3.2.1",
     "firebase": "^9.22.1",
     "formik": "^2.4.2",
+    "google-map-react": "^2.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.8.0",
@@ -23,7 +30,7 @@
   "scripts": {
     "start": "react-scripts start",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build" ,
+    "deploy": "gh-pages -d build",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

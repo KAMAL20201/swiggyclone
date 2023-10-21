@@ -1,19 +1,28 @@
 import React, { useState } from "react";
 import styled, { keyframes } from "styled-components";
-import Header from "./Header";
+import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { cartActions } from "../../store/cart-slice";
 
 function Cart() {
-  const [isanimationVisible, setIsAnimationVisible] = useState(false);
-
   const cartItems = useSelector((state) => state.cart.cartItems);
   const dispatch = useDispatch();
+  const [isLoading, setLoading] = useState(false);
+  const [showProgress, setShowProgress] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleClick = () => {
-    setIsAnimationVisible(true);
+    setLoading(true);
+    setShowProgress(true);
+    setTimeout(() => {
+      setLoading(false);
+      navigate("/orderDone");
+      setShowProgress(false);
+    }, 3000); // 3 seconds delay
   };
 
   const totalAmount = cartItems.reduce((accumulator, currentObject) => {
@@ -63,7 +72,11 @@ function Cart() {
 
           {cartItems.length > 0 && (
             <Button onClick={handleClick}>
-              ORDER NOW &#x20B9;{totalAmount / 100.0}
+              {showProgress ? (
+                <Progress />
+              ) : (
+                <>ORDER NOW &#x20B9;{totalAmount / 100.0}</>
+              )}
             </Button>
           )}
         </CartItems>
@@ -75,23 +88,21 @@ function Cart() {
 
 export default Cart;
 
-const scooterMove = keyframes`
-    0% {
-      left: -40%; /* Initial left position */
-    }
-    100% {
-      left: calc(40%); /* Final right position */
-    }
-  `;
-
-const ScooterImage = styled.img`
-  position: relative;
-  left: -40%; /* Initial left position of the scooter */
-  animation-name: ${scooterMove};
-  animation-duration: 3s; /* Duration of the animation */
-  animation-timing-function: linear; /* Linear animation */
-  animation-fill-mode: forwards; /* Keep the final position after animation ends */
+const progressAnimation = keyframes`
+   to {
+      transform: rotate(1turn);
+   }
 `;
+
+const Progress = styled.div`
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: conic-gradient(#0000 10%,  white);
+  -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 9px), #000 0);
+  animation: ${progressAnimation} 1s infinite linear;
+`;
+
 const Amount = styled.div`
   display: flex;
   align-items: center;

@@ -33,45 +33,36 @@ const Heading = styled.h4`
 const List = styled.ul`
   list-style: none;
   padding: 0;
+  min-width: 100px;
+  @media (max-width: 450px) {
+    min-width: 80px;
+  }
+ 
 `;
 
 const ListItem = styled.li`
   margin-bottom: 8px;
+  font-size: 18px;
+  @media (max-width: 900px) {
+    font-size: 16px;
+  }
+  @media (max-width: 600px) {
+    font-size: 14px;
+  }
+  @media (max-width: 450px) {
+    font-size: 10px;
+  }
 `;
 
 const Bottom = styled.div`
   text-align: center;
   margin-top: 20px;
 `;
-const ButtonWrapper = styled.div`
+
+const Links = styled.div`
   display: flex;
   align-items: center;
-`;
-
-const Button = styled.a`
-  display: flex;
-  align-items: center;
-  background-color: #fff;
-  color: #222;
-  padding: 10px 15px;
-  border-radius: 4px;
-  margin-right: 10px;
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 14px;
-
-  &:hover {
-    background-color: #f2f2f2;
-  }
-`;
-
-const ButtonText = styled.span`
-  margin-left: 5px;
-`;
-
-const Icon = styled.img`
-  width: 24px;
-  height: 24px;
+  justify-content: center;
 `;
 
 const Footer = () => {
@@ -111,15 +102,25 @@ const Footer = () => {
               <ListItem>Phishing & Fraud</ListItem>
             </List>
           </Column>
-          <Column>
-            <a href="https://play.google.com/store/apps/details?id=in.swiggy.android&hl=en&gl=US">
-              <img src="https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_200,h_65/icon-GooglePlay_1_zixjxl" />
-            </a>
-            <a href="https://apps.apple.com/in/app/swiggy-food-grocery-delivery/id989540920">
-              <img src="https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_200,h_65/icon-AppStore_lg30tv" />
-            </a>
-          </Column>
         </Row>
+        <Links>
+          <Row>
+            <Column>
+              <a href="https://play.google.com/store/apps/details?id=in.swiggy.android&hl=en&gl=US">
+                <img
+                  alt="Google Play"
+                  src="https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_200,h_65/icon-GooglePlay_1_zixjxl"
+                />
+              </a>
+              <a href="https://apps.apple.com/in/app/swiggy-food-grocery-delivery/id989540920">
+                <img
+                  alt="App Store"
+                  src="https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_200,h_65/icon-AppStore_lg30tv"
+                />
+              </a>
+            </Column>
+          </Row>
+        </Links>
         <Bottom>
           <p>&copy; {new Date().getFullYear()} Swiggy. All rights reserved.</p>
         </Bottom>

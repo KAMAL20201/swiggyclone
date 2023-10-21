@@ -2,23 +2,22 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
-import Offers from "./components/Header/Offers/Offers";
-import Help from "./components/Header/Help/Help";
+import Help from "./components/Help/Help";
 import App from "./App";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import RestaurantMenu from "./components/Menu/RestaurantMenu";
-import SignIn from "./components/Header/SignIn";
-import Cart from "./components/Header/Cart";
+import Cart from "./components/Cart/Cart";
 import { Provider } from "react-redux";
 import store from "./store";
-import SignUp from "./components/Header/SignUp";
 import Error from "./components/Errors/Error";
-import Forgot from "./components/Header/Forgot";
-import SignInLayout from "./components/Header/SignInLayout";
-import NewPassword from "./components/Header/NewPassword";
-import PartnerOnboard from "./components/Header/Help/PartnerOnboard";
-import Legals from './components/Header/Help/Legals';
-import Faqs from "./components/Header/Help/Faqs";
+import PartnerOnboard from "./components/Help/PartnerOnboard";
+import Legals from "./components/Help/Legals";
+import Faqs from './components/Help/Faqs'
+import OrderDone from "./components/Cart/OrderDone";
+import { ModalProvider } from "./contexts/signInModalContext";
+import { LocationProvider } from "./contexts/locationModalContext";
+import SignUp from "./components/Modals/SignUp/SignUp";
+import LocationModal from "./components/Modals/LocationModal/LocationModal";
 
 
 
@@ -28,31 +27,8 @@ const appRoutes = createBrowserRouter([
     element: <App />,
     errorElement:<Error/>
   },
-  {
-    path: "/signup",
-    element: <SignUp />,
-  },
-  {
-    path: "/signin",
-    element: <SignInLayout/>,
-    children:[
-      {
-        index:true,
-        element:<SignIn/>
-      },
-      {
-        path:"forgot",
-        element:<Forgot/>,
-      },
-      {
-        path:"reset",
-        element:<NewPassword/>
-      }
-    ]
 
-  },
-  
-  {
+   {
     path: "/help",
     element: <Help />,
     children:[
@@ -75,6 +51,10 @@ const appRoutes = createBrowserRouter([
     element: <Cart />,
   },
   {
+    path: "/orderDone",
+    element: <OrderDone/>,
+  },
+  {
     path: "/restaurant/:resid",
     element: <RestaurantMenu />,
   },
@@ -83,10 +63,15 @@ const appRoutes = createBrowserRouter([
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
-    <RouterProvider router={appRoutes} />
+    <RouterProvider router={appRoutes}/>
+      <ModalProvider>
+        <LocationProvider>
+          <SignUp/>
+          <LocationModal/>
+        </LocationProvider>
+      </ModalProvider>
+
   </Provider>
 );
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+
 reportWebVitals();
