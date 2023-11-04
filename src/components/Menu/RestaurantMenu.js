@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 
 import Shimmer from "../Shimmer/Shimmer";
 import styled from "styled-components";
-import useRestauMenu from "../myHooks/useRestauMenu";
+import useRestauMenu from "../../myHooks/useRestauMenu";
 import MenuHead from "./MenuHead";
 import MenuSubHead from "./MenuSubHead";
 import MainFoodMenu from "./MainFoodMenu";

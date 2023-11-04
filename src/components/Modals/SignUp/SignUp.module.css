@@ -45,7 +45,44 @@
   background-color: #fc8019;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12);
   text-transform: uppercase;
+
+  
+
 }
+
+
+.progressBar {
+  width: 100%; /* Adjust the width as needed */
+  height: 50px;
+  background-color: transparent;
+  position: relative;
+  display: flex;
+  bottom:  50px;
+  z-index: 10;
+
+}
+
+@keyframes loadingAnimation {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+  
+}
+
+.filler {
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.061);
+  animation: loadingAnimation 9s linear; /* Adjust the transition duration as needed */
+}
+
+
+.loading {
+  cursor: not-allowed;
+}
+
 .loginHeader {
   display: flex;
   padding-top: 30px;
@@ -102,12 +139,12 @@
   transform: translateZ(0);
 }
 
-.form_group:focus-within .label {
+/* .form_group:focus-within .label {
   transform: translateY(-70%);
   font-size: 12px !important;
   font-weight: 500 !important;
   color: #7e808c !important;
-}
+} */
 
 
 .input {
@@ -130,13 +167,11 @@
   font-weight: 500;
 }
 
-.labelTransformed {
-  font-size: 12px !important;
-  font-weight: 500 !important;
-  color: #7e808c !important;
-  -ms-transform: translateY(-70%);
+.input:focus + .label, input:valid + .label {
   transform: translateY(-70%);
+  font-size: 14px;
 }
+
 
 .label {
   position: absolute;

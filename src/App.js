@@ -4,10 +4,8 @@ import Content from "./components/Content/Content";
 import Footer from "./components/Footer/Footer";
 import Shimmer from "./components/Shimmer/Shimmer";
 import "./App.css";
-import useGetRestaurants from "./components/myHooks/useGetRestaurants";
-import { LocationProvider } from "./contexts/locationModalContext";
-import { ModalProvider } from "./contexts/signInModalContext";
-
+import useGetRestaurants from "./myHooks/useGetRestaurants";
+import UnServiceAble from "./components/UnServiceAble/UnServiceAble";
 
 function App() {
   const [inputData, setInputData] = useState("");
@@ -17,19 +15,24 @@ function App() {
     setInputData(data);
   };
 
-  return restaurantdata?.length === 0 ? (
-    <Shimmer />
-  ) : (
-    
-    <div className="App">
-      <ModalProvider>
-      <LocationProvider>
-      <Header getInputData={inputHandler} />
-      <Content newRestaurantData={restaurantdata} newInputData={inputData} />
-      <Footer />
-      </LocationProvider>
-      </ModalProvider>
-    </div>
-  );
+  if (Array.isArray(restaurantdata)) {
+    return restaurantdata?.length === 0 ? (
+      <Shimmer />
+    ) : (
+      <div className="App">
+        <Header getInputData={inputHandler} />
+        <Content newRestaurantData={restaurantdata} newInputData={inputData} />
+        <Footer />
+      </div>
+    );
+  } else {
+    return (
+      <div className="App">
+        <Header getInputData={inputHandler} />
+        <UnServiceAble/>
+        <Footer />
+      </div>
+    );
+  }
 }
 export default App;

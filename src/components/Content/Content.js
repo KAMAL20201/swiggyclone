@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import RestauCard from "./RestauCard";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import useOnline from "../myHooks/useOnline";
+import useOnline from "../../myHooks/useOnline";
 
 
 function Content(props) {
@@ -11,6 +11,7 @@ function Content(props) {
   const [filterdata, setFilterData] = useState(newRestaurantData);
   const [clickedFilters, setClickedFilters] = useState([]);       
 
+  console.log(filterdata);
 
   useEffect(() => {
     const filteredData = newRestaurantData?.filter((restaurant) => {

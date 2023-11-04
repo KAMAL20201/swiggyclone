@@ -17,9 +17,10 @@ import classes from "./Header.module.css";
 import { useLocationContext } from "../../contexts/locationModalContext";
 function Header(props) {
 
-  // const {openModal} = useModal();
-  // const {currentLocation, openLocationModal} = useLocationContext();
-// 
+  const {openModal} = useModal();
+  const {currentLocation, openLocationModal} = useLocationContext();
+
+
 
   const [query, setQuery] = useState("");
   const { isUserAuthenicated, userName, authToken } = useSelector(
@@ -96,9 +97,9 @@ function Header(props) {
           <SwiggyLogo />
         </Link>
 
-        <div className={classes.locationContainer} >
+        <div className={classes.locationContainer} onClick={openLocationModal}>
           <span className={classes.other}>Other</span>
-          <span className={classes.location}>jjj</span>
+          <span className={classes.location}>{currentLocation}</span>
           <span className={classes.downArrow}><DownArrowIcon/></span>
         </div>
       </Logo>
@@ -124,7 +125,7 @@ function Header(props) {
 
        
           <div className={classes.login} 
- 
+    onClick={openModal}
           >
             <LoginIcon />
             <span className={classes.SignInText}>Sign In</span>

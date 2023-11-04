@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import classes from "./Location.module.css";
 import { ReactComponent as LocationIcon } from "../../../assets/LocationIcon.svg";
-import {ReactComponent as PinCodeIcon} from '../../../assets/pincodeIcon.svg';
+import { ReactComponent as PinCodeIcon } from "../../../assets/pincodeIcon.svg";
 import { useLocationContext } from "../../../contexts/locationModalContext";
 import { City } from "country-state-city";
+import { createPortal } from "react-dom";
 
 const LocationModal = () => {
+
   const [inputText, setInputText] = useState("");
 
   const {
@@ -15,15 +17,18 @@ const LocationModal = () => {
     islocationModalVisible,
     closeLocationModal,
   } = useLocationContext();
+
   const [suggestions, setSuggestions] = useState([]);
 
-  const reverseGeocode = async(latitude, longitude) =>{
-    const data= await fetch(`https://apis.mappls.com/advancedmaps/v1/b9b5654ced874cfc9b71f2ed60eb6542/rev_geocode?lat=${latitude}&lng=${longitude}&region=IND`);
-    const resdata= await data.json();
-    const {city, state, area} =resdata.results[0];
+  const reverseGeocode = async (latitude, longitude) => {
+    const data = await fetch(
+      `https://apis.mappls.com/advancedmaps/v1/b9b5654ced874cfc9b71f2ed60eb6542/rev_geocode?lat=${latitude}&lng=${longitude}&region=IND`
+    );
+    const resdata = await data.json();
+    const { city, state, area } = resdata.results[0];
     setLocation(city, state, area);
+  };
 
-  }
   const fetchCurrentLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -31,7 +36,6 @@ const LocationModal = () => {
           setLatitude(position.coords.latitude);
           setLongitude(position.coords.longitude);
           reverseGeocode(position.coords.latitude, position.coords.longitude);
-          
           closeLocationModal();
         },
         (error) => {
@@ -58,20 +62,17 @@ const LocationModal = () => {
       closeLocationModal();
     }
   };
-  
-  const fetchCityDetails = (city)=>{
+
+  const fetchCityDetails = (city) => {
     setLatitude(city.latitude);
     setLongitude(city.longitude);
     reverseGeocode(city.latitude, city.longitude);
     closeLocationModal();
-  }
+  };
 
   useEffect(() => {
     fetchSuggestions();
   }, [inputText]);
-
-
-  console.log(suggestions);
 
   return (
     <>
@@ -96,9 +97,9 @@ const LocationModal = () => {
 
             <div
               className={classes.currentLocationContainer}
-              onClick={()=>{
-                
-                fetchCurrentLocation()}}
+              onClick={() => {
+                fetchCurrentLocation();
+              }}
             >
               <div className={classes.currentLocation}>
                 <div className={classes.currentLocationIcon}>
@@ -114,29 +115,38 @@ const LocationModal = () => {
             </div>
 
             <div className={classes.suggestionContainer}>
-            {suggestions &&
-              suggestions.map((suggestion, index) => (
-                <div className={classes.suggestion} key={index} onClick={()=>fetchCityDetails(suggestion)}>
-                  <div className={classes.currentLocation}>
-                    <div className={classes.currentLocationIcon}>
-                      <PinCodeIcon />
-                    </div>
-                    <div>
-                      <p className={classes.currentLocationText}>
-                       {suggestion.name}
-                      </p>
-                      <span className={classes.usingGps}>{suggestion.stateCode}, </span>
-                      <span className={classes.usingGps}>{suggestion.countryCode}</span>
+              {suggestions &&
+                suggestions.map((suggestion, index) => (
+                  <div
+                    className={classes.suggestion}
+                    key={index}
+                    onClick={() => fetchCityDetails(suggestion)}
+                  >
+                    <div className={classes.currentLocation}>
+                      <div className={classes.currentLocationIcon}>
+                        <PinCodeIcon />
+                      </div>
+                      <div>
+                        <p className={classes.currentLocationText}>
+                          {suggestion.name}
+                        </p>
+                        <span className={classes.usingGps}>
+                          {suggestion.stateCode},{" "}
+                        </span>
+                        <span className={classes.usingGps}>
+                          {suggestion.countryCode}
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
-              </div>
+                ))}
+            </div>
           </div>
         </div>
       )}
     </>
   );
 };
+
 
 export default LocationModal;

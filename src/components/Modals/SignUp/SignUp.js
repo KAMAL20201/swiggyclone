@@ -1,13 +1,57 @@
 import classes from "./SignUp.module.css";
 import { useModal } from "../../../contexts/signInModalContext";
-import { useState } from "react";
+import { useLocationContext } from "../../../contexts/locationModalContext";
+import { useState, useEffect } from "react";
 import clsx from "clsx";
+import { isInteger } from "formik";
 export default function SignUp() {
   const { isModalVisible, closeModal } = useModal();
 
+
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [otpCode, setOtpCode] = useState("");
   const [isOtpPage, setisOtpPage] = useState(false);
+  const [isSignUpPage, setisSignUpPage] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+
+  const handleRegisterUser = (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify({
+      data: {
+        name: name,
+        email: email,
+        phone: phoneNumber,
+      },
+    });
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    fetch("http://localhost:1337/api/swiggy-users", requestOptions)
+      .then((response) => response.text())
+      .then((result) => {
+
+        handleSendVerification(e);
+      
+      })
+      .catch((error) => console.log("error", error))
+      .finally(() => {
+        setIsLoading(false);
+     
+      });
+  };
 
   const handleBackdropClick = (e) => {
     if (e.target === e.currentTarget) {
@@ -18,11 +62,6 @@ export default function SignUp() {
   const handleSendVerification = (e) => {
     e.preventDefault();
 
-    // Prepend "+91" to the phoneNumber
-    const phoneNumberWithCountryCode = "+91" + phoneNumber;
-
-
-    // Send the first request to Twilio to initiate verification
     fetch(
       "https://verify.twilio.com/v2/Services/VAee7f69837cf4dd1b8924753483d366c5/Verifications",
       {
@@ -50,27 +89,33 @@ export default function SignUp() {
   };
 
   const handleVerifyOtp = () => {
-  
-    fetch('https://verify.twilio.com/v2/Services/VAee7f69837cf4dd1b8924753483d366c5/VerificationCheck', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': 'Basic ' + btoa('ACf129193203a1d2fdac78a21fb0269184:58259ff6405612d263985df512cc22dd'),
-      },
-      body: `To=%2B91${phoneNumber}&Code=${otpCode}`,
-    })
-      .then(response => {
-        const resdata= response.json();
-   
-         const {valid} = resdata;
+    fetch(
+      "https://verify.twilio.com/v2/Services/VAee7f69837cf4dd1b8924753483d366c5/VerificationCheck",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          Authorization:
+            "Basic " +
+            btoa(
+              "ACf129193203a1d2fdac78a21fb0269184:58259ff6405612d263985df512cc22dd"
+            ),
+        },
+        body: `To=%2B91${phoneNumber}&Code=${otpCode}`,
+      }
+    )
+      .then((response) => {
+        const resdata = response.json();
+          console.log(resdata);
+        const { valid } = resdata;
+        closeModal();
+
       })
-      .catch(error => {
+      .catch((error) => {
         // Handle the error
         console.error(error);
       });
   };
-
-
 
   return (
     <>
@@ -80,7 +125,12 @@ export default function SignUp() {
             <div className={classes.loginHeader}>
               <div>
                 {isOtpPage ? (
-                  <span className={classes.backIcon} onClick={()=>setisOtpPage(false)}>&larr;</span>
+                  <span
+                    className={classes.backIcon}
+                    onClick={() => setisOtpPage(false)}
+                  >
+                    &larr;
+                  </span>
                 ) : (
                   <span className={classes.closeIcon} onClick={closeModal}>
                     &#10799;{" "}
@@ -88,7 +138,7 @@ export default function SignUp() {
                 )}
 
                 <h1 style={{ marginBottom: "10px" }}>
-                  {isOtpPage ? "Enter OTP" : "Login"}
+                  {isSignUpPage ? "Sign Up" : isOtpPage ? "Enter OTP" : "Login"}
                 </h1>
 
                 {isOtpPage ? (
@@ -98,10 +148,23 @@ export default function SignUp() {
                 ) : (
                   <div className={classes.createAccount}>
                     or
-                    <span className={classes.createAccountLink}>
-                      {" "}
-                      create an account
-                    </span>
+                    {isSignUpPage ? (
+                      <span
+                        className={classes.createAccountLink}
+                        onClick={() => setisSignUpPage(false)}
+                      >
+                        {" "}
+                        login to your account
+                      </span>
+                    ) : (
+                      <span
+                        className={classes.createAccountLink}
+                        onClick={() => setisSignUpPage(true)}
+                      >
+                        {" "}
+                        create an account
+                      </span>
+                    )}
                   </div>
                 )}
               </div>
@@ -112,23 +175,71 @@ export default function SignUp() {
                 src="https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/Image-login_btpq7r"
               />
             </div>
-            <form >
+
+            <form>
               <div className={classes.form_group}>
                 <input
                   name="mobile"
                   id="mobile"
-                  type="tel"
+                  type="text"
                   maxLength={10}
+                  minLength={10}
                   autoComplete="off"
                   value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  onChange={(e) => {
+                      const value = e.target.value;
+                  
+                      // Use a regular expression to check if the value is numeric
+                      if (/^\d*$/.test(value)) {
+                        setPhoneNumber(value);
+                      }
+                    }}
                   className={classes.input}
                   disabled={isOtpPage}
+                  required
                 />
                 <label htmlFor="mobile" className={clsx(classes.label)}>
                   Phone Number
                 </label>
               </div>
+
+              {isSignUpPage && (
+                <>
+                  <div className={classes.form_group}>
+                    {" "}
+                    <input
+                      name="name"
+                      id="name"
+                      type="text"
+                      autoComplete="off"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      className={classes.input}
+                      required
+                      disabled={isOtpPage}
+                    />
+                    <label htmlFor="name" className={clsx(classes.label)}>
+                      Name
+                    </label>
+                  </div>
+                  <div className={classes.form_group}>
+                    <input
+                      name="email"
+                      id="email"
+                      type="email"
+                      autoComplete="off"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className={classes.input}
+                      required
+                      disabled={isOtpPage}
+                    />
+                    <label htmlFor="email" className={clsx(classes.label)}>
+                      Email
+                    </label>
+                  </div>
+                </>
+              )}
 
               {isOtpPage && (
                 <div className={classes.form_group}>
@@ -136,11 +247,12 @@ export default function SignUp() {
                     name="otp"
                     id="otp"
                     type="text"
-                    maxLength={10}
+                    maxLength={6}
                     autoComplete="off"
                     value={otpCode}
                     onChange={(e) => setOtpCode(e.target.value)}
                     className={classes.input}
+                    required
                   />
                   <label htmlFor="otp" className={clsx(classes.label)}>
                     One Time Password
@@ -149,11 +261,35 @@ export default function SignUp() {
               )}
               <div className={classes.loginButtonContainer}>
                 {isOtpPage ? (
-                  <button type="submit" className={classes.loginButton} onClick={handleVerifyOtp}>
+                  <button
+                    type="submit"
+                    className={classes.loginButton}
+                    onClick={handleVerifyOtp}
+                  >
                     VERIFY OTP
                   </button>
+                ) : isSignUpPage ? (
+                  <>
+                    <button
+                      type="submit"
+                      className={clsx(
+                        classes.loginButton,
+                        isLoading && classes.loading
+                      )}
+                      onClick={handleRegisterUser}
+                    >
+                      CONTINUE
+                    </button>
+                  { isLoading &&  <div className={classes.progressBar}>
+                      <div className={clsx(classes.filler)}></div>
+                    </div>}
+                  </>
                 ) : (
-                  <button type="submit" className={classes.loginButton} onClick={handleSendVerification}>
+                  <button
+                    type="submit"
+                    className={classes.loginButton}
+                    onClick={handleSendVerification}
+                  >
                     LOGIN
                   </button>
                 )}
