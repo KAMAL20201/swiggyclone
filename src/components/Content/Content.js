@@ -11,7 +11,7 @@ function Content(props) {
   const [filterdata, setFilterData] = useState(newRestaurantData);
   const [clickedFilters, setClickedFilters] = useState([]);       
 
-  console.log(filterdata);
+
 
   useEffect(() => {
     const filteredData = newRestaurantData?.filter((restaurant) => {

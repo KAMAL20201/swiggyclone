@@ -1,7 +1,9 @@
 import {useState,useEffect} from 'react'
-
+import { useLocationContext } from '../contexts/locationModalContext';
 const useRestauMenu = (resid) => {
     const [RestauMenu, setRestaurantMenu] = useState({});
+
+    const {latitude, longitude} = useLocationContext();
 
     //API call
     useEffect(() => {
@@ -10,7 +12,7 @@ const useRestauMenu = (resid) => {
     
       async function getRestaurantMenu() {
         const response = await fetch(
-          "https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=30.7333148&lng=76.7794179&restaurantId="+resid+"&submitAction=ENTER"         
+          `https://swiggyclone-backend-jy63.onrender.com/api/menu?page-type=REGULAR_MENU&complete-menu=true&lat=${latitude}&lng=${longitude}&restaurantId=${resid}&submitAction=ENTER`        
         );
         if(!response.ok){
           return;

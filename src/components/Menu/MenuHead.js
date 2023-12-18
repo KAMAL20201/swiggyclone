@@ -9,9 +9,9 @@ function MenuHead(props) {
           <RestauInfo>
             <h3>{RestMenu?.cards[0]?.card?.card?.info?.name}</h3>
             <h6>{RestMenu?.cards[0]?.card?.card?.info?.cuisines?.join(", ")}</h6>
-            <p>
+            <h6>
               {RestMenu?.cards[0]?.card?.card?.info?.areaName}, {RestMenu?.cards[0]?.card?.card?.info?.sla?.lastMileTravelString}
-            </p>
+            </h6>
             <p>{RestMenu?.cards[0]?.card?.card?.info?.feeDetails?.message}</p>
           </RestauInfo>
           <Rating>
@@ -52,11 +52,9 @@ const RestauInfo = styled.div`
   h6 {
     margin: 0px;
     font-weight:400;
+    color: #7e808c;
   }
-  p {
-    margin: 0px;
-    font-weight:400;
-  }
+
 `;
 
 const Rating = styled.div`

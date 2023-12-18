@@ -10,7 +10,7 @@ const useGetRestaurants = (resid) => {
   useEffect(() => {
     async function getRestaurants() {
       const data = await fetch(
-        `https://www.swiggy.com/dapi/restaurants/list/v5?lat=${latitude}&lng=${longitude}&page_type=DESKTOP_WEB_LISTING`
+        `https://swiggyclone-backend-jy63.onrender.com/api/restaurants?lat=${latitude}&lng=${longitude}&page_type=DESKTOP_WEB_LISTING`
       );
 
       const json = await data.json();

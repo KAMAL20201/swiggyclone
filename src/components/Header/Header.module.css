@@ -12,11 +12,7 @@
   align-items: center;
   justify-content: center;
 }
-.SearchIcon svg {
-  @media (max-width: 600px) {
-    display: none;
-  }
-}
+
 .SearchIcon:hover svg {
   fill: #fc8019;
 }
@@ -89,7 +85,6 @@
   white-space: nowrap;
 }
 
-
 .location {
   display: block;
   padding-left: 5px;
@@ -107,15 +102,29 @@
   width: 15px;
   position: relative;
   right: -12px;
-top: 1px;
+  top: 1px;
   color: #fc8019;
   font-weight: 700;
 }
 
-.downArrow svg{
+.downArrow svg {
   height: 14px;
   width: 14px;
- 
+
   fill: #fc8019;
   font-weight: 700;
+}
+
+@media screen and (max-width: 450px) {
+  .locationContainer {
+    display: none;
+  }
+}
+
+
+@media screen and (max-width: 768px) {
+  .SearchIcon {
+    display: none;
+  }
+  
 }

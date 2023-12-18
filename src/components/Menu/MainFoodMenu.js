@@ -14,28 +14,48 @@ function MainFoodMenu(props) {
 
   const newMenu = MenuDetails?.cards?.filter((card) => card?.groupedCard);
 
-  const [showMenu, setShowMenu] = useState(0);
-  const [showSubMenu, setShowSubMenu] = useState(false);
-  const [showMeMenu, setMenu] = useState(true);
+  const cardsLength =
+    newMenu[0]?.groupedCard?.cardGroupMap?.REGULAR?.cards?.length;
+
+  const cardsArray = Array(cardsLength).fill(1);
+
+  const [showMenu, setShowMenu] = useState(cardsArray);
+
+
+  const [showSubMenu, setShowSubMenu] = useState(() => {
+    const initialShowSubMenu = {};
+    newMenu[0].groupedCard?.cardGroupMap?.REGULAR?.cards.forEach((item, index) => {
+      if (item?.card?.card?.categories) {
+        item.card.card.categories.forEach((_, categoryIndex) => {
+          const categoryKey = `${index}-${categoryIndex}`;
+          initialShowSubMenu[categoryKey] = false;
+        });
+      }
+    });
+    return initialShowSubMenu;
+  });
+
+
+  
 
   function MenuHandler(index) {
-    setMenu(!showMeMenu);
     setShowMenu((prevState) => {
-      if (prevState === index) {
-        return null; // toggle off if already selected
+      if (prevState[index] === 0) {
+        prevState[index] = 1;
       } else {
-        return index; // toggle on if not already selected
+        prevState[index] = 0;
       }
+      return [...prevState];
     });
   }
 
   function SubMenuhandler(mainIndex, categoryIndex) {
     setShowSubMenu((prevState) => {
-      if (prevState === `${mainIndex}-${categoryIndex}`) {
-        return null; // toggle off if already selected
-      } else {
-        return `${mainIndex}-${categoryIndex}`; // toggle on if not already selected
-      }
+      const categoryKey = `${mainIndex}-${categoryIndex}`;
+      return {
+        ...prevState,
+        [categoryKey]: !prevState[categoryKey],
+      };
     });
   }
 
@@ -59,7 +79,7 @@ function MainFoodMenu(props) {
         (item, index) => {
           return (
             (item?.card?.card?.categories || item?.card?.card?.itemCards) && (
-              <Items>
+              <Items key={index}>
                 <Header onClick={() => MenuHandler(index)}>
                   {item?.card?.card?.categories ? (
                     <h3>{item?.card?.card?.title}</h3>
@@ -81,10 +101,11 @@ function MainFoodMenu(props) {
                     </>
                   )}
                 </Header>
-                {showMenu === index &&
-                  item?.card?.card?.itemCards?.map((fooditem) => {
+
+                {showMenu[index] === 1 &&
+                  item?.card?.card?.itemCards?.map((fooditem, idx) => {
                     return (
-                      <Cards>
+                      <Cards key={idx}>
                         <ItemInfo>
                           <p>{fooditem?.card?.info?.name}</p>
                           <p>{fooditem?.card?.info?.price / 100}</p>
@@ -112,13 +133,18 @@ function MainFoodMenu(props) {
                       </Cards>
                     );
                   })}
+
+
                 {item?.card?.card?.categories?.map(
                   (category, categoryindex) => {
+
+                    const categoryKey = `${index}-${categoryindex}`;
                     return (
                       <>
                         <SubMenu
                           style={{ cursor: "pointer" }}
                           onClick={() => SubMenuhandler(index, categoryindex)}
+                          borderShort = {showSubMenu[categoryKey]}
                         >
                           <p>
                             {category?.title} ({category?.itemCards?.length})
@@ -131,7 +157,7 @@ function MainFoodMenu(props) {
                           />
                         </SubMenu>
 
-                        {showSubMenu === `${index}-${categoryindex}` &&
+                        {showSubMenu[categoryKey] &&
                           category?.itemCards?.map((fooditem) => {
                             return (
                               <Cards>
@@ -205,9 +231,6 @@ const Button = styled.button`
       left: -33%;
     `}
 `;
-const Container = styled.div`
-  margin-top: 30px;
-`;
 
 const Header = styled.div`
   display: flex;
@@ -219,18 +242,57 @@ const Header = styled.div`
     font-size: 20px;
   }
 `;
-const Items = styled.div`
-  display: flex;
-  flex-direction: column;
-  border-bottom: 13px solid rgba(0, 0, 0, 0.1);
-  padding: 10px;
-`;
+
 const Cards = styled.div`
   display: flex;
 
   justify-content: space-between;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+  border-bottom: 0.5px solid #d3d3d3;
 `;
+
+const SubMenu = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom:;
+  margin-bottom: 20px;
+  border-bottom: ${(props) => (props.borderShort ? 'none' : ' 0.5px solid #d3d3d3')};
+
+  p{
+    border-bottom: ${(props) => (props.borderShort ? ' 0.5px solid #d3d3d3' : 'none')};
+    margin: 0px;
+    padding: 20px 0px;
+  }
+
+`;
+
+
+const Items = styled.div`
+  display: flex;
+  flex-direction: column;
+  border-bottom: 16px solid #f1f1f6;
+  padding: 10px;
+ ${Cards}: last-child {
+    border-bottom: none;
+ }
+ ${SubMenu}: last-child {
+    border-bottom: none;
+    margin: 0px;
+ }
+
+`;
+
+const Container = styled.div`
+  margin-top: 30px;
+
+  ${Items}:last-child {
+    border-bottom: none;
+  }
+`;
+
+
+
+
 const Image = styled.div`
   margin: 25px 0px 10px 0px;
   display: flex;
@@ -241,8 +303,4 @@ const Image = styled.div`
   }
 `;
 const ItemInfo = styled.div``;
-const SubMenu = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
+

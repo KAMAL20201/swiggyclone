@@ -6,8 +6,6 @@ import clsx from "clsx";
 import { isInteger } from "formik";
 export default function SignUp() {
   const { isModalVisible, closeModal } = useModal();
-
-
   const [phoneNumber, setPhoneNumber] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -16,6 +14,8 @@ export default function SignUp() {
   const [isSignUpPage, setisSignUpPage] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  const twilioAccountSid = process.env.TWILIO_ACCOUNT_SID;
+const twilioAuthToken = process.env.TWILIO_AUTH_TOKEN;
 
   const handleRegisterUser = (e) => {
     e.preventDefault();
@@ -68,11 +68,7 @@ export default function SignUp() {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
-          Authorization:
-            "Basic " +
-            btoa(
-              "ACf129193203a1d2fdac78a21fb0269184:58259ff6405612d263985df512cc22dd"
-            ),
+          Authorization: "Basic " + btoa(`${twilioAccountSid}:${twilioAuthToken}`),
         },
         body: `To=%2B91${phoneNumber}&Channel=sms`,
       }
@@ -95,11 +91,7 @@ export default function SignUp() {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
-          Authorization:
-            "Basic " +
-            btoa(
-              "ACf129193203a1d2fdac78a21fb0269184:58259ff6405612d263985df512cc22dd"
-            ),
+          Authorization: "Basic " + btoa(`${twilioAccountSid}:${twilioAuthToken}`),
         },
         body: `To=%2B91${phoneNumber}&Code=${otpCode}`,
       }
