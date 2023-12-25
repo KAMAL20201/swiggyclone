@@ -1,112 +1,89 @@
-import classes from "./SignUp.module.css";
-import { useModal } from "../../../contexts/signInModalContext";
-import { useLocationContext } from "../../../contexts/locationModalContext";
-import { useState, useEffect } from "react";
-import clsx from "clsx";
-import { isInteger } from "formik";
+import classes from './SignUp.module.css';
+import { useModal } from '../../../contexts/signInModalContext';
+import { useState } from 'react';
+import clsx from 'clsx';
+import { supabase } from '../../../client';
+import toast, { Toaster } from 'react-hot-toast';
+import { useUserContext } from '../../../contexts/userContext';
+import { useNavigate } from 'react-router-dom';
 export default function SignUp() {
   const { isModalVisible, closeModal } = useModal();
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [otpCode, setOtpCode] = useState("");
-  const [isOtpPage, setisOtpPage] = useState(false);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [isSignUpPage, setisSignUpPage] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
-  const twilioAccountSid = process.env.TWILIO_ACCOUNT_SID;
-const twilioAuthToken = process.env.TWILIO_AUTH_TOKEN;
-
-  const handleRegisterUser = (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-
-    var raw = JSON.stringify({
-      data: {
-        name: name,
-        email: email,
-        phone: phoneNumber,
-      },
-    });
-
-    var requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: raw,
-      redirect: "follow",
-    };
-
-    fetch("http://localhost:1337/api/swiggy-users", requestOptions)
-      .then((response) => response.text())
-      .then((result) => {
-
-        handleSendVerification(e);
-      
-      })
-      .catch((error) => console.log("error", error))
-      .finally(() => {
-        setIsLoading(false);
-     
-      });
-  };
-
+  const { setUser } = useUserContext();
+  const navigate = useNavigate();
   const handleBackdropClick = (e) => {
     if (e.target === e.currentTarget) {
       closeModal();
     }
   };
 
-  const handleSendVerification = (e) => {
+  const handleRegisterUser = async (e) => {
     e.preventDefault();
-
-    fetch(
-      "https://verify.twilio.com/v2/Services/VAee7f69837cf4dd1b8924753483d366c5/Verifications",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-          Authorization: "Basic " + btoa(`${twilioAccountSid}:${twilioAuthToken}`),
+    setIsLoading(true);
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: 'http://localhost:3000',
+        data: {
+          full_name: name,
         },
-        body: `To=%2B91${phoneNumber}&Channel=sms`,
-      }
-    )
-      .then((response) => {
-        // Handle the response, you can add error handling here
-        console.log(response);
-        setisOtpPage(true);
-      })
-      .catch((error) => {
-        // Handle the error
-        console.error(error);
+      },
+    });
+    if (error) {
+      console.log(error?.message);
+      toast(error?.message, {
+        duration: 4000,
+        position: 'bottom-center',
       });
+    } else {
+      console.log(data);
+      setEmail('');
+      setName('');
+      setPassword('');
+
+      toast.success('Verification Link sent', {
+        duration: 4000,
+        position: 'top-center',
+      });
+    }
+
+    setIsLoading(false);
   };
 
-  const handleVerifyOtp = () => {
-    fetch(
-      "https://verify.twilio.com/v2/Services/VAee7f69837cf4dd1b8924753483d366c5/VerificationCheck",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-          Authorization: "Basic " + btoa(`${twilioAccountSid}:${twilioAuthToken}`),
-        },
-        body: `To=%2B91${phoneNumber}&Code=${otpCode}`,
-      }
-    )
-      .then((response) => {
-        const resdata = response.json();
-          console.log(resdata);
-        const { valid } = resdata;
-        closeModal();
-
-      })
-      .catch((error) => {
-        // Handle the error
-        console.error(error);
+  const handleLoginUser = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    if (error) {
+      console.log(error);
+      toast(error?.message, {
+        duration: 4000,
+        position: 'bottom-center',
       });
+    } else {
+      setUser({
+        id: data?.user?.id,
+        name: data?.user?.user_metadata?.full_name,
+        email: data?.user?.email,
+      });
+      navigate('/');
+      // window.location.reload();
+      closeModal();
+
+      toast.success(`Welcome back ${data?.user?.user_metadata?.full_name}`, {
+        duration: 4000,
+        position: 'bottom-center',
+      });
+    }
+    setIsLoading(false);
   };
 
   return (
@@ -116,49 +93,34 @@ const twilioAuthToken = process.env.TWILIO_AUTH_TOKEN;
           <div className={classes.signUpContainer}>
             <div className={classes.loginHeader}>
               <div>
-                {isOtpPage ? (
-                  <span
-                    className={classes.backIcon}
-                    onClick={() => setisOtpPage(false)}
-                  >
-                    &larr;
-                  </span>
-                ) : (
-                  <span className={classes.closeIcon} onClick={closeModal}>
-                    &#10799;{" "}
-                  </span>
-                )}
+                <span className={classes.closeIcon} onClick={closeModal}>
+                  &#10799;{' '}
+                </span>
 
-                <h1 style={{ marginBottom: "10px" }}>
-                  {isSignUpPage ? "Sign Up" : isOtpPage ? "Enter OTP" : "Login"}
+                <h1 style={{ marginBottom: '10px' }}>
+                  {isSignUpPage ? 'Sign Up' : 'Login'}
                 </h1>
 
-                {isOtpPage ? (
-                  <div className={classes.createAccount}>
-                    We've sent an OTP to your phone number.
-                  </div>
-                ) : (
-                  <div className={classes.createAccount}>
-                    or
-                    {isSignUpPage ? (
-                      <span
-                        className={classes.createAccountLink}
-                        onClick={() => setisSignUpPage(false)}
-                      >
-                        {" "}
-                        login to your account
-                      </span>
-                    ) : (
-                      <span
-                        className={classes.createAccountLink}
-                        onClick={() => setisSignUpPage(true)}
-                      >
-                        {" "}
-                        create an account
-                      </span>
-                    )}
-                  </div>
-                )}
+                <div className={classes.createAccount}>
+                  or
+                  {isSignUpPage ? (
+                    <span
+                      className={classes.createAccountLink}
+                      onClick={() => setisSignUpPage(false)}
+                    >
+                      {' '}
+                      login to your account
+                    </span>
+                  ) : (
+                    <span
+                      className={classes.createAccountLink}
+                      onClick={() => setisSignUpPage(true)}
+                    >
+                      {' '}
+                      create an account
+                    </span>
+                  )}
+                </div>
               </div>
 
               <img
@@ -168,37 +130,41 @@ const twilioAuthToken = process.env.TWILIO_AUTH_TOKEN;
               />
             </div>
 
-            <form>
+            <div>
               <div className={classes.form_group}>
                 <input
-                  name="mobile"
-                  id="mobile"
-                  type="text"
-                  maxLength={10}
-                  minLength={10}
+                  name="email"
+                  id="email"
+                  type="email"
                   autoComplete="off"
-                  value={phoneNumber}
-                  onChange={(e) => {
-                      const value = e.target.value;
-                  
-                      // Use a regular expression to check if the value is numeric
-                      if (/^\d*$/.test(value)) {
-                        setPhoneNumber(value);
-                      }
-                    }}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className={classes.input}
-                  disabled={isOtpPage}
                   required
                 />
-                <label htmlFor="mobile" className={clsx(classes.label)}>
-                  Phone Number
+                <label htmlFor="email" className={classes.label}>
+                  Email
                 </label>
               </div>
-
+              <div className={classes.form_group}>
+                <input
+                  name="password"
+                  id="password"
+                  type="password"
+                  autoComplete="off"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className={classes.input}
+                  required
+                />
+                <label htmlFor="password" className={classes.label}>
+                  Password
+                </label>
+              </div>
               {isSignUpPage && (
                 <>
                   <div className={classes.form_group}>
-                    {" "}
+                    {' '}
                     <input
                       name="name"
                       id="name"
@@ -208,59 +174,16 @@ const twilioAuthToken = process.env.TWILIO_AUTH_TOKEN;
                       onChange={(e) => setName(e.target.value)}
                       className={classes.input}
                       required
-                      disabled={isOtpPage}
                     />
-                    <label htmlFor="name" className={clsx(classes.label)}>
-                      Name
-                    </label>
-                  </div>
-                  <div className={classes.form_group}>
-                    <input
-                      name="email"
-                      id="email"
-                      type="email"
-                      autoComplete="off"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className={classes.input}
-                      required
-                      disabled={isOtpPage}
-                    />
-                    <label htmlFor="email" className={clsx(classes.label)}>
-                      Email
+                    <label htmlFor="name" className={classes.label}>
+                      Username
                     </label>
                   </div>
                 </>
               )}
 
-              {isOtpPage && (
-                <div className={classes.form_group}>
-                  <input
-                    name="otp"
-                    id="otp"
-                    type="text"
-                    maxLength={6}
-                    autoComplete="off"
-                    value={otpCode}
-                    onChange={(e) => setOtpCode(e.target.value)}
-                    className={classes.input}
-                    required
-                  />
-                  <label htmlFor="otp" className={clsx(classes.label)}>
-                    One Time Password
-                  </label>
-                </div>
-              )}
               <div className={classes.loginButtonContainer}>
-                {isOtpPage ? (
-                  <button
-                    type="submit"
-                    className={classes.loginButton}
-                    onClick={handleVerifyOtp}
-                  >
-                    VERIFY OTP
-                  </button>
-                ) : isSignUpPage ? (
+                {isSignUpPage ? (
                   <>
                     <button
                       type="submit"
@@ -272,31 +195,43 @@ const twilioAuthToken = process.env.TWILIO_AUTH_TOKEN;
                     >
                       CONTINUE
                     </button>
-                  { isLoading &&  <div className={classes.progressBar}>
-                      <div className={clsx(classes.filler)}></div>
-                    </div>}
+                    {isLoading && (
+                      <div className={classes.progressBar}>
+                        <div className={clsx(classes.filler)}></div>
+                      </div>
+                    )}
                   </>
                 ) : (
-                  <button
-                    type="submit"
-                    className={classes.loginButton}
-                    onClick={handleSendVerification}
-                  >
-                    LOGIN
-                  </button>
+                  <>
+                    <button
+                      type="submit"
+                      className={clsx(
+                        classes.loginButton,
+                        isLoading && classes.loading
+                      )}
+                      onClick={handleLoginUser}
+                    >
+                      LOGIN
+                    </button>
+                    {isLoading && (
+                      <div className={classes.progressBar}>
+                        <div className={clsx(classes.filler)}></div>
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
-            </form>
-            {!isOtpPage && (
-              <div className={classes.termsContainer}>
-                By clicking on Login, I accept the{" "}
-                <span className={classes.terms}>Terms &amp; Conditions </span>
-                &amp; <span className={classes.terms}>Privacy Policy</span>
-              </div>
-            )}
+            </div>
+
+            <div className={classes.termsContainer}>
+              By clicking on Login, I accept the{' '}
+              <span className={classes.terms}>Terms &amp; Conditions </span>
+              &amp; <span className={classes.terms}>Privacy Policy</span>
+            </div>
           </div>
         </div>
       )}
+      <Toaster />
     </>
   );
 }

@@ -1,95 +1,50 @@
-import React, { useState, useRef } from "react";
-import styled from "styled-components";
-import { Link, NavLink } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { css } from "styled-components";
-import { useDispatch } from "react-redux";
-import clsx from "clsx";
-import { useNavigate, useLocation } from "react-router-dom";
-import { ReactComponent as SwiggyLogo } from "../../assets/SwiggyLogo.svg";
-import { ReactComponent as Helpicon } from "../../assets/HelpIcon.svg";
-import { ReactComponent as SearchIcon } from "../../assets/SearchIcon.svg";
-import { ReactComponent as LoginIcon } from "../../assets/LoginIcon.svg";
-import { ReactComponent as CartIcon } from "../../assets/CartIcon.svg";
-import { ReactComponent as DownArrowIcon } from "../../assets/downarrow.svg";
-import { useModal } from "../../contexts/signInModalContext";
-import classes from "./Header.module.css";
-import { useLocationContext } from "../../contexts/locationModalContext";
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+import clsx from 'clsx';
+import { useLocation } from 'react-router-dom';
+import { ReactComponent as SwiggyLogo } from '../../assets/SwiggyLogo.svg';
+import { ReactComponent as Helpicon } from '../../assets/HelpIcon.svg';
+import { ReactComponent as SearchIcon } from '../../assets/SearchIcon.svg';
+import { ReactComponent as LoginIcon } from '../../assets/LoginIcon.svg';
+import { ReactComponent as CartIcon } from '../../assets/CartIcon.svg';
+import { ReactComponent as DownArrowIcon } from '../../assets/downarrow.svg';
+import { useModal } from '../../contexts/signInModalContext';
+import classes from './Header.module.css';
+import { useLocationContext } from '../../contexts/locationModalContext';
+import SignUp from '../Modals/SignUp/SignUp';
+import LocationModal from '../Modals/LocationModal/LocationModal';
+import { useUserContext } from '../../contexts/userContext';
+import { supabase } from '../../client';
+import toast from 'react-hot-toast';
 function Header(props) {
-
-  const {openModal} = useModal();
-  const {currentLocation, openLocationModal} = useLocationContext();
-
-
-
-  const [query, setQuery] = useState("");
-  const { isUserAuthenicated, userName, authToken } = useSelector(
-    (state) => state.user
-  );
-  const [showLogout, setShowLogout] = useState(false);
-
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const navLinkContainerRef = useRef(null);
-  const logoutDivRef = useRef(null);
+  const { openModal } = useModal();
+  const { currentLocation, openLocationModal } = useLocationContext();
+  const { user } = useUserContext();
+  const [query, setQuery] = useState('');
+ const navigate = useNavigate();
 
   const location = useLocation();
 
   // Check if the current path is "/"
-  const isHomePage = location.pathname === "/";
-
-  // if (authToken) {
-  //   sessionStorage.setItem("token", JSON.stringify(authToken));
-  // }
-  // useEffect(() => {
-  //   const storedToken = sessionStorage.getItem("token");
-
-  //   // If the token exists, set the authentication state in the Redux store
-  //   if (storedToken) {
-  //     const data = JSON.parse(storedToken);
-  //     dispatch(setUserToAuthenticated(true));
-  //     dispatch(setUserName(data.user.user_metadata.full_name));
-  //     dispatch(setAuthToken(data));
-  //   }
-  // }, [dispatch]);
-
-  // useEffect(() => {
-  //   function handleClickOutside(event) {
-  //     if (
-  //       navLinkContainerRef.current &&
-  //       !navLinkContainerRef.current.contains(event.target) &&
-  //       logoutDivRef.current &&
-  //       !logoutDivRef.current.contains(event.target)
-  //     ) {
-  //       setShowLogout(false);
-  //     }
-  //   }
-
-  //   document.addEventListener("mousedown", handleClickOutside);
-
-  //   return () => {
-  //     document.removeEventListener("mousedown", handleClickOutside);
-  //   };
-  // }, []);
-
+  const isHomePage = location.pathname === '/';
   function handleInputChange(event) {
     const query = event.target.value.toLowerCase();
     setQuery(query);
     props.getInputData(query);
   }
-  // const handleLogout = () => {
-  //   sessionStorage.removeItem("token");
 
-  //   // Set the user as unauthenticated in the Redux store
-  //   dispatch(setUserToAuthenticated(false));
-  //   dispatch(setUserName(""));
-  //   dispatch(setAuthToken(null));
-
-  //   // Navigate to the homepage or any desired location after logout
-  //   navigate("/");
-  // };
-
+  const signOutHandler = async () => {
+    const { error } = await supabase.auth.signOut();
+    if(error) {
+      toast.error("Something went wrong");
+    }
+    else{
+      navigate("/");
+      window.location.reload();
+      console.log("kamal entered");
+    }
+  };
   return (
     <Top>
       <Logo>
@@ -100,7 +55,9 @@ function Header(props) {
         <div className={classes.locationContainer} onClick={openLocationModal}>
           <span className={classes.other}>Other</span>
           <span className={classes.location}>{currentLocation}</span>
-          <span className={classes.downArrow}><DownArrowIcon/></span>
+          <span className={classes.downArrow}>
+            <DownArrowIcon />
+          </span>
         </div>
       </Logo>
 
@@ -123,37 +80,39 @@ function Header(props) {
           <span className="offers-text">Help</span>
         </NavLink>
 
-       
-          <div className={classes.login} 
-    onClick={openModal}
-          >
+        {user?.id ? (
+          <div className={classes.popoverContainer}>
+            <NavLink to="/user-details" className={classes.login}>
+              <LoginIcon />
+              <span className={classes.SignInText}>{user?.name}</span>
+            </NavLink>
+            <div className={classes.popoverWrapper}>
+              <div className={classes.popoverContent}>
+                <Link to="/user-details" className={classes.popoverItem}>
+                  Profile
+                </Link>
+                <Link to="/user-details" className={classes.popoverItem}>
+                  Orders
+                </Link>
+                <Link to="/user-details" className={classes.popoverItem}>
+                  Swiggy One
+                </Link>
+                <Link
+                  to="/"
+                  className={classes.popoverItem}
+                  onClick={signOutHandler}
+                >
+                  Logout
+                </Link>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className={classes.login} onClick={openModal}>
             <LoginIcon />
             <span className={classes.SignInText}>Sign In</span>
           </div>
-
-        
-        {/* // :
-
-        //  (
-        //   <NavLinkContainer ref={navLinkContainerRef}>
-        //     <StyledNavLink
-        //       showLogout={showLogout}
-        //       onClick={() => setShowLogout(!showLogout)}
-        //     >
-        //       <img
-        //         alt="logo"
-        //         src="https://img.freepik.com/free-icon/user_318-932533.jpg?size=338&ext=jpg&uid=R15594633&ga=GA1.2.1185902625.1677912760&semt=sph"
-        //         height="25px"
-        //       />
-        //       <span className="offers-text">{userName}</span>
-        //     </StyledNavLink>
-        //     {showLogout && (
-        //       <LogoutDiv onClick={handleLogout} ref={logoutDivRef}>
-        //         Logout
-        //       </LogoutDiv>
-        //     )}
-        //   </NavLinkContainer>
-        // )} */}
+        )}
 
         <NavLink to="/cart" className={clsx(classes.cart)}>
           <CartIcon />
@@ -161,36 +120,14 @@ function Header(props) {
           <span className="offers-text">Cart</span>
         </NavLink>
       </Right>
+
+      {!user?.id && <SignUp />}
+      <LocationModal />
     </Top>
   );
 }
 
 export default Header;
-
-const StyledNavLink = styled(NavLink)`
-  span {
-    color: black;
-    ${(props) =>
-      props.showLogout &&
-      css`
-        color: #fc8019;
-      `}
-  }
-`;
-const LogoutDiv = styled.div`
-  position: absolute;
-  top: 70px;
-  right: 140px;
-  display: block;
-  padding: 5px;
-  background-color: #fc8019;
-  border: 2px solid white;
-  color: white;
-  cursor: pointer;
-  padding: 15px;
-`;
-
-const NavLinkContainer = styled.div``;
 
 const Top = styled.div`
   color: #fff;
@@ -222,7 +159,7 @@ const Right = styled.div`
   @media (max-width: 1024px) {
     gap: 40px;
   }
- 
+
   @media (max-width: 720px) {
     gap: 30px;
   }
@@ -238,7 +175,6 @@ const Right = styled.div`
     width: 150px;
     height: 3vh;
     outline: none;
-
 
     @media (max-width: 900px) {
       width: 100px;
@@ -288,9 +224,8 @@ const Right = styled.div`
 `;
 
 const Logo = styled.div`
-
- display: flex;
- align-items: center;
+  display: flex;
+  align-items: center;
   margin-left: 20px;
   cursor: pointer;
   // aspect-ratio: 3/2;
