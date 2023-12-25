@@ -1,6 +1,25 @@
-body,html {
+html {
+  scroll-behavior: smooth;
+}
+
+body,
+html {
   background-color: white;
   margin: 0;
-  font-family: ProximaNova,arial,Helvetica Neue,sans-serif;
+  font-family:
+    ProximaNova,
+    arial,
+    Helvetica Neue,
+    sans-serif;
+}
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+div {
+  color: rgba(2, 6, 12, 0.92);
 }

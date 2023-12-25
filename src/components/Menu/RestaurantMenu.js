@@ -1,21 +1,34 @@
-import React from "react";
-import Footer from "../Footer/Footer";
-import Header from "../Header/Header";
-import { useParams } from "react-router-dom";
-
-import Shimmer from "../Shimmer/Shimmer";
-import styled from "styled-components";
-import useRestauMenu from "../../myHooks/useRestauMenu";
-import MenuHead from "./MenuHead";
-import MenuSubHead from "./MenuSubHead";
-import MainFoodMenu from "./MainFoodMenu";
+import React, { useEffect, useState } from 'react';
+import Footer from '../Footer/Footer';
+import Header from '../Header/Header';
+import { useParams } from 'react-router-dom';
+import Shimmer from '../Shimmer/Shimmer';
+import styled from 'styled-components';
+import MenuHead from './MenuHead';
+import MenuSubHead from './MenuSubHead';
+import MainFoodMenu from './MainFoodMenu';
+import { useLocationContext } from '../../contexts/locationModalContext';
 
 function RestaurantMenu() {
   //to read the dynamic url
   const { resid } = useParams();
+  const [RestauMenu, setRestaurantMenu] = useState({});
+  const { latitude, longitude } = useLocationContext();
 
-  //fetching data
-  const RestauMenu = useRestauMenu(resid);
+  //API call
+
+  async function getRestaurantMenu() {
+    const response = await fetch(
+      `https://swiggyclone-backend-jy63.onrender.com/api/menu?page-type=REGULAR_MENU&complete-menu=true&lat=${latitude}&lng=${longitude}&restaurantId=${resid}&submitAction=ENTER`,
+    );
+    const json = await response.json();
+
+    setRestaurantMenu(json?.data);
+  }
+
+  useEffect(() => {
+    getRestaurantMenu();
+  }, []);
 
   //showing data
   return Object.keys(RestauMenu).length === 0 ? (
@@ -56,6 +69,6 @@ const Menu = styled.div`
     width: 80%;
   }
   @media (max-width: 600px) {
-    width: 90%;
+    width: 94%;
   }
 `;
