@@ -1,17 +1,14 @@
-import React, { useEffect, useState } from "react";
-import RestauCard from "./RestauCard";
-import styled from "styled-components";
-import { Link } from "react-router-dom";
-import useOnline from "../../myHooks/useOnline";
-
+import React, { useEffect, useState } from 'react';
+import RestauCard from './RestauCard';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import useOnline from '../../myHooks/useOnline';
 
 function Content(props) {
   const { newRestaurantData, newInputData } = props;
 
   const [filterdata, setFilterData] = useState(newRestaurantData);
-  const [clickedFilters, setClickedFilters] = useState([]);       
-
-
+  const [clickedFilters, setClickedFilters] = useState([]);
 
   useEffect(() => {
     const filteredData = newRestaurantData?.filter((restaurant) => {
@@ -33,7 +30,7 @@ function Content(props) {
       updatedFilters.push(buttonId);
     } else {
       updatedFilters = updatedFilters?.filter(
-        (filterId) => filterId !== buttonId
+        (filterId) => filterId !== buttonId,
       );
     }
 
@@ -92,8 +89,8 @@ function Content(props) {
             <button
               style={{
                 background: clickedFilters.includes(1)
-                  ? "#dad8d8"
-                  : "transparent",
+                  ? '#dad8d8'
+                  : 'transparent',
               }}
               onClick={() => filterRestaurants(1)}
             >
@@ -102,8 +99,8 @@ function Content(props) {
             <button
               style={{
                 background: clickedFilters.includes(2)
-                  ? "#dad8d8"
-                  : "transparent",
+                  ? '#dad8d8'
+                  : 'transparent',
               }}
               onClick={() => filterRestaurants(2)}
             >
@@ -112,8 +109,8 @@ function Content(props) {
             <button
               style={{
                 background: clickedFilters.includes(3)
-                  ? "#dad8d8"
-                  : "transparent",
+                  ? '#dad8d8'
+                  : 'transparent',
               }}
               onClick={() => filterRestaurants(3)}
             >
@@ -122,8 +119,8 @@ function Content(props) {
             <button
               style={{
                 background: clickedFilters.includes(4)
-                  ? "#dad8d8"
-                  : "transparent",
+                  ? '#dad8d8'
+                  : 'transparent',
               }}
               onClick={() => filterRestaurants(5)}
             >
@@ -132,8 +129,8 @@ function Content(props) {
             <button
               style={{
                 background: clickedFilters.includes(5)
-                  ? "#dad8d8"
-                  : "transparent",
+                  ? '#dad8d8'
+                  : 'transparent',
               }}
               onClick={() => filterRestaurants(6)}
             >
@@ -147,7 +144,7 @@ function Content(props) {
         {filterdata?.map((restaurant) => {
           return (
             <Link
-              to={"restaurant/" + restaurant.info.id}
+              to={'restaurant/' + restaurant.info.id}
               key={restaurant.info.id}
             >
               <RestauCard {...restaurant.info} />
@@ -155,7 +152,6 @@ function Content(props) {
           );
         })}
       </RestaurantCards>
-
     </Container>
   );
 }
@@ -168,8 +164,8 @@ const FilterContainer = styled.div`
   white-space: nowrap;
   flex-grow: 1;
 
-   /* Hide the scrollbar */
-   scrollbar-width: none; /* Firefox */
+  /* Hide the scrollbar */
+  scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */
   ::-webkit-scrollbar {
     display: none; /* Chrome and Safari */
@@ -178,19 +174,15 @@ const FilterContainer = styled.div`
 
 const RestaurantCards = styled.div`
   display: grid;
-    grid-template-columns: repeat(4, 1fr); /* Creates four equal columns */
-      gap: 10px;
-
+  grid-template-columns: repeat(4, 1fr); /* Creates four equal columns */
+  gap: 10px;
 
   @media (max-width: 900px) {
     grid-template-columns: repeat(3, 1fr);
-   
   }
   @media (max-width: 450px) {
     grid-template-columns: repeat(1, 1fr);
-   
   }
-
 `;
 const Filter = styled.div`
   display: flex;
@@ -231,7 +223,7 @@ const Container = styled.div`
   overflow-x: hidden;
   margin-left: 30px;
   @media (max-width: 450px) {
-    margin:0px;
+    margin: 0px;
   }
   a {
     width: 100%;

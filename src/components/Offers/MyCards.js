@@ -1,6 +1,6 @@
-import React from "react";
-import styled from "styled-components";
-import RestauCard from "../Content/RestauCard";
+import React from 'react';
+import styled from 'styled-components';
+import RestauCard from '../Content/RestauCard';
 function MyCards({ offers }) {
   return (
     <Container>

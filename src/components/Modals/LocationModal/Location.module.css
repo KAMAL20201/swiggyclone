@@ -27,7 +27,6 @@
   font-weight: 600;
   font-size: 25px;
   padding-top: 32px;
-
 }
 
 .locationInputContainer {
@@ -58,7 +57,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
   font-weight: 500;
-
 }
 
 .locationInput::placeholder {
@@ -66,20 +64,20 @@
   font-size: 15px;
 }
 
-.currentLocationContainer { 
+.currentLocationContainer {
   padding: 0;
   border: 1px solid #d4d5d9;
   margin-top: 20px;
   cursor: pointer;
 }
-.currentLocationContainer:hover .currentLocationText{
+.currentLocationContainer:hover .currentLocationText {
   color: #fc8019;
 }
 
-.currentLocation { 
+.currentLocation {
   display: table;
-    table-layout: fixed;
-    padding: 22px 24px;
+  table-layout: fixed;
+  padding: 22px 24px;
 }
 
 .currentLocationIcon {
@@ -103,17 +101,16 @@
   margin: 4px 0;
   font-size: 14px;
   letter-spacing: 0.1em;
-
 }
 
 .usingGps {
   margin: 0;
   font-size: 12px;
-  color:rgba(0, 0, 0, 0.4);
+  color: rgba(0, 0, 0, 0.4);
   font-weight: 300;
 }
 
-.suggestionContainer{
+.suggestionContainer {
   padding: 0;
   margin-top: 20px;
   cursor: pointer;

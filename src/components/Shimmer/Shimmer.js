@@ -1,13 +1,13 @@
-import React from 'react'
-import Header from '../Header/Header'
-import ShimmerBody from './ShimmerBody'
+import React from 'react';
+import Header from '../Header/Header';
+import ShimmerBody from './ShimmerBody';
 function Shimmer() {
   return (
     <>
-    <Header/>
-    <ShimmerBody/>
+      <Header />
+      <ShimmerBody />
     </>
-  )
+  );
 }
 
-export default Shimmer
+export default Shimmer;

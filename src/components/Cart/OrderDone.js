@@ -29,12 +29,12 @@ const OrderStatus = styled.p`
 const OrderDone = () => {
   return (
     <>
-    <Header/>
-    <ThankYouContainer>
-      <ThankYouTitle>Thank You for Ordering!</ThankYouTitle>
-      <OrderStatus>Your order is on its way.</OrderStatus>
-    </ThankYouContainer>
-    <Footer/>
+      <Header />
+      <ThankYouContainer>
+        <ThankYouTitle>Thank You for Ordering!</ThankYouTitle>
+        <OrderStatus>Your order is on its way.</OrderStatus>
+      </ThankYouContainer>
+      <Footer />
     </>
   );
 };

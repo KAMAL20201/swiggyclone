@@ -1,9 +1,8 @@
-import React from "react";
-import { Link, NavLink, Outlet } from "react-router-dom";
-import styled from "styled-components";
-import Footer from "../Footer/Footer";
-import Header from "../Header/Header";
-
+import React from 'react';
+import { Link, NavLink, Outlet } from 'react-router-dom';
+import styled from 'styled-components';
+import Footer from '../Footer/Footer';
+import Header from '../Header/Header';
 
 function Help() {
   return (
@@ -64,7 +63,7 @@ const List = styled.div`
     justify-content: center;
     align-items: center;
     width: 100%;
-    p{
+    p {
       padding: 0px 5px;
       text-align: center;
     }

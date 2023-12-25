@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState } from 'react';
 
 const SignInModalContext = createContext();
 
-export function ModalProvider({ children }) {
+export function SignInModalProvider({ children }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const openModal = () => {
@@ -14,7 +14,9 @@ export function ModalProvider({ children }) {
   };
 
   return (
-    <SignInModalContext.Provider value={{ isModalVisible, openModal, closeModal }}>
+    <SignInModalContext.Provider
+      value={{ isModalVisible, openModal, closeModal }}
+    >
       {children}
     </SignInModalContext.Provider>
   );

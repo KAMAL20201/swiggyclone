@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import styled, { keyframes } from "styled-components";
-import Header from "../Header/Header";
-import Footer from "../Footer/Footer";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { cartActions } from "../../store/cart-slice";
+import React, { useState } from 'react';
+import styled, { keyframes } from 'styled-components';
+import Header from '../Header/Header';
+import Footer from '../Footer/Footer';
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { cartActions } from '../../store/cart-slice';
 
 function Cart() {
   const cartItems = useSelector((state) => state.cart.cartItems);
@@ -20,7 +20,7 @@ function Cart() {
     setShowProgress(true);
     setTimeout(() => {
       setLoading(false);
-      navigate("/orderDone");
+      navigate('/orderDone');
       setShowProgress(false);
     }, 3000); // 3 seconds delay
   };
@@ -39,7 +39,7 @@ function Cart() {
         price: cartItem.price,
         name: cartItem.name,
         description: cartItem.description,
-      })
+      }),
     );
   };
   return (
@@ -98,7 +98,7 @@ const Progress = styled.div`
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: conic-gradient(#0000 10%,  white);
+  background: conic-gradient(#0000 10%, white);
   -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 9px), #000 0);
   animation: ${progressAnimation} 1s infinite linear;
 `;

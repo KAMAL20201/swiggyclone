@@ -1,5 +1,5 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 const FooterWrapper = styled.footer`
   background-color: #222;
@@ -27,7 +27,7 @@ const Column = styled.div`
 const Heading = styled.h4`
   font-size: 18px;
   margin-bottom: 10px;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.92);
 `;
 
 const List = styled.ul`
@@ -37,12 +37,12 @@ const List = styled.ul`
   @media (max-width: 450px) {
     min-width: 80px;
   }
- 
 `;
 
 const ListItem = styled.li`
   margin-bottom: 8px;
   font-size: 18px;
+  color: rgba(255, 255, 255, 0.6);
   @media (max-width: 900px) {
     font-size: 16px;
   }

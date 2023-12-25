@@ -1,6 +1,6 @@
-import React from "react";
-import styled from "styled-components";
-import { restaurantCardURL } from "../../../config";
+import React from 'react';
+import styled from 'styled-components';
+import { restaurantCardURL } from '../../../config';
 function OffersCard({ type, data }) {
   return (
     <>

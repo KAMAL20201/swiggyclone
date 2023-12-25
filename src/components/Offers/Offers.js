@@ -1,32 +1,28 @@
-import React, { useEffect, useState } from "react";
-import Header from "../Header";
-import RestauCard from "../../Content/RestauCard";
-import styled from "styled-components";
-import Shimmer from "../../Shimmer/Shimmer";
-import { createBrowserRouter, Link, Outlet } from "react-router-dom";
-import NewOffers from "./NewOffers";
-import MyCards from "./MyCards";
-import Footer from "../../Footer/Footer";
-
-
+import React, { useEffect, useState } from 'react';
+import Header from '../Header';
+import styled from 'styled-components';
+import Shimmer from '../../Shimmer/Shimmer';
+import {  Link, } from 'react-router-dom';
+import NewOffers from './NewOffers';
+import MyCards from './MyCards';
+import Footer from '../../Footer/Footer';
 
 function Offers() {
   const [OffersResturant, setOffersRestaurant] = useState([]);
   const [activeButton, setActiveButton] = useState(1);
-  const [showCards,setShowCards]=useState(true);
-  const [showOffers,setShowOffers]=useState(false);
+  const [showCards, setShowCards] = useState(true);
+  const [showOffers, setShowOffers] = useState(false);
 
   const handleButtonClick = (buttonIndex) => {
     setActiveButton(buttonIndex);
-    if(buttonIndex===1){
+    if (buttonIndex === 1) {
       setShowCards(true);
       setShowOffers(false);
     }
-    if(buttonIndex===2){
+    if (buttonIndex === 2) {
       setShowCards(false);
       setShowOffers(true);
     }
-
   };
 
   useEffect(() => {
@@ -35,7 +31,7 @@ function Offers() {
 
   async function getOfferRestaurant() {
     const data = await fetch(
-      "https://www.swiggy.com/dapi/offers/restaurant?lat=30.7333148&lng=76.7794179&offset=0"
+      'https://www.swiggy.com/dapi/offers/restaurant?lat=30.7333148&lng=76.7794179&offset=0',
     );
     const json = await data.json();
     // console.log(json.data.cards);
@@ -66,19 +62,18 @@ function Offers() {
           >
             Restaurant Offers
           </Button>
-        
+
           <Button
             active={activeButton === 2}
             onClick={() => handleButtonClick(2)}
           >
             Payment offers/Coupons
           </Button>
-          </Link>
-       
+        </Link>
       </ButttonComponent>
       {showCards && <MyCards offers={OffersResturant} />}
-      {showOffers  && <NewOffers offers={OffersResturant} />}
-      <Footer/>
+      {showOffers && <NewOffers offers={OffersResturant} />}
+      <Footer />
     </div>
   );
 }
@@ -94,8 +89,8 @@ const Banner = styled.div`
   background-color: #005062;
   img {
     padding: 30px;
-    width:16vw;
-    height:12vw;
+    width: 16vw;
+    height: 12vw;
   }
 `;
 
@@ -112,7 +107,7 @@ const BannerContent = styled.div`
     margin: 0px;
     opacity: 0.7;
     font-size: 3vw;
-    font-weight:500;
+    font-weight: 500;
   }
 `;
 
@@ -127,7 +122,7 @@ const Button = styled.button`
   font-size: 20px;
   padding: 10px;
   margin: 1.2vw 0px;
-  opacity: ${(props) => (props.active ? "1" : "0.4")};
+  opacity: ${(props) => (props.active ? '1' : '0.4')};
   font-weight: 600;
   cursor: pointer;
   &:first-child {
@@ -140,5 +135,3 @@ const Button = styled.button`
     font-size: 11px;
   }
 `;
-
-

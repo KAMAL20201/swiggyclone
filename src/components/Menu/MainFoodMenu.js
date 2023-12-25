@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import { createPortal } from "react-dom";
-import styled from "styled-components";
-import { restaurantCardURL } from "../../config.js";
-import AddedToCart from "./AddedToCart.js";
-import { useDispatch } from "react-redux";
-import { cartActions } from "../../store/cart-slice.js";
-import { useSelector } from "react-redux";
-import { css } from "styled-components";
+import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
+import styled from 'styled-components';
+import { restaurantCardURL } from '../../config.js';
+import AddedToCart from './AddedToCart.js';
+import { useDispatch } from 'react-redux';
+import { cartActions } from '../../store/cart-slice.js';
+import { useSelector } from 'react-redux';
+import { css } from 'styled-components';
 function MainFoodMenu(props) {
   const totalquantity = useSelector((state) => state.cart.totalQuantity);
   const dispatch = useDispatch();
@@ -21,22 +21,20 @@ function MainFoodMenu(props) {
 
   const [showMenu, setShowMenu] = useState(cardsArray);
 
-
   const [showSubMenu, setShowSubMenu] = useState(() => {
     const initialShowSubMenu = {};
-    newMenu[0].groupedCard?.cardGroupMap?.REGULAR?.cards.forEach((item, index) => {
-      if (item?.card?.card?.categories) {
-        item.card.card.categories.forEach((_, categoryIndex) => {
-          const categoryKey = `${index}-${categoryIndex}`;
-          initialShowSubMenu[categoryKey] = false;
-        });
-      }
-    });
+    newMenu[0].groupedCard?.cardGroupMap?.REGULAR?.cards.forEach(
+      (item, index) => {
+        if (item?.card?.card?.categories) {
+          item.card.card.categories.forEach((_, categoryIndex) => {
+            const categoryKey = `${index}-${categoryIndex}`;
+            initialShowSubMenu[categoryKey] = false;
+          });
+        }
+      },
+    );
     return initialShowSubMenu;
   });
-
-
-  
 
   function MenuHandler(index) {
     setShowMenu((prevState) => {
@@ -134,17 +132,15 @@ function MainFoodMenu(props) {
                     );
                   })}
 
-
                 {item?.card?.card?.categories?.map(
                   (category, categoryindex) => {
-
                     const categoryKey = `${index}-${categoryindex}`;
                     return (
                       <>
                         <SubMenu
-                          style={{ cursor: "pointer" }}
+                          style={{ cursor: 'pointer' }}
                           onClick={() => SubMenuhandler(index, categoryindex)}
-                          borderShort = {showSubMenu[categoryKey]}
+                          borderShort={showSubMenu[categoryKey]}
                         >
                           <p>
                             {category?.title} ({category?.itemCards?.length})
@@ -201,12 +197,12 @@ function MainFoodMenu(props) {
                           })}
                       </>
                     );
-                  }
+                  },
                 )}
               </Items>
             )
           );
-        }
+        },
       )}
       {totalquantity > 0 && createPortal(<AddedToCart />, document.body)};
     </Container>
@@ -256,30 +252,29 @@ const SubMenu = styled.div`
   align-items: center;
   border-bottom:;
   margin-bottom: 20px;
-  border-bottom: ${(props) => (props.borderShort ? 'none' : ' 0.5px solid #d3d3d3')};
+  border-bottom: ${(props) =>
+    props.borderShort ? 'none' : ' 0.5px solid #d3d3d3'};
 
-  p{
-    border-bottom: ${(props) => (props.borderShort ? ' 0.5px solid #d3d3d3' : 'none')};
+  p {
+    border-bottom: ${(props) =>
+      props.borderShort ? ' 0.5px solid #d3d3d3' : 'none'};
     margin: 0px;
     padding: 20px 0px;
   }
-
 `;
-
 
 const Items = styled.div`
   display: flex;
   flex-direction: column;
   border-bottom: 16px solid #f1f1f6;
   padding: 10px;
- ${Cards}: last-child {
+  ${Cards}: last-child {
     border-bottom: none;
- }
- ${SubMenu}: last-child {
+  }
+  ${SubMenu}: last-child {
     border-bottom: none;
     margin: 0px;
- }
-
+  }
 `;
 
 const Container = styled.div`
@@ -289,9 +284,6 @@ const Container = styled.div`
     border-bottom: none;
   }
 `;
-
-
-
 
 const Image = styled.div`
   margin: 25px 0px 10px 0px;
@@ -303,4 +295,3 @@ const Image = styled.div`
   }
 `;
 const ItemInfo = styled.div``;
-

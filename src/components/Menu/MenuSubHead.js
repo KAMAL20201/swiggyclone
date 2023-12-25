@@ -1,6 +1,6 @@
-import React from "react";
-import styled from "styled-components";
-import { restaurantCardURL } from "../../config";
+import React from 'react';
+import styled from 'styled-components';
+import { restaurantCardURL } from '../../config';
 function MenuSubHead(props) {
   const { RestInfo } = props;
   return (
@@ -39,7 +39,7 @@ function MenuSubHead(props) {
                 )}
               </Cards>
             );
-          }
+          },
         )}
       </OffersCards>
     </MenuSubHeader>

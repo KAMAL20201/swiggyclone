@@ -1,6 +1,6 @@
-import React from "react";
-import styled from "styled-components";
-import { restaurantCardURL } from "../../config.js";
+import React from 'react';
+import styled from 'styled-components';
+import { restaurantCardURL } from '../../config.js';
 function RestauCard({
   name,
   cuisines,
@@ -10,15 +10,14 @@ function RestauCard({
   costForTwo,
   aggregatedDiscountInfoV2,
 }) {
-
-  let ratingClass = "";
+  let ratingClass = '';
 
   if (avgRating < 3) {
-    ratingClass = "red";
+    ratingClass = 'red';
   } else if (avgRating >= 3 && avgRating < 4) {
-    ratingClass = "#fca00d";
+    ratingClass = '#fca00d';
   } else if (avgRating >= 4 && avgRating < 5) {
-    ratingClass = "green";
+    ratingClass = 'green';
   }
 
   return (
@@ -32,7 +31,7 @@ function RestauCard({
       <ContentWrapper>
         <RestaurantHead>
           <h3>{name}</h3>
-          <Cuisines>{cuisines?.join(", ")}</Cuisines>
+          <Cuisines>{cuisines?.join(', ')}</Cuisines>
           <Foot>
             <MyH6 backgroundColor={ratingClass}>&#9733; {avgRating}</MyH6>
             <h6>&bull;</h6>

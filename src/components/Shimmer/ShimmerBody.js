@@ -1,13 +1,13 @@
-import React from "react";
-import styled from "styled-components";
-import ShimmerCards from "./ShimmerCards";
+import React from 'react';
+import styled from 'styled-components';
+import ShimmerCards from './ShimmerCards';
 function ShimmerBody() {
   return (
     <ShimHead>
       {Array(10)
-        .fill("")
-        .map((e,index) => (
-          <ShimmerCards key={index}/>
+        .fill('')
+        .map((e, index) => (
+          <ShimmerCards key={index} />
         ))}
     </ShimHead>
   );
@@ -20,6 +20,3 @@ const ShimHead = styled.div`
   width: 100%;
   flex-wrap: wrap;
 `;
-
-
-
