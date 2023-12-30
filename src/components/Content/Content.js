@@ -3,12 +3,14 @@ import RestauCard from './RestauCard';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import useOnline from '../../myHooks/useOnline';
+import { useSearchRestaurantContext } from '../../contexts/searchResturantContext';
 
 function Content(props) {
-  const { newRestaurantData, newInputData } = props;
+  const { newRestaurantData } = props;
 
   const [filterdata, setFilterData] = useState(newRestaurantData);
   const [clickedFilters, setClickedFilters] = useState([]);
+  const { query: newInputData } = useSearchRestaurantContext();
 
   useEffect(() => {
     const filteredData = newRestaurantData?.filter((restaurant) => {
@@ -222,6 +224,7 @@ const Container = styled.div`
   flex-wrap: wrap;
   overflow-x: hidden;
   margin-left: 30px;
+  margin-top: 20px;
   @media (max-width: 450px) {
     margin: 0px;
   }

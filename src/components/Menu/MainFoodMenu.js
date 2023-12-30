@@ -12,7 +12,11 @@ function MainFoodMenu(props) {
   const dispatch = useDispatch();
   const { MenuDetails } = props;
 
+
   const newMenu = MenuDetails?.cards?.filter((card) => card?.groupedCard);
+  const restaurantNameCard = MenuDetails?.cards?.filter((card)=>card?.card?.card?.info?.name);
+
+  const restaurantName = restaurantNameCard[0]?.card?.card?.info?.name;
 
   const cardsLength =
     newMenu[0]?.groupedCard?.cardGroupMap?.REGULAR?.cards?.length;
@@ -31,7 +35,7 @@ function MainFoodMenu(props) {
             initialShowSubMenu[categoryKey] = false;
           });
         }
-      },
+      }
     );
     return initialShowSubMenu;
   });
@@ -64,10 +68,10 @@ function MainFoodMenu(props) {
     const description = fooditem?.card?.info?.description;
 
     if (price) {
-      dispatch(cartActions.addToCart({ id, name, price, description }));
+      dispatch(cartActions.addToCart({ id, name, price, description, restaurantName }));
     } else {
       const price = fooditem?.card?.info?.defaultPrice;
-      dispatch(cartActions.addToCart({ id, name, price, description }));
+      dispatch(cartActions.addToCart({ id, name, price, description, restaurantName }));
     }
   };
 
@@ -197,12 +201,12 @@ function MainFoodMenu(props) {
                           })}
                       </>
                     );
-                  },
+                  }
                 )}
               </Items>
             )
           );
-        },
+        }
       )}
       {totalquantity > 0 && createPortal(<AddedToCart />, document.body)};
     </Container>
@@ -250,7 +254,7 @@ const SubMenu = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom:;
+  /* border-bottom:; */
   margin-bottom: 20px;
   border-bottom: ${(props) =>
     props.borderShort ? 'none' : ' 0.5px solid #d3d3d3'};
@@ -268,10 +272,12 @@ const Items = styled.div`
   flex-direction: column;
   border-bottom: 16px solid #f1f1f6;
   padding: 10px;
-  ${Cards}: last-child {
+
+  ${Cards}:last-child {
     border-bottom: none;
   }
-  ${SubMenu}: last-child {
+
+  ${SubMenu}:last-child {
     border-bottom: none;
     margin: 0px;
   }

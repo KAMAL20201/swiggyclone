@@ -1,0 +1,106 @@
+.UserDetailsCon {
+  background: #37718e;
+  min-height: 100vh;
+}
+
+.UserDetailHeader {
+  padding-top: 70px;
+  padding-bottom: 37px;
+  width: 90%;
+  margin: 0 auto;
+  color: #fff;
+  position: relative;
+}
+
+.editProfileBtn {
+  float: right;
+  position: absolute;
+  bottom: 28%;
+  right: 0;
+  border: 1px solid hsla(0, 0%, 100%, 0.6);
+  padding: 12px 20px;
+  text-transform: uppercase;
+  display: flex;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  color: #fff;
+}
+.userName {
+  font-size: 32px;
+  font-weight: 600;
+  text-transform: capitalize;
+  color: #fff;
+}
+
+.userDetails {
+  margin-top: 2px;
+  font-size: 16px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 300;
+}
+
+.userDetailsContent {
+  display: flex;
+  box-shadow: 0 2px 15px 0 rgba(0, 0, 0, 0.15);
+  width: 84%;
+  margin: 0 auto;
+  background: #fff;
+  contain: layout;
+  padding:  50px;
+}
+
+.detailsTabsCon {
+  min-width: 260px;
+  background: #edf1f7;
+}
+.detailsTabs {
+  padding: 20px 0;
+  position: sticky;
+  top: 0px;
+  margin: 0px;
+}
+
+.listItem {
+  padding: 25px 20px;
+  margin-left: 20px;
+  cursor: pointer;
+  display: flex;
+  position: relative;
+}
+
+ .activeLink{
+    background-color: #fff;
+  }
+
+.listLink {
+  display: flex;
+  align-items: center;
+}
+
+.tabTitle {
+  margin-left: 30px;
+  font-size: 16px;
+  color: #535665;
+  font-weight: 500;
+}
+
+.activeTab {
+  background: #fff;
+}
+
+
+.tabDataCon {
+    flex: 1;
+    background: #fff;
+    padding: 37px 0 0 50px;
+    position: relative;
+    min-height: 80vh;
+}
+
+.tabIcon {
+  font-size: 25px;
+  color:#535665;
+  height: 25px;
+}
