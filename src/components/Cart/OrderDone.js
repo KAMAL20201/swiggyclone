@@ -1,7 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import Footer from '../Footer/Footer';
-import Header from '../Header/Header';
 
 const ThankYouContainer = styled.div`
   background-color: #f9f9f9;
@@ -29,12 +27,10 @@ const OrderStatus = styled.p`
 const OrderDone = () => {
   return (
     <>
-      <Header />
       <ThankYouContainer>
         <ThankYouTitle>Thank You for Ordering!</ThankYouTitle>
         <OrderStatus>Your order is on its way.</OrderStatus>
       </ThankYouContainer>
-      <Footer />
     </>
   );
 };

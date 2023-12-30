@@ -1,28 +1,63 @@
 import React, { useState } from 'react';
 import styled, { keyframes } from 'styled-components';
-import Header from '../Header/Header';
-import Footer from '../Footer/Footer';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { cartActions } from '../../store/cart-slice';
-
+import { supabase } from '../../client';
+import { useUserContext } from '../../contexts/userContext';
 function Cart() {
   const cartItems = useSelector((state) => state.cart.cartItems);
+  const restaurantName = useSelector((state) => state.cart.restaurantName);
+
+  console.log('kamalrest', cartItems);
   const dispatch = useDispatch();
   const [isLoading, setLoading] = useState(false);
   const [showProgress, setShowProgress] = useState(false);
 
+  const { user } = useUserContext();
   const navigate = useNavigate();
 
-  const handleClick = () => {
+  const handleSendOrder = async () => {
     setLoading(true);
     setShowProgress(true);
-    setTimeout(() => {
-      setLoading(false);
-      navigate('/orderDone');
-      setShowProgress(false);
-    }, 3000); // 3 seconds delay
+
+    //add order details in db
+    const { data, error } = await supabase
+      .from('orders')
+      .insert([{ user_id: user?.id, restaurant_name: restaurantName }])
+      .select();
+
+    const orderId = data && data[0]?.id;
+
+    //add orderItems in db
+
+    if (error) {
+      console.log(error);
+    } else {
+      cartItems.map(async (cartItem) => {
+        const { data, err } = await supabase
+          .from('order_items')
+          .insert([
+            {
+              order_id: orderId,
+              itemName: cartItem?.name,
+              item_quantity: cartItem?.quantity,
+            },
+          ])
+          .select();
+
+        if (err) {
+          console.log(err);
+        } else {
+          setTimeout(() => {
+            setLoading(false);
+            navigate('/orderDone');
+            setShowProgress(false);
+          }, 3000); // 3 seconds delay
+        }
+      });
+    }
   };
 
   const totalAmount = cartItems.reduce((accumulator, currentObject) => {
@@ -39,12 +74,11 @@ function Cart() {
         price: cartItem.price,
         name: cartItem.name,
         description: cartItem.description,
-      }),
+      })
     );
   };
   return (
     <>
-      <Header />
       <Container>
         <CartItems>
           {cartItems.length === 0 ? (
@@ -71,7 +105,7 @@ function Cart() {
           )}
 
           {cartItems.length > 0 && (
-            <Button onClick={handleClick}>
+            <Button onClick={handleSendOrder}>
               {showProgress ? (
                 <Progress />
               ) : (
@@ -81,7 +115,6 @@ function Cart() {
           )}
         </CartItems>
       </Container>
-      <Footer />
     </>
   );
 }
