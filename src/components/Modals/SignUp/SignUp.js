@@ -1,6 +1,6 @@
 import classes from './SignUp.module.css';
 import { useModal } from '../../../contexts/signInModalContext';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { supabase } from '../../../client';
 import toast, { Toaster } from 'react-hot-toast';
@@ -11,12 +11,20 @@ export default function SignUp() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isSignUpPage, setisSignUpPage] = useState(false);
+  const [isSignUpPage, setIsSignUpPage] = useState(false);
+  const [isResetPasswordPage, setIsResetPasswordPage] = useState(false);
+  const [isLoginUserPage, setIsLoginUserPage] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const { setUser } = useUserContext();
   const navigate = useNavigate();
   const handleBackdropClick = (e) => {
     if (e.target === e.currentTarget) {
+      setEmail('');
+      setName('');
+      setPassword('');
+      setIsLoginUserPage(true);
+      setIsSignUpPage(false);
+      setIsResetPasswordPage(false);
       closeModal();
     }
   };
@@ -28,20 +36,29 @@ export default function SignUp() {
       email,
       password,
       options: {
-        emailRedirectTo: 'http://localhost:3000',
+        redirectTo: 'http://localhost:3000',
         data: {
           full_name: name,
         },
       },
     });
-    if (error) {
+
+    if (
+      data.user &&
+      data.user.identities &&
+      data.user.identities.length === 0
+    ) {
+      toast('User already exists', {
+        duration: 4000,
+        position: 'bottom-center',
+      });
+    } else if (error) {
       console.log(error?.message);
       toast(error?.message, {
         duration: 4000,
         position: 'bottom-center',
       });
     } else {
-      console.log(data);
       setEmail('');
       setName('');
       setPassword('');
@@ -53,6 +70,27 @@ export default function SignUp() {
     }
 
     setIsLoading(false);
+  };
+
+  const handleResetPassword = async (e) => {
+    e.preventDefault();
+    const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: 'http://localhost:3000/reset-password',
+    });
+
+    if(error){
+      
+      toast(error?.message, {
+        duration: 4000,
+        position: 'bottom-center',
+      });
+    }
+    else{
+      toast.success('Password Reset link sent', {
+        duration: 4000,
+        position: 'top-center',
+      });
+    }
   };
 
   const handleLoginUser = async (e) => {
@@ -86,6 +124,7 @@ export default function SignUp() {
     setIsLoading(false);
   };
 
+
   return (
     <>
       {isModalVisible && (
@@ -98,15 +137,25 @@ export default function SignUp() {
                 </span>
 
                 <h1 style={{ marginBottom: '10px' }}>
-                  {isSignUpPage ? 'Sign Up' : 'Login'}
+                  {isSignUpPage
+                    ? 'Sign Up'
+                    : isResetPasswordPage
+                    ? 'Reset'
+                    : isLoginUserPage
+                    ? 'Login'
+                    : null}
                 </h1>
 
                 <div className={classes.createAccount}>
                   or
-                  {isSignUpPage ? (
+                  {isSignUpPage || isResetPasswordPage ? (
                     <span
                       className={classes.createAccountLink}
-                      onClick={() => setisSignUpPage(false)}
+                      onClick={() => {
+                        setIsLoginUserPage(true);
+                        setIsSignUpPage(false);
+                        setIsResetPasswordPage(false);
+                      }}
                     >
                       {' '}
                       login to your account
@@ -114,7 +163,11 @@ export default function SignUp() {
                   ) : (
                     <span
                       className={classes.createAccountLink}
-                      onClick={() => setisSignUpPage(true)}
+                      onClick={() => {
+                        setIsSignUpPage(true);
+                        setIsLoginUserPage(false);
+                        setIsResetPasswordPage(false);
+                      }}
                     >
                       {' '}
                       create an account
@@ -131,38 +184,38 @@ export default function SignUp() {
             </div>
 
             <div>
-              <div className={classes.form_group}>
-                <input
-                  name="email"
-                  id="email"
-                  type="email"
-                  autoComplete="off"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className={classes.input}
-                  required
-                />
-                <label htmlFor="email" className={classes.label}>
-                  Email
-                </label>
-              </div>
-              <div className={classes.form_group}>
-                <input
-                  name="password"
-                  id="password"
-                  type="password"
-                  autoComplete="off"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className={classes.input}
-                  required
-                />
-                <label htmlFor="password" className={classes.label}>
-                  Password
-                </label>
-              </div>
-              {isSignUpPage && (
-                <>
+              {isSignUpPage && !isResetPasswordPage && !isLoginUserPage && (
+                <form onSubmit={handleRegisterUser}>
+                  <div className={classes.form_group}>
+                    <input
+                      name="email"
+                      id="email"
+                      type="email"
+                      autoComplete="off"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className={classes.input}
+                      required
+                    />
+                    <label htmlFor="email" className={classes.label}>
+                      Email
+                    </label>
+                  </div>
+                  <div className={classes.form_group}>
+                    <input
+                      name="password"
+                      id="password"
+                      type="password"
+                      autoComplete="off"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className={classes.input}
+                      required
+                    />
+                    <label htmlFor="password" className={classes.label}>
+                      Password
+                    </label>
+                  </div>
                   <div className={classes.form_group}>
                     {' '}
                     <input
@@ -179,37 +232,96 @@ export default function SignUp() {
                       Username
                     </label>
                   </div>
-                </>
+                  <button
+                    type="submit"
+                    className={clsx(
+                      classes.loginButton,
+                      isLoading && classes.loading
+                    )}
+                  >
+                    CONTINUE
+                  </button>
+                  {isLoading && (
+                    <div className={classes.progressBar}>
+                      <div className={clsx(classes.filler)}></div>
+                    </div>
+                  )}
+                </form>
               )}
 
-              <div className={classes.loginButtonContainer}>
-                {isSignUpPage ? (
-                  <>
-                    <button
-                      type="submit"
-                      className={clsx(
-                        classes.loginButton,
-                        isLoading && classes.loading
-                      )}
-                      onClick={handleRegisterUser}
-                    >
-                      CONTINUE
-                    </button>
-                    {isLoading && (
-                      <div className={classes.progressBar}>
-                        <div className={clsx(classes.filler)}></div>
-                      </div>
+              {isResetPasswordPage && !isSignUpPage && !isLoginUserPage && (
+                <form onSubmit={handleResetPassword}>
+                  <div className={classes.form_group}>
+                    <input
+                      name="email"
+                      id="email"
+                      type="email"
+                      autoComplete="off"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className={classes.input}
+                      required
+                    />
+                    <label htmlFor="email" className={classes.label}>
+                      Email
+                    </label>
+                  </div>
+                  <button
+                    type="submit"
+                    className={clsx(
+                      classes.loginButton,
+                      isLoading && classes.loading
                     )}
-                  </>
-                ) : (
-                  <>
+                  >
+                    RESET
+                  </button>
+                  {isLoading && (
+                    <div className={classes.progressBar}>
+                      <div className={clsx(classes.filler)}></div>
+                    </div>
+                  )}
+                </form>
+              )}
+
+              {isLoginUserPage && !isSignUpPage && !isResetPasswordPage && (
+                <>
+                  <form onSubmit={handleLoginUser}>
+                    <div className={classes.form_group}>
+                      <input
+                        name="email"
+                        id="email"
+                        type="email"
+                        autoComplete="off"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className={classes.input}
+                        required
+                      />
+                      <label htmlFor="email" className={classes.label}>
+                        Email
+                      </label>
+                    </div>
+                    <div className={classes.form_group}>
+                      <input
+                        name="password"
+                        id="password"
+                        type="password"
+                        autoComplete="off"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        className={classes.input}
+                        required
+                      />
+                      <label htmlFor="password" className={classes.label}>
+                        Password
+                      </label>
+                    </div>
                     <button
                       type="submit"
                       className={clsx(
                         classes.loginButton,
                         isLoading && classes.loading
                       )}
-                      onClick={handleLoginUser}
                     >
                       LOGIN
                     </button>
@@ -218,16 +330,28 @@ export default function SignUp() {
                         <div className={clsx(classes.filler)}></div>
                       </div>
                     )}
-                  </>
-                )}
-              </div>
+                  </form>
+                  <p
+                    className={classes.createAccountLink}
+                    onClick={() => {
+                      setIsResetPasswordPage(true);
+                      setIsSignUpPage(false);
+                      setIsLoginUserPage(false);
+                    }}
+                  >
+                    Forgot password?
+                  </p>
+                </>
+              )}
             </div>
 
-            <div className={classes.termsContainer}>
-              By clicking on Login, I accept the{' '}
-              <span className={classes.terms}>Terms &amp; Conditions </span>
-              &amp; <span className={classes.terms}>Privacy Policy</span>
-            </div>
+            {isLoginUserPage && !isSignUpPage && !isResetPasswordPage && (
+              <div className={classes.termsContainer}>
+                By clicking on Login, I accept the{' '}
+                <span className={classes.terms}>Terms &amp; Conditions </span>
+                &amp; <span className={classes.terms}>Privacy Policy</span>
+              </div>
+            )}
           </div>
         </div>
       )}

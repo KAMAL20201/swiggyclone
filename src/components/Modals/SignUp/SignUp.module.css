@@ -203,3 +203,15 @@
 .terms {
   color: #282c3f;
 }
+
+.resetPageCon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto auto;
+  min-height: 60vh;
+}
+
+.resetForm {
+  width: 30%;
+}
