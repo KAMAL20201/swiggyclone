@@ -1,12 +1,12 @@
 export const getRestaurants = async (latitude, longitude) => {
   try {
     const data = await fetch(
-      `https://swiggyclone-backend-jy63.onrender.com/api/restaurants?lat=${latitude}&lng=${longitude}`,
+      `https://swiggyclone-backend-jy63.onrender.com/api/restaurants?lat=${latitude}&lng=${longitude}`
     );
     const json = await data.json();
 
     const restaurants = json?.data?.cards?.filter(
-      (item) => item.card?.card?.id === 'restaurant_grid_listing',
+      (item) => item.card?.card?.id === 'restaurant_grid_listing'
     );
 
     // const unServiceAble = json?.data?.cards?.filter((item) => {
@@ -21,3 +21,11 @@ export const getRestaurants = async (latitude, longitude) => {
     throw err;
   }
 };
+
+const deploymentEnvironment = process.env.REACT_APP_DEPLOYMENT_ENVIRONMENT;
+
+export const isProduction = deploymentEnvironment === 'PROD';
+
+export const BASE_URL = isProduction
+  ? 'https://swiggyclone-kamal.vercel.app/'
+  : 'http://localhost:3000';

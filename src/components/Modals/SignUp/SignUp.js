@@ -1,11 +1,12 @@
 import classes from './SignUp.module.css';
 import { useModal } from '../../../contexts/signInModalContext';
-import { useEffect, useState } from 'react';
-import clsx from 'clsx';
+import { useState } from 'react';
 import { supabase } from '../../../client';
 import toast, { Toaster } from 'react-hot-toast';
 import { useUserContext } from '../../../contexts/userContext';
 import { useNavigate } from 'react-router-dom';
+import { BASE_URL } from '../../../utils/utils';
+import clsx from 'clsx';
 export default function SignUp() {
   const { isModalVisible, closeModal } = useModal();
   const [name, setName] = useState('');
@@ -36,7 +37,7 @@ export default function SignUp() {
       email,
       password,
       options: {
-        redirectTo: 'http://localhost:3000',
+        redirectTo: BASE_URL,
         data: {
           full_name: name,
         },
@@ -75,17 +76,15 @@ export default function SignUp() {
   const handleResetPassword = async (e) => {
     e.preventDefault();
     const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: 'http://localhost:3000/reset-password',
+      redirectTo: `${BASE_URL}/reset-password`,
     });
 
-    if(error){
-      
+    if (error) {
       toast(error?.message, {
         duration: 4000,
         position: 'bottom-center',
       });
-    }
-    else{
+    } else {
       toast.success('Password Reset link sent', {
         duration: 4000,
         position: 'top-center',
@@ -123,7 +122,6 @@ export default function SignUp() {
     }
     setIsLoading(false);
   };
-
 
   return (
     <>
