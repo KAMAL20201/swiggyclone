@@ -7,8 +7,8 @@ import { UserContextWrapper } from './contexts/userContext';
 import { SearchRestaurantWrapper } from './contexts/searchResturantContext';
 const Provider = ({ children }) => {
   return (
-    <ReduxProvider store={store}>
-      <UserContextWrapper>
+    <UserContextWrapper>
+      <ReduxProvider store={store}>
         <RestaurantsContextWrapper>
           <LocationProvider>
             <SearchRestaurantWrapper>
@@ -16,8 +16,8 @@ const Provider = ({ children }) => {
             </SearchRestaurantWrapper>
           </LocationProvider>
         </RestaurantsContextWrapper>
-      </UserContextWrapper>
-    </ReduxProvider>
+      </ReduxProvider>
+    </UserContextWrapper>
   );
 };
 
