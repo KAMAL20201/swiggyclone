@@ -24,8 +24,8 @@ export const getRestaurants = async (latitude, longitude) => {
 
 const deploymentEnvironment = process.env.REACT_APP_DEPLOYMENT_ENVIRONMENT;
 
-export const isProduction = deploymentEnvironment === 'PROD';
+export const isDevEnvironment = deploymentEnvironment === 'LOCAL';
 
-export const BASE_URL = isProduction
-  ? 'https://swiggyclone-kamal.vercel.app/'
-  : 'http://localhost:3000';
+export const BASE_URL = isDevEnvironment
+  ? 'http://localhost:3000'
+  : 'https://swiggyclone-kamal.vercel.app/';
