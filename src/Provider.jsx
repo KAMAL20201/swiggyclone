@@ -4,13 +4,16 @@ import { RestaurantsContextWrapper } from './contexts/allRestaurantsContext';
 import { LocationProvider } from './contexts/locationModalContext';
 import { SignInModalProvider } from './contexts/signInModalContext';
 import { UserContextWrapper } from './contexts/userContext';
+import { SearchRestaurantWrapper } from './contexts/searchResturantContext';
 const Provider = ({ children }) => {
   return (
     <ReduxProvider store={store}>
       <UserContextWrapper>
         <RestaurantsContextWrapper>
           <LocationProvider>
-            <SignInModalProvider>{children}</SignInModalProvider>
+            <SearchRestaurantWrapper>
+              <SignInModalProvider>{children}</SignInModalProvider>
+            </SearchRestaurantWrapper>
           </LocationProvider>
         </RestaurantsContextWrapper>
       </UserContextWrapper>

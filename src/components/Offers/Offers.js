@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import Header from '../Header';
 import styled from 'styled-components';
 import Shimmer from '../../Shimmer/Shimmer';
 import {  Link, } from 'react-router-dom';
 import NewOffers from './NewOffers';
 import MyCards from './MyCards';
-import Footer from '../../Footer/Footer';
 
 function Offers() {
   const [OffersResturant, setOffersRestaurant] = useState([]);
@@ -34,7 +32,6 @@ function Offers() {
       'https://www.swiggy.com/dapi/offers/restaurant?lat=30.7333148&lng=76.7794179&offset=0',
     );
     const json = await data.json();
-    // console.log(json.data.cards);
     setOffersRestaurant(json?.data?.cards);
   }
 
@@ -42,7 +39,6 @@ function Offers() {
     <Shimmer />
   ) : (
     <div>
-      <Header />
       <Banner>
         <BannerContent>
           <h1>Offers for you</h1>
@@ -73,7 +69,6 @@ function Offers() {
       </ButttonComponent>
       {showCards && <MyCards offers={OffersResturant} />}
       {showOffers && <NewOffers offers={OffersResturant} />}
-      <Footer />
     </div>
   );
 }

@@ -17,12 +17,13 @@ import LocationModal from '../Modals/LocationModal/LocationModal';
 import { useUserContext } from '../../contexts/userContext';
 import { supabase } from '../../client';
 import toast from 'react-hot-toast';
+import { useSearchRestaurantContext } from '../../contexts/searchResturantContext';
 function Header(props) {
   const { openModal } = useModal();
   const { currentLocation, openLocationModal } = useLocationContext();
   const { user } = useUserContext();
-  const [query, setQuery] = useState('');
- const navigate = useNavigate();
+  const { query, setQuery } = useSearchRestaurantContext();
+  const navigate = useNavigate();
 
   const location = useLocation();
 
@@ -36,13 +37,11 @@ function Header(props) {
 
   const signOutHandler = async () => {
     const { error } = await supabase.auth.signOut();
-    if(error) {
-      toast.error("Something went wrong");
-    }
-    else{
-      navigate("/");
+    if (error) {
+      toast.error('Something went wrong');
+    } else {
+      navigate('/');
       window.location.reload();
-      console.log("kamal entered");
     }
   };
   return (
@@ -129,7 +128,7 @@ function Header(props) {
 
 export default Header;
 
-const Top = styled.div`
+const Top = styled.nav`
   color: #fff;
 
   background-color: white;

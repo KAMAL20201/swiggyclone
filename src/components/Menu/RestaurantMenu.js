@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Footer from '../Footer/Footer';
-import Header from '../Header/Header';
 import { useParams } from 'react-router-dom';
 import Shimmer from '../Shimmer/Shimmer';
 import styled from 'styled-components';
@@ -35,7 +33,6 @@ function RestaurantMenu() {
     <Shimmer />
   ) : (
     <Container>
-      <Header />
       <MenuWrapper>
         <Menu>
           <MenuHead RestMenu={RestauMenu} />
@@ -43,7 +40,6 @@ function RestaurantMenu() {
           <MainFoodMenu MenuDetails={RestauMenu} />
         </Menu>
       </MenuWrapper>
-      <Footer />
     </Container>
   );
 }

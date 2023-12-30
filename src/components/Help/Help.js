@@ -1,14 +1,10 @@
 import React from 'react';
-import { Link, NavLink, Outlet } from 'react-router-dom';
+import { NavLink, Outlet } from 'react-router-dom';
 import styled from 'styled-components';
-import Footer from '../Footer/Footer';
-import Header from '../Header/Header';
 
 function Help() {
   return (
     <>
-      <Header />
-
       <Container>
         <Head>
           <h1>Help & Support</h1>
@@ -31,7 +27,6 @@ function Help() {
           </Content>
         </MainContent>
       </Container>
-      <Footer />
     </>
   );
 }
