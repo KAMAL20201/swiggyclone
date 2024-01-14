@@ -9,7 +9,6 @@ const ResetPassword = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  console.log(isLoading);
   const handleChangePassword = async (e) => {
     e.preventDefault();
 
@@ -24,7 +23,6 @@ const ResetPassword = () => {
             position: 'top-center',
           });
         } else {
-          console.log(data);
           toast.success('Password updated successfully!', {
             duration: 4000,
             position: 'top-center',

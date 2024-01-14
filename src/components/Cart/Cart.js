@@ -10,7 +10,6 @@ function Cart() {
   const cartItems = useSelector((state) => state.cart.cartItems);
   const restaurantName = useSelector((state) => state.cart.restaurantName);
 
-  console.log('kamalrest', cartItems);
   const dispatch = useDispatch();
   const [isLoading, setLoading] = useState(false);
   const [showProgress, setShowProgress] = useState(false);
