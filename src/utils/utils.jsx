@@ -1,3 +1,5 @@
+import Cookies from 'universal-cookie';
+
 export const getRestaurants = async (latitude, longitude) => {
   try {
     const data = await fetch(
@@ -22,6 +24,25 @@ export const getRestaurants = async (latitude, longitude) => {
   }
 };
 
+export const getLocationFromCookies = () => {
+  const cookies = new Cookies();
+  const userLocationValue = cookies.get('userLocation');
+
+  if (userLocationValue) {
+    return userLocationValue;
+  }
+  return null;
+};
+
+export const setUserLocation = (userLocation) => {
+  const cookies = new Cookies();
+  const expirationDate = new Date();
+  expirationDate.setFullYear(expirationDate.getFullYear() + 1);
+  cookies.set('userLocation', userLocation, {
+    path: '/',
+    expires: expirationDate,
+  });
+};
 const deploymentEnvironment = process.env.REACT_APP_DEPLOYMENT_ENVIRONMENT;
 
 export const isDevEnvironment = deploymentEnvironment === 'LOCAL';

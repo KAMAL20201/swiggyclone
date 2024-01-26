@@ -4,8 +4,7 @@ import { ReactComponent as LocationIcon } from '../../../assets/LocationIcon.svg
 import { ReactComponent as PinCodeIcon } from '../../../assets/pincodeIcon.svg';
 import { useLocationContext } from '../../../contexts/locationModalContext';
 import { City } from 'country-state-city';
-import { getRestaurants } from '../../../utils/utils';
-import { useRestaurantsContext } from '../../../contexts/allRestaurantsContext';
+import { setUserLocation } from '../../../utils/utils';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
@@ -15,40 +14,43 @@ const LocationModal = () => {
   const navigate = useNavigate();
 
   const {
-    setLocation,
     setLatitude,
     setLongitude,
+    setLocation,
     islocationModalVisible,
     closeLocationModal,
   } = useLocationContext();
-
-  const { setRestaurants } = useRestaurantsContext();
 
   const [suggestions, setSuggestions] = useState([]);
 
   const reverseGeocode = async (latitude, longitude) => {
     try {
-      const restaurantData = await getRestaurants(latitude, longitude);
-      setRestaurants(restaurantData);
-
       const response = await fetch(
-        `https://apis.mappls.com/advancedmaps/v1/b9b5654ced874cfc9b71f2ed60eb6542/rev_geocode?lat=${latitude}&lng=${longitude}&region=IND`,
+        `https://apis.mappls.com/advancedmaps/v1/b9b5654ced874cfc9b71f2ed60eb6542/rev_geocode?lat=${latitude}&lng=${longitude}&region=IND`
       );
 
       if (!response.ok) {
         throw new Error(
-          `Error fetching reverse geocode API: ${response.statusText}`,
+          `Error fetching reverse geocode API: ${response.statusText}`
         );
       }
 
       const resData = await response.json();
-      const { city, state, area } = resData.results[0];
+      const { locality, formatted_address } = resData.results[0];
 
-      // Handle the location data
-      setLocation(city, state, area);
+      const userLocationObject = {
+        lat: latitude,
+        lng: longitude,
+        address: formatted_address,
+        area: locality,
+      };
+      setUserLocation(userLocationObject);
+      setLocation(formatted_address);
+      setLatitude(latitude);
+      setLongitude(longitude);
       setIsFetchingLocation(false);
     } catch (err) {
-      toast.error("Failed to fetch location! Please try again.", {
+      toast.error('Failed to fetch location! Please try again.', {
         duration: 4000,
         position: 'bottom-center',
       });
@@ -61,18 +63,19 @@ const LocationModal = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          setLatitude(position.coords.latitude);
-          setLongitude(position.coords.longitude);
           reverseGeocode(position.coords.latitude, position.coords.longitude);
           closeLocationModal();
           navigate('/');
         },
         (error) => {
           console.error(error);
-        },
+        }
       );
     } else {
-      console.error('Geolocation is not supported by your browser.');
+      toast.error('Geolocation is not supported by your browser.', {
+        duration: 4000,
+        position: 'bottom-center',
+      });
       setIsFetchingLocation(false);
     }
   };
@@ -81,7 +84,7 @@ const LocationModal = () => {
     if (inputText.length >= 3) {
       const cities = City.getCitiesOfCountry('IN');
       const filteredCities = cities.filter((city) =>
-        city.name.toLowerCase().startsWith(inputText.toLowerCase()),
+        city.name.toLowerCase().startsWith(inputText.toLowerCase())
       );
       setSuggestions(filteredCities);
     }
@@ -95,8 +98,6 @@ const LocationModal = () => {
 
   const fetchCityDetails = async (city) => {
     setIsFetchingLocation(true);
-    setLatitude(city.latitude);
-    setLongitude(city.longitude);
     await reverseGeocode(city.latitude, city.longitude);
     setInputText('');
     navigate('/');

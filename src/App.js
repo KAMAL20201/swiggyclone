@@ -11,13 +11,12 @@ function App() {
   const { latitude, longitude } = useLocationContext();
   const { restaurants, setRestaurants } = useRestaurantsContext();
 
-
   const fetchData = async () => {
     try {
       const data = await getRestaurants(latitude, longitude);
       setRestaurants(data);
     } catch (err) {
-      toast.error("Something went wrong !!", {
+      toast.error('Something went wrong !!', {
         duration: 4000,
         position: 'bottom-center',
       });
@@ -26,12 +25,9 @@ function App() {
   };
 
   useEffect(() => {
-    if (restaurants.length === 0) {
-      fetchData();
-    }
+    if (!latitude || !longitude) return;
+    fetchData();
   }, [latitude, longitude]);
-
-
 
   if (Array.isArray(restaurants)) {
     return restaurants?.length === 0 ? (

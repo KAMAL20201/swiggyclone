@@ -22,7 +22,7 @@ function Header(props) {
   const { openModal } = useModal();
   const { currentLocation, openLocationModal } = useLocationContext();
   const { user } = useUserContext();
-  const { query, setQuery } = useSearchRestaurantContext();
+    const { query, setQuery } = useSearchRestaurantContext();
   const navigate = useNavigate();
 
   const location = useLocation();
@@ -53,7 +53,7 @@ function Header(props) {
 
         <div className={classes.locationContainer} onClick={openLocationModal}>
           <span className={classes.other}>Other</span>
-          <span className={classes.location}>{currentLocation}</span>
+          <span className={classes.location}>{currentLocation?.slice(0,30)+"..."}</span>
           <span className={classes.downArrow}>
             <DownArrowIcon />
           </span>
