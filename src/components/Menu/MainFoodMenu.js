@@ -122,6 +122,7 @@ function MainFoodMenu(props) {
                                 fooditem?.card?.info?.imageId
                               }
                               alt={fooditem?.card?.info?.name}
+                              loading='lazy'
                             />
                           )}
 
@@ -184,6 +185,7 @@ function MainFoodMenu(props) {
                                         fooditem?.card?.info?.imageId
                                       }
                                       alt=""
+                                      loading='lazy'
                                     />
                                   )}
 

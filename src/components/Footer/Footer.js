@@ -110,12 +110,14 @@ const Footer = () => {
                 <img
                   alt="Google Play"
                   src="https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_200,h_65/icon-GooglePlay_1_zixjxl"
+                  loading='lazy'
                 />
               </a>
               <a href="https://apps.apple.com/in/app/swiggy-food-grocery-delivery/id989540920">
                 <img
                   alt="App Store"
                   src="https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_200,h_65/icon-AppStore_lg30tv"
+                  loading='lazy'
                 />
               </a>
             </Column>

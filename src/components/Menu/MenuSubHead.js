@@ -10,12 +10,14 @@ function MenuSubHead(props) {
           height="20px"
           alt=""
           src="https://img.freepik.com/free-icon/time-quarter-hour_318-79674.jpg?size=338&ext=jpg&uid=R15594633&ga=GA1.1.1185902625.1677912760&semt=sph"
+          loading='lazy'
         />
         <h4>{RestInfo?.cards[0]?.card?.card?.info?.sla?.slaString}</h4>
         <img
           height="20px"
           alt=""
           src="https://img.freepik.com/free-icon/rupee_318-566514.jpg?size=338&ext=jpg&uid=R15594633&ga=GA1.2.1185902625.1677912760&semt=sph"
+          loading='lazy'
         />
         <h4>{RestInfo?.cards[0]?.card?.card?.info?.costForTwoMessage}</h4>
       </span>
@@ -29,6 +31,7 @@ function MenuSubHead(props) {
                     height="12px"
                     alt=""
                     src={restaurantCardURL + item?.info?.offerLogo}
+                    loading='lazy'
                   />
                   {item?.info?.header}
                 </h3>
