@@ -110,7 +110,7 @@ function MainFoodMenu(props) {
                       <Cards key={idx}>
                         <ItemInfo>
                           <p>{fooditem?.card?.info?.name}</p>
-                          <p>{fooditem?.card?.info?.price / 100}</p>
+                          <p>&#8377;{fooditem?.card?.info?.price / 100}</p>
                         </ItemInfo>
 
                         <Image>
