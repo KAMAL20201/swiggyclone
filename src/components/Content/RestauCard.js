@@ -26,6 +26,7 @@ function RestauCard({
         alt="card"
         src={restaurantCardURL + cloudinaryImageId}
         height="150px"
+        loading='lazy'
       />
 
       <ContentWrapper>
