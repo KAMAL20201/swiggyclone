@@ -7,16 +7,18 @@ import { IoSettings } from 'react-icons/io5';
 import { NavLink, Outlet } from 'react-router-dom';
 import { clsx } from 'clsx';
 import { useLocation } from 'react-router-dom';
+import { useUserContext } from '../../contexts/userContext';
 
 const UserDetailsLayout = () => {
   const location = useLocation();
+  const { user } = useUserContext();
   return (
     <div className={classes.UserDetailsCon}>
       <div className={classes.UserDetailHeader}>
         <div className={classes.editProfileBtn}>Edit Profile</div>
-        <div className={classes.userName}>Kamal</div>
+        <div className={classes.userName}>{user?.name}</div>
         <div className={classes.userDetails}>
-          <span>User Email</span>
+          <span>{user?.email}</span>
         </div>
       </div>
       <div className={classes.userDetailsContent}>
