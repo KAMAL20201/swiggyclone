@@ -6,6 +6,7 @@ import UnServiceAble from './components/UnServiceAble/UnServiceAble';
 import { getRestaurants } from './utils/utils';
 import { useLocationContext } from './contexts/locationModalContext';
 import { useRestaurantsContext } from './contexts/allRestaurantsContext';
+import toast from 'react-hot-toast';
 function App() {
   const { latitude, longitude } = useLocationContext();
   const { restaurants, setRestaurants } = useRestaurantsContext();
@@ -16,6 +17,10 @@ function App() {
       const data = await getRestaurants(latitude, longitude);
       setRestaurants(data);
     } catch (err) {
+      toast.error("Something went wrong !!", {
+        duration: 4000,
+        position: 'bottom-center',
+      });
       console.error(err);
     }
   };

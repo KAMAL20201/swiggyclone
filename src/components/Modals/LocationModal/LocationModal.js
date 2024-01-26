@@ -7,6 +7,7 @@ import { City } from 'country-state-city';
 import { getRestaurants } from '../../../utils/utils';
 import { useRestaurantsContext } from '../../../contexts/allRestaurantsContext';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const LocationModal = () => {
   const [inputText, setInputText] = useState('');
@@ -47,6 +48,10 @@ const LocationModal = () => {
       setLocation(city, state, area);
       setIsFetchingLocation(false);
     } catch (err) {
+      toast.error("Failed to fetch location! Please try again.", {
+        duration: 4000,
+        position: 'bottom-center',
+      });
       console.error(err);
     }
   };

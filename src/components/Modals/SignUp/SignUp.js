@@ -2,7 +2,7 @@ import classes from './SignUp.module.css';
 import { useModal } from '../../../contexts/signInModalContext';
 import { useState } from 'react';
 import { supabase } from '../../../client';
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 import { useUserContext } from '../../../contexts/userContext';
 import { useNavigate } from 'react-router-dom';
 import { BASE_URL } from '../../../utils/utils';
@@ -238,12 +238,12 @@ export default function SignUp() {
                     )}
                   >
                     CONTINUE
+                    {!isLoading && (
+                      <div className={classes.progressBar}>
+                        <div className={clsx(classes.filler)}></div>
+                      </div>
+                    )}
                   </button>
-                  {isLoading && (
-                    <div className={classes.progressBar}>
-                      <div className={clsx(classes.filler)}></div>
-                    </div>
-                  )}
                 </form>
               )}
 
@@ -272,12 +272,12 @@ export default function SignUp() {
                     )}
                   >
                     RESET
+                    {isLoading && (
+                      <div className={classes.progressBar}>
+                        <div className={clsx(classes.filler)}></div>
+                      </div>
+                    )}
                   </button>
-                  {isLoading && (
-                    <div className={classes.progressBar}>
-                      <div className={clsx(classes.filler)}></div>
-                    </div>
-                  )}
                 </form>
               )}
 
@@ -322,12 +322,12 @@ export default function SignUp() {
                       )}
                     >
                       LOGIN
+                      {isLoading && (
+                        <div className={classes.progressBar}>
+                          <div className={clsx(classes.filler)}></div>
+                        </div>
+                      )}
                     </button>
-                    {isLoading && (
-                      <div className={classes.progressBar}>
-                        <div className={clsx(classes.filler)}></div>
-                      </div>
-                    )}
                   </form>
                   <p
                     className={classes.createAccountLink}
@@ -353,7 +353,6 @@ export default function SignUp() {
           </div>
         </div>
       )}
-      <Toaster />
     </>
   );
 }

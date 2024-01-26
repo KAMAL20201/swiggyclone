@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { supabase } from '../../../client';
 import classes from '../SignUp/SignUp.module.css';
 import clsx from 'clsx';
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 
 const ResetPassword = () => {
   const [newPassword, setNewPassword] = useState('');
@@ -79,7 +79,6 @@ const ResetPassword = () => {
           </div>
         )}
       </form>
-      <Toaster />
     </div>
   );
 };
