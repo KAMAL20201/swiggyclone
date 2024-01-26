@@ -238,7 +238,7 @@ export default function SignUp() {
                     )}
                   >
                     CONTINUE
-                    {!isLoading && (
+                    {isLoading && (
                       <div className={classes.progressBar}>
                         <div className={clsx(classes.filler)}></div>
                       </div>
