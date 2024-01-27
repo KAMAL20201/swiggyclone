@@ -12,11 +12,16 @@ function MainFoodMenu(props) {
   const dispatch = useDispatch();
   const { MenuDetails } = props;
 
-
   const newMenu = MenuDetails?.cards?.filter((card) => card?.groupedCard);
-  const restaurantNameCard = MenuDetails?.cards?.filter((card)=>card?.card?.card?.info?.name);
+  const restaurantNameCard = MenuDetails?.cards?.filter(
+    (card) => card?.card?.card?.info?.name
+  );
 
-  const restaurantName = restaurantNameCard[0]?.card?.card?.info?.name;
+  const {
+    restaurantName,
+    id: restaurantId,
+    cloudinaryImageId,
+  } = restaurantNameCard[0]?.card?.card?.info;
 
   const cardsLength =
     newMenu[0]?.groupedCard?.cardGroupMap?.REGULAR?.cards?.length;
@@ -68,10 +73,30 @@ function MainFoodMenu(props) {
     const description = fooditem?.card?.info?.description;
 
     if (price) {
-      dispatch(cartActions.addToCart({ id, name, price, description, restaurantName }));
+      dispatch(
+        cartActions.addToCart({
+          id,
+          name,
+          price,
+          description,
+          restaurantName,
+          restaurantId,
+          cloudinaryImageId,
+        })
+      );
     } else {
       const price = fooditem?.card?.info?.defaultPrice;
-      dispatch(cartActions.addToCart({ id, name, price, description, restaurantName }));
+      dispatch(
+        cartActions.addToCart({
+          id,
+          name,
+          price,
+          description,
+          restaurantName,
+          restaurantId,
+          cloudinaryImageId,
+        })
+      );
     }
   };
 
@@ -122,7 +147,7 @@ function MainFoodMenu(props) {
                                 fooditem?.card?.info?.imageId
                               }
                               alt={fooditem?.card?.info?.name}
-                              loading='lazy'
+                              loading="lazy"
                             />
                           )}
 
@@ -185,7 +210,7 @@ function MainFoodMenu(props) {
                                         fooditem?.card?.info?.imageId
                                       }
                                       alt=""
-                                      loading='lazy'
+                                      loading="lazy"
                                     />
                                   )}
 

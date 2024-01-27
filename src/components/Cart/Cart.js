@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -6,9 +6,26 @@ import { useDispatch } from 'react-redux';
 import { cartActions } from '../../store/cart-slice';
 import { supabase } from '../../client';
 import { useUserContext } from '../../contexts/userContext';
+
+
 function Cart() {
-  const cartItems = useSelector((state) => state.cart.cartItems);
+ 
+  const cartItem = useSelector((state) => state.cart.cartItems);
+
+  const [cartItems, setCartItems] = useState(cartItem);
   const restaurantName = useSelector((state) => state.cart.restaurantName);
+  const restaurantId = useSelector((state) => state.cart.restaurantId);
+  const cloudinaryImageId = useSelector(
+    (state) => state.cart.cloudinaryImageId
+  )
+
+  useEffect(()=>{
+    const cartItemsFromLocalStorage = JSON.parse(
+      localStorage.getItem('cartItems')
+    )
+    setCartItems(cartItemsFromLocalStorage?.cartItems || cartItem);
+  }, [cartItem]);
+
 
   const dispatch = useDispatch();
   const [isLoading, setLoading] = useState(false);
@@ -73,6 +90,9 @@ function Cart() {
         price: cartItem.price,
         name: cartItem.name,
         description: cartItem.description,
+        restaurantName: restaurantName,
+        restaurantId: restaurantId,
+        cloudinaryImageId: cloudinaryImageId,
       })
     );
   };

@@ -1,9 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const cartItemsFromLocalStorage = JSON.parse(localStorage.getItem('cartItems'));
 const initialState = {
-  cartItems: [],
-  totalQuantity: 0,
-  restaurantName: '',
+  cartItems: cartItemsFromLocalStorage?.cartItems || [],
+  totalQuantity: cartItemsFromLocalStorage?.totalQuantity || 0,
+  restaurantName: cartItemsFromLocalStorage?.restaurantName || '',
+  restaurantId: cartItemsFromLocalStorage?.restaurantId || null,
+  cloudinaryImageId: cartItemsFromLocalStorage?.cloudinaryImageId || '',
 };
 
 const cartSlice = createSlice({
@@ -12,11 +15,13 @@ const cartSlice = createSlice({
   reducers: {
     addToCart(state, action) {
       const newitem = action.payload;
-      const restaurantName = action.payload.restaurantName;
       const existingItem = state.cartItems.find(
-        (cartItem) => cartItem.id === newitem.id,
+        (cartItem) => cartItem.id === newitem.id
       );
       state.totalQuantity++;
+      state.restaurantName = newitem.restaurantName;
+      state.restaurantId = newitem.restaurantId;
+      state.cloudinaryImageId = newitem.cloudinaryImageId;
 
       if (!existingItem) {
         state.cartItems.push({
@@ -27,26 +32,28 @@ const cartSlice = createSlice({
           name: newitem.name,
           description: newitem.description,
         });
-        state.restaurantName = restaurantName;
       } else {
         existingItem.quantity++;
         existingItem.totalPrice = existingItem.totalPrice + newitem.price;
       }
+
+      localStorage.setItem('cartItems', JSON.stringify(state));
     },
     removeFromCart(state, action) {
       const id = action.payload;
       const existingItem = state.cartItems.find(
-        (cartItem) => cartItem.id === id,
+        (cartItem) => cartItem.id === id
       );
       state.totalQuantity--;
       if (existingItem.quantity === 1) {
         state.cartItems = state.cartItems.filter(
-          (cartItem) => cartItem.id !== id,
+          (cartItem) => cartItem.id !== id
         );
       } else {
         existingItem.quantity--;
         existingItem.totalPrice = existingItem.totalPrice - existingItem.price;
       }
+      localStorage.setItem('cartItems', JSON.stringify(state));
     },
   },
 });
