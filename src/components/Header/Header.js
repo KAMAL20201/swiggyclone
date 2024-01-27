@@ -18,12 +18,15 @@ import { useUserContext } from '../../contexts/userContext';
 import { supabase } from '../../client';
 import toast from 'react-hot-toast';
 import { useSearchRestaurantContext } from '../../contexts/searchResturantContext';
+import { useSelector } from 'react-redux';
+
 function Header(props) {
   const { openModal } = useModal();
   const { currentLocation, openLocationModal } = useLocationContext();
   const { user } = useUserContext();
-    const { query, setQuery } = useSearchRestaurantContext();
+  const { query, setQuery } = useSearchRestaurantContext();
   const navigate = useNavigate();
+  const cartItemsQuantity = useSelector((state) => state.cart.totalQuantity);
 
   const location = useLocation();
 
@@ -53,7 +56,9 @@ function Header(props) {
 
         <div className={classes.locationContainer} onClick={openLocationModal}>
           <span className={classes.other}>Other</span>
-          <span className={classes.location}>{currentLocation?.slice(0,30)+"..."}</span>
+          <span className={classes.location}>
+            {currentLocation?.slice(0, 30) + '...'}
+          </span>
           <span className={classes.downArrow}>
             <DownArrowIcon />
           </span>
@@ -113,9 +118,22 @@ function Header(props) {
           </div>
         )}
 
-        <NavLink to="/cart" className={clsx(classes.cart)}>
+        <NavLink
+          to="/cart"
+          className={clsx(
+            classes.cart,
+            cartItemsQuantity > 0 && classes.cartActive
+          )}
+        >
           <CartIcon />
-          <span className={classes.cartItemsNumber}>{0}</span>
+          <span
+            className={clsx(
+              classes.cartItemsNumber,
+              cartItemsQuantity > 0 && classes.cartItemsNumberActive
+            )}
+          >
+            {cartItemsQuantity}
+          </span>
           <span className="offers-text">Cart</span>
         </NavLink>
       </Right>

@@ -13,11 +13,9 @@ function RestaurantMenu() {
   const [RestauMenu, setRestaurantMenu] = useState({});
   const { latitude, longitude } = useLocationContext();
 
-  //API call
-
   async function getRestaurantMenu() {
     const response = await fetch(
-      `https://swiggyclone-backend-jy63.onrender.com/api/menu?page-type=REGULAR_MENU&complete-menu=true&lat=${latitude}&lng=${longitude}&restaurantId=${resid}&submitAction=ENTER`,
+      `https://swiggyclone-backend-jy63.onrender.com/api/menu?page-type=REGULAR_MENU&complete-menu=true&lat=${latitude}&lng=${longitude}&restaurantId=${resid}&submitAction=ENTER`
     );
     const json = await response.json();
 
@@ -25,8 +23,9 @@ function RestaurantMenu() {
   }
 
   useEffect(() => {
+    if (!latitude || !longitude) return;
     getRestaurantMenu();
-  }, []);
+  }, [latitude, longitude]);
 
   //showing data
   return Object.keys(RestauMenu).length === 0 ? (

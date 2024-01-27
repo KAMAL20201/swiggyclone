@@ -10,10 +10,11 @@ import toast from 'react-hot-toast';
 function App() {
   const { latitude, longitude } = useLocationContext();
   const { restaurants, setRestaurants } = useRestaurantsContext();
-  const [isLoading, setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(false);
 
   const fetchData = async () => {
     try {
+      setLoading(true);
       const data = await getRestaurants(latitude, longitude);
       setRestaurants(data);
       setLoading(false);

@@ -5,7 +5,12 @@
   fill: #fc8019;
 }
 .cart:hover svg {
+  fill: #fc8019;
   stroke: #fc8019;
+}
+.cartActive svg {
+  fill: #60b246;
+  stroke: #60b246;
 }
 .SearchIcon {
   display: flex;
@@ -45,10 +50,14 @@
 }
 
 .cartItemsNumber {
-  font-size: 16px;
+  font-size: 12px;
   font-weight: 500;
   position: relative;
   right: 19px;
+  z-index: 1;
+}
+.cartItemsNumberActive {
+  color: #fff;
 }
 
 .SignInText {
@@ -110,7 +119,6 @@
 .downArrow svg {
   height: 14px;
   width: 14px;
-
   fill: #fc8019;
   font-weight: 700;
 }
