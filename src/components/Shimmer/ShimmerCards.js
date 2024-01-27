@@ -40,19 +40,19 @@ const Container = styled.div`
   }
 `;
 const Main = styled.div`
-  background-color: rgba(40, 44, 63, 0.05);
+  background-color: rgb(214, 214, 214);
   width: 100%;
   height: 145px;
   margin-bottom: 3px;
 `;
 const FirstLine = styled.div`
-  background-color: rgba(40, 44, 63, 0.05);
+  background-color: rgb(214, 214, 214);
   height: 10px;
   width: 50%;
   margin-bottom: 2px;
 `;
 const SecondLine = styled.div`
-  background-color: rgba(40, 44, 63, 0.05);
+  background-color: rgb(214, 214, 214);
   height: 10px;
   width: 35%;
 `;

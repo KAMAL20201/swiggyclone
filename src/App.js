@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Content from './components/Content/Content';
 import Shimmer from './components/Shimmer/Shimmer';
 import './App.css';
@@ -10,11 +10,13 @@ import toast from 'react-hot-toast';
 function App() {
   const { latitude, longitude } = useLocationContext();
   const { restaurants, setRestaurants } = useRestaurantsContext();
+  const [isLoading, setLoading] = useState(true);
 
   const fetchData = async () => {
     try {
       const data = await getRestaurants(latitude, longitude);
       setRestaurants(data);
+      setLoading(false);
     } catch (err) {
       toast.error('Something went wrong !!', {
         duration: 4000,
@@ -29,20 +31,20 @@ function App() {
     fetchData();
   }, [latitude, longitude]);
 
-  if (Array.isArray(restaurants)) {
-    return restaurants?.length === 0 ? (
-      <Shimmer />
-    ) : (
-      <div className="App">
-        <Content newRestaurantData={restaurants} />
-      </div>
-    );
-  } else {
-    return (
-      <div className="App">
-        <UnServiceAble />
-      </div>
-    );
-  }
+  return (
+    <>
+      {isLoading ? (
+        <Shimmer />
+      ) : (
+        <div className="App">
+          {Array.isArray(restaurants) ? (
+            <Content newRestaurantData={restaurants} />
+          ) : (
+            <UnServiceAble />
+          )}
+        </div>
+      )}
+    </>
+  );
 }
 export default App;
