@@ -55,6 +55,14 @@ const cartSlice = createSlice({
       }
       localStorage.setItem('cartItems', JSON.stringify(state));
     },
+    clearCart(state) {
+      state.cartItems = [];
+      state.totalQuantity = 0;
+      state.restaurantName = '';
+      state.restaurantId = null;
+      state.cloudinaryImageId = '';
+      localStorage.setItem('cartItems', JSON.stringify(state));
+    },
   },
 });
 export const cartActions = cartSlice.actions;

@@ -16,10 +16,12 @@ const Orders = () => {
         id,
         order_date, 
         restaurant_name, 
+        restaurant_image_id,
         order_items ( item_quantity, itemName )
         `
       )
-      .eq('user_id', user?.id);
+      .eq('user_id', user?.id)
+      .order('order_date', { ascending: false });
 
     if (error) {
       console.log(error);

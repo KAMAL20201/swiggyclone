@@ -6,10 +6,10 @@ import { useDispatch } from 'react-redux';
 import { cartActions } from '../../store/cart-slice';
 import { supabase } from '../../client';
 import { useUserContext } from '../../contexts/userContext';
-
+import { restaurantCardURL } from '../../utils/utils';
+import classes from './style.module.css';
 
 function Cart() {
- 
   const cartItem = useSelector((state) => state.cart.cartItems);
 
   const [cartItems, setCartItems] = useState(cartItem);
@@ -17,31 +17,35 @@ function Cart() {
   const restaurantId = useSelector((state) => state.cart.restaurantId);
   const cloudinaryImageId = useSelector(
     (state) => state.cart.cloudinaryImageId
-  )
+  );
 
-  useEffect(()=>{
+  useEffect(() => {
     const cartItemsFromLocalStorage = JSON.parse(
       localStorage.getItem('cartItems')
-    )
+    );
     setCartItems(cartItemsFromLocalStorage?.cartItems || cartItem);
   }, [cartItem]);
 
-
   const dispatch = useDispatch();
-  const [isLoading, setLoading] = useState(false);
   const [showProgress, setShowProgress] = useState(false);
 
   const { user } = useUserContext();
   const navigate = useNavigate();
 
   const handleSendOrder = async () => {
-    setLoading(true);
     setShowProgress(true);
 
     //add order details in db
     const { data, error } = await supabase
       .from('orders')
-      .insert([{ user_id: user?.id, restaurant_name: restaurantName }])
+      .insert([
+        {
+          user_id: user?.id,
+          restaurant_name: restaurantName,
+          restaurant_id: restaurantId,
+          restaurant_image_id: cloudinaryImageId,
+        },
+      ])
       .select();
 
     const orderId = data && data[0]?.id;
@@ -67,13 +71,15 @@ function Cart() {
           console.log(err);
         } else {
           setTimeout(() => {
-            setLoading(false);
             navigate('/orderDone');
             setShowProgress(false);
+            dispatch(cartActions.clearCart());
           }, 3000); // 3 seconds delay
         }
       });
     }
+
+
   };
 
   const totalAmount = cartItems.reduce((accumulator, currentObject) => {
@@ -103,24 +109,45 @@ function Cart() {
           {cartItems.length === 0 ? (
             <>
               <img
+                className={classes.emptyCartImg}
+                loading="lazy"
                 alt=""
                 src="https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/2xempty_cart_yfxml0"
               />
-              <h3>Your Cart is empty</h3>
+              <h3 className={classes.emptyCartText}>Your Cart is empty</h3>
               <h6>You can go to home page to view more restaurants</h6>
             </>
           ) : (
-            cartItems.map((cartItem) => (
-              <Item>
-                <p> {cartItem.name}</p>
-                <Amount>
-                  <button onClick={() => removeItemHandler(cartItem)}>-</button>
-                  <h4>{cartItem.quantity}</h4>
-                  <button onClick={() => addItemHandler(cartItem)}>+</button>
-                </Amount>
-                <p> &#x20B9; {cartItem.totalPrice / 100.0}</p>
-              </Item>
-            ))
+            <>
+              <div className={classes.restaurantHeader}>
+                <img
+                  src={`${restaurantCardURL}${cloudinaryImageId}`}
+                  alt="restaurant"
+                  className={classes.restaurantImg}
+                  loading="lazy"
+                />
+                <h3 className={classes.restaurantName}>{restaurantName}</h3>
+              </div>
+              {cartItems.map((cartItem) => {
+                return (
+                  <Item>
+                    <p> {cartItem.name}</p>
+                    <Amount>
+                      <IncrementButton
+                        onClick={() => removeItemHandler(cartItem)}
+                      >
+                        -
+                      </IncrementButton>
+                      <h4>{cartItem.quantity}</h4>
+                      <DecrementButton onClick={() => addItemHandler(cartItem)}>
+                        +
+                      </DecrementButton>
+                    </Amount>
+                    <p> &#x20B9; {cartItem.totalPrice / 100.0}</p>
+                  </Item>
+                );
+              })}
+            </>
           )}
 
           {cartItems.length > 0 && (
@@ -155,15 +182,39 @@ const Progress = styled.div`
   animation: ${progressAnimation} 1s infinite linear;
 `;
 
+const IncrementButton = styled.div`
+  width: 33.33%;
+  color: #60b246;
+  font-size: 16px;
+  cursor: pointer;
+`;
+
+const DecrementButton = styled.div`
+  width: 33.33%;
+  color: #60b246;
+  font-size: 16px;
+  cursor: pointer;
+`;
 const Amount = styled.div`
   display: flex;
   align-items: center;
+  width: 70px;
+  font-size: 12px;
+  height: 30px;
+  border: 1px solid #d4d5d9;
+  font-weight: 600;
+  line-height: 30px;
+  position: relative;
+  text-align: center;
+  background-color: #fff;
+  padding: 0px 4px;
   h4 {
     margin: 0px;
     padding: 0px 5px;
+    width: 33.33%;
+    color: #60b246;
   }
   margin-right: 10px;
-  justify-content: space-between;
 `;
 const Button = styled.button`
   display: flex;
@@ -181,26 +232,25 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  background: #e9ecee;
+  height: 100%;
 `;
 const CartItems = styled.div`
   display: flex;
   flex-direction: column;
   margin: 7% 10%;
   justify-content: center;
+  background-color: #fff;
+  height: 100%;
+  padding: 20px 30px;
+  color: #60b246;
 
-  img {
-    height: 250px;
-    width: 38%;
-    margin: auto;
-    padding: 20px;
-  }
-  h3,
   h6 {
     margin: auto;
     padding: 10px;
+    color: rgba(0, 0, 0, 0.3);
   }
   h6 {
-    color: rgba(0, 0, 0, 0.3);
   }
 `;
 
@@ -212,14 +262,12 @@ const Item = styled.div`
 
   p:first-child {
     margin-left: 12%;
-    flex: 1; //Ensures equal width for first p tag
+    flex: 1;
   }
-
-  > * {
-    flex-shrink: 0;
-  }
-
   > *:not(:first-child) {
     margin-left: 10px;
+    font-size: 13px;
+    color: #535665;
+    flex: 0.1;
   }
 `;

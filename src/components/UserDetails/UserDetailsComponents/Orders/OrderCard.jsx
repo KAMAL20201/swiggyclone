@@ -1,5 +1,6 @@
 import React from 'react';
 import classes from './style.module.css';
+import { restaurantCardURL } from '../../../../utils/utils';
 
 const OrderCard = ({ order }) => {
   const totalPrice = order?.order_items?.reduce((acc, curr) => {
@@ -15,7 +16,7 @@ const OrderCard = ({ order }) => {
             height="200"
             width="300"
             alt="restaurant"
-            src="https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_300,h_200,c_fill/85ccae4e3576f9330af102c46ca85395"
+            src={`${restaurantCardURL}/${order?.restaurant_image_id}`}
           />
         </div>
         <div className={classes.orderDetails}>
