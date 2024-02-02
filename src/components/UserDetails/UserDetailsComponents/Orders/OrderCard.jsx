@@ -27,7 +27,7 @@ const OrderCard = ({ order }) => {
         </div>
       </div>
       <div className={classes.itemDetailsCon}>
-        <div>
+        <div className={classes.orderItems}>
           {order?.order_items?.map((item, index) => (
             <span key={item.itemId} className={classes.itemDetails}>
               {item.itemName} x {item.item_quantity}
