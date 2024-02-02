@@ -8,6 +8,8 @@ import { supabase } from '../../client';
 import { useUserContext } from '../../contexts/userContext';
 import { restaurantCardURL } from '../../utils/utils';
 import classes from './style.module.css';
+import { useModal } from '../../contexts/signInModalContext';
+import toast from 'react-hot-toast';
 
 function Cart() {
   const cartItem = useSelector((state) => state.cart.cartItems);
@@ -15,6 +17,7 @@ function Cart() {
   const [cartItems, setCartItems] = useState(cartItem);
   const restaurantName = useSelector((state) => state.cart.restaurantName);
   const restaurantId = useSelector((state) => state.cart.restaurantId);
+  const { openModal } = useModal();
   const cloudinaryImageId = useSelector(
     (state) => state.cart.cloudinaryImageId
   );
@@ -35,6 +38,16 @@ function Cart() {
   const handleSendOrder = async () => {
     setShowProgress(true);
 
+    if (!user?.id) {
+      openModal();
+      toast('Please login to place order', {
+        icon: '🍔',
+        duration: 4000,
+        position: 'bottom-center',
+      });
+      setShowProgress(false);
+      return;
+    }
     //add order details in db
     const { data, error } = await supabase
       .from('orders')
@@ -78,8 +91,6 @@ function Cart() {
         }
       });
     }
-
-
   };
 
   const totalAmount = cartItems.reduce((accumulator, currentObject) => {
