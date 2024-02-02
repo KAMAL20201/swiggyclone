@@ -1,0 +1,79 @@
+.popupContainer {
+  background-color: #fff;
+  padding: 30px;
+  box-shadow: 0 2px 20px 0 rgba(40, 44, 63, 0.5);
+  max-width: 520px;
+  min-width: 300px;
+  margin-bottom: 40px;
+  position: sticky;
+  bottom: 50px;
+  margin: auto;
+  z-index: 3;
+  animation: cartPopup 0.3s ease;
+}
+
+@keyframes cartPopup {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 100%, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateZ(0);
+  }
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 25px;
+}
+.title {
+  padding-bottom: 5px;
+  color: #282c3f;
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.description {
+  color: #535665;
+  line-height: 20px;
+  font-size: 14px;
+}
+
+.buttons {
+  display: flex;
+  gap: 20px;
+}
+
+.cancel {
+  display: flex;
+  cursor: pointer;
+  background-color: #fff;
+  border: 2px solid #60b246;
+  font-weight: 600;
+  color: #60b246;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+  flex-grow: 1;
+  flex-basis: 0;
+  position: relative;
+  box-shadow: 0 2px 8px #d4d5d9;
+  padding: 15px 0px;
+}
+
+.continue {
+  flex-grow: 1;
+  flex-basis: 0;
+  display: flex;
+  cursor: pointer;
+  background-color: #60b246;
+  border: 2px solid #60b246;
+  font-weight: 600;
+  color: #fff;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+  padding: 15px 0px;
+}

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { restaurantCardURL } from '../../config';
+import { restaurantCardURL} from '../../utils/utils';
 function MenuSubHead(props) {
   const { RestInfo } = props;
   return (

@@ -53,13 +53,16 @@
   font-size: 12px;
   font-weight: 500;
   position: relative;
-  right: 19px;
+  right: 18px;
   z-index: 1;
 }
 .cartItemsNumberActive {
   color: #fff;
 }
 
+.forcedRight{
+  right: 22px;
+}
 .SignInText {
   margin-right: 5px;
   font-weight: 600;

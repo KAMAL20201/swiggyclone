@@ -5,6 +5,7 @@ import { LocationProvider } from './contexts/locationModalContext';
 import { SignInModalProvider } from './contexts/signInModalContext';
 import { UserContextWrapper } from './contexts/userContext';
 import { SearchRestaurantWrapper } from './contexts/searchResturantContext';
+import {NewCartContextWrapper} from './contexts/NewCartContext';
 const Provider = ({ children }) => {
   return (
     <UserContextWrapper>
@@ -12,7 +13,9 @@ const Provider = ({ children }) => {
         <RestaurantsContextWrapper>
           <LocationProvider>
             <SearchRestaurantWrapper>
+            <NewCartContextWrapper>
               <SignInModalProvider>{children}</SignInModalProvider>
+              </NewCartContextWrapper>
             </SearchRestaurantWrapper>
           </LocationProvider>
         </RestaurantsContextWrapper>

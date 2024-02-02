@@ -129,7 +129,8 @@ function Header(props) {
           <span
             className={clsx(
               classes.cartItemsNumber,
-              cartItemsQuantity > 0 && classes.cartItemsNumberActive
+              cartItemsQuantity > 0 && classes.cartItemsNumberActive,
+              cartItemsQuantity > 9 && classes.forcedRight
             )}
           >
             {cartItemsQuantity}

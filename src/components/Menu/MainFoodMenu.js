@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import styled from 'styled-components';
-import { restaurantCardURL } from '../../config.js';
+import { restaurantCardURL} from '../../utils/utils';
 import AddedToCart from './AddedToCart.js';
 import { useDispatch } from 'react-redux';
 import { cartActions } from '../../store/cart-slice.js';
 import { useSelector } from 'react-redux';
 import { css } from 'styled-components';
+import { useNewCartContext } from '../../contexts/NewCartContext';
+import ItemsInCart from '../Popups/ItemsInCartPopup/ItemsInCart';
 function MainFoodMenu(props) {
   const totalquantity = useSelector((state) => state.cart.totalQuantity);
   const dispatch = useDispatch();
@@ -17,8 +19,17 @@ function MainFoodMenu(props) {
     (card) => card?.card?.card?.info?.name
   );
 
+  const currentRestaurantIdInCart = useSelector(
+    (state) => state.cart.restaurantId
+  );
   const {
-    restaurantName,
+    setIsCartPopupOpen,
+    continueWithAnotherCart,
+    setContinueWithAnotherCart,
+  } = useNewCartContext();
+
+  const {
+    name: restaurantName,
     id: restaurantId,
     cloudinaryImageId,
   } = restaurantNameCard[0]?.card?.card?.info;
@@ -29,7 +40,7 @@ function MainFoodMenu(props) {
   const cardsArray = Array(cardsLength).fill(1);
 
   const [showMenu, setShowMenu] = useState(cardsArray);
-
+  const [currentItemAdded, setCurrentItemAdded] = useState(null);
   const [showSubMenu, setShowSubMenu] = useState(() => {
     const initialShowSubMenu = {};
     newMenu[0].groupedCard?.cardGroupMap?.REGULAR?.cards.forEach(
@@ -67,10 +78,20 @@ function MainFoodMenu(props) {
   }
 
   const handleAddButtonClick = (fooditem) => {
+
     const id = fooditem?.card?.info?.id;
     const name = fooditem?.card?.info?.name;
     const price = fooditem?.card?.info?.price;
     const description = fooditem?.card?.info?.description;
+
+    if (currentRestaurantIdInCart && restaurantId !== currentRestaurantIdInCart) {    
+      if (continueWithAnotherCart) {
+        setContinueWithAnotherCart(false);
+      } else {
+        setIsCartPopupOpen(true);
+        return;
+      }
+    }
 
     if (price) {
       dispatch(
@@ -135,7 +156,11 @@ function MainFoodMenu(props) {
                       <Cards key={idx}>
                         <ItemInfo>
                           <p>{fooditem?.card?.info?.name}</p>
-                          <p>&#8377;{fooditem?.card?.info?.price / 100}</p>
+                          <p>
+                            &#8377;
+                            {(fooditem?.card?.info?.price ||
+                              fooditem?.card?.info?.defaultPrice) / 100}
+                          </p>
                         </ItemInfo>
 
                         <Image>
@@ -153,7 +178,10 @@ function MainFoodMenu(props) {
 
                           <Button
                             hasImageId={fooditem?.card?.info?.imageId}
-                            onClick={() => handleAddButtonClick(fooditem)}
+                            onClick={() => {
+                              handleAddButtonClick(fooditem);
+                              setCurrentItemAdded(fooditem);
+                            }}
                           >
                             ADD
                           </Button>
@@ -216,9 +244,10 @@ function MainFoodMenu(props) {
 
                                   <Button
                                     hasImageId={fooditem?.card?.info?.imageId}
-                                    onClick={() =>
-                                      handleAddButtonClick(fooditem)
-                                    }
+                                    onClick={() => {
+                                      handleAddButtonClick(fooditem);
+                                      setCurrentItemAdded(fooditem);
+                                    }}
                                   >
                                     ADD
                                   </Button>
@@ -235,6 +264,9 @@ function MainFoodMenu(props) {
           );
         }
       )}
+      <ItemsInCart
+        onStartAfresh={() => handleAddButtonClick(currentItemAdded)}
+      />
       {totalquantity > 0 && createPortal(<AddedToCart />, document.body)};
     </Container>
   );

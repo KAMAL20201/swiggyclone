@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { restaurantCardURL } from '../../config.js';
+import { restaurantCardURL} from '../../utils/utils';
 function RestauCard({
   name,
   cuisines,
