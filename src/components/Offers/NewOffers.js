@@ -10,7 +10,7 @@ function NewOffers() {
 
   async function getOffers() {
     const data = await fetch(
-      'https://www.swiggy.com/dapi/offers/payment?lat=30.7333148&lng=76.7794179&offset=',
+      'https://www.swiggy.com/dapi/offers/payment?lat=30.7333148&lng=76.7794179&offset='
     );
     const json = await data.json();
 
@@ -19,9 +19,9 @@ function NewOffers() {
 
   return (
     <Container>
-      {offers.map((offer) => {
+      {offers.map((offer, index) => {
         if (offer.data.data.logo) {
-          return <OffersCard {...offer.data} />;
+          return <OffersCard key={index} {...offer.data} />;
         } else {
           return null;
         }

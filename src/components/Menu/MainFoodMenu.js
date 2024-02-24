@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import styled from 'styled-components';
-import { restaurantCardURL} from '../../utils/utils';
+import { restaurantCardURL } from '../../utils/utils';
 import AddedToCart from './AddedToCart.js';
 import { useDispatch } from 'react-redux';
 import { cartActions } from '../../store/cart-slice.js';
@@ -78,13 +78,15 @@ function MainFoodMenu(props) {
   }
 
   const handleAddButtonClick = (fooditem) => {
-
     const id = fooditem?.card?.info?.id;
     const name = fooditem?.card?.info?.name;
     const price = fooditem?.card?.info?.price;
     const description = fooditem?.card?.info?.description;
 
-    if (currentRestaurantIdInCart && restaurantId !== currentRestaurantIdInCart) {    
+    if (
+      currentRestaurantIdInCart &&
+      restaurantId !== currentRestaurantIdInCart
+    ) {
       if (continueWithAnotherCart) {
         setContinueWithAnotherCart(false);
       } else {
@@ -196,6 +198,7 @@ function MainFoodMenu(props) {
                     return (
                       <>
                         <SubMenu
+                          key={categoryKey}
                           style={{ cursor: 'pointer' }}
                           onClick={() => SubMenuhandler(index, categoryindex)}
                           borderShort={showSubMenu[categoryKey]}
@@ -212,9 +215,9 @@ function MainFoodMenu(props) {
                         </SubMenu>
 
                         {showSubMenu[categoryKey] &&
-                          category?.itemCards?.map((fooditem) => {
+                          category?.itemCards?.map((fooditem, idx) => {
                             return (
-                              <Cards>
+                              <Cards key={idx}>
                                 <ItemInfo>
                                   <p>{fooditem?.card?.info?.name}</p>
                                   {fooditem?.card?.info?.price ? (

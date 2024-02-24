@@ -4,12 +4,16 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import useOnline from '../../myHooks/useOnline';
 import { useSearchRestaurantContext } from '../../contexts/searchResturantContext';
+import { RESTAURANT_FILTERS } from '../../utils/utils';
+import { IoClose } from 'react-icons/io5';
+import classes from './style.module.css';
+import clsx from 'clsx';
 
 function Content(props) {
   const { newRestaurantData } = props;
 
   const [filterdata, setFilterData] = useState(newRestaurantData);
-  const [clickedFilters, setClickedFilters] = useState([]);
+  const [currentFilters, setCurrentFilters] = useState([]);
   const { query: newInputData } = useSearchRestaurantContext();
 
   useEffect(() => {
@@ -25,119 +29,110 @@ function Content(props) {
     setFilterData(filteredData);
   }, [newRestaurantData, newInputData]);
 
-  const filterRestaurants = (buttonId) => {
-    let updatedFilters = [...clickedFilters];
+  const filterCategories = [
+    RESTAURANT_FILTERS.FAST_DELIVERY,
+    RESTAURANT_FILTERS.RATING_FOUR_PLUS,
+    RESTAURANT_FILTERS.PURE_VEG,
+    RESTAURANT_FILTERS.THREE_TO_SIX_HUNDRED,
+    RESTAURANT_FILTERS.LESS_THAN_THREE_HUNDRED,
+  ];
 
-    if (!updatedFilters.includes(buttonId)) {
-      updatedFilters.push(buttonId);
+  const addFilterHandler = (filter) => {
+    //if it's already present
+
+    if (currentFilters.length > 0 && currentFilters.includes(filter)) {
+      setCurrentFilters((prev) => {
+        return prev?.filter((el) => {
+          return el !== filter;
+        });
+      });
     } else {
-      updatedFilters = updatedFilters?.filter(
-        (filterId) => filterId !== buttonId,
-      );
+      setCurrentFilters((prev) => [...prev, filter]);
     }
+  };
 
-    setClickedFilters(updatedFilters);
-
+  const sortedFilterData = () => {
     let filteredData = newRestaurantData;
 
-    if (updatedFilters.includes(1)) {
-      filteredData = filteredData?.filter((restaurant) => {
-        return restaurant.data.deliveryTime <= 35;
-      });
-    }
+    currentFilters.length > 0 &&
+      currentFilters.map((filter) => {
+        switch (filter) {
+          case RESTAURANT_FILTERS.FAST_DELIVERY:
+            filteredData = filteredData?.filter((restaurant) => {
+              return restaurant?.info?.sla?.deliveryTime <= 35;
+            });
+            break;
+          case RESTAURANT_FILTERS.RATING_FOUR_PLUS:
+            filteredData = filteredData?.filter((restaurant) => {
+              return parseFloat(restaurant?.info?.avgRating) >= 4;
+            });
+            break;
+          case RESTAURANT_FILTERS.PURE_VEG:
+            filteredData = filteredData?.filter((restaurant) => {
+              return restaurant?.data?.veg === true;
+            });
+            break;
+          case RESTAURANT_FILTERS.THREE_TO_SIX_HUNDRED:
+            filteredData = filteredData?.filter((restaurant) => {
+              let costForTwo = restaurant?.info?.costForTwo
+                ?.split(' ')[0]
+                .slice(1);
+              costForTwo = parseInt(costForTwo);
 
-    if (updatedFilters.includes(2)) {
-      filteredData = filteredData?.filter((restaurant) => {
-        return parseFloat(restaurant.data.avgRating) >= 4;
-      });
-    }
+              return costForTwo >= 300 && costForTwo <= 600;
+            });
+            break;
+          case RESTAURANT_FILTERS.LESS_THAN_THREE_HUNDRED:
+            filteredData = filteredData?.filter((restaurant) => {
+              let costForTwo = restaurant?.info?.costForTwo
+                ?.split(' ')[0]
+                .slice(1);
+              costForTwo = parseInt(costForTwo);
 
-    if (updatedFilters.includes(3)) {
-      filteredData = filteredData?.filter((restaurant) => {
-        return restaurant.data.pureVeg === true;
+              return costForTwo < 300;
+            });
+            break;
+        }
       });
-    }
-    if (updatedFilters.includes(4)) {
-      filteredData = filteredData?.filter((restaurant) => {
-        return (
-          restaurant.data.costForTwoString / 100 >= 300 &&
-          restaurant.data.costForTwoString / 100 <= 600
-        );
-      });
-    }
-    if (updatedFilters.includes(5)) {
-      filteredData = filteredData?.filter((restaurant) => {
-        return restaurant.data.costForTwoString / 100 <= 300;
-      });
-    }
-
-    // Add more filters here for other buttons if needed
 
     setFilterData(filteredData);
   };
+
+  useEffect(() => {
+    sortedFilterData();
+  }, [currentFilters]);
 
   const isOnline = useOnline();
   if (!isOnline) {
     return <h1>No Internet Connection Found</h1>;
   }
-  if (filterdata?.length === 0) return <h1>No Restaurant Found</h1>;
+  if (filterdata?.length === 0 && newInputData.length > 0)
+    return <h1>No Restaurant Found</h1>;
   return (
     <Container>
       <SortsFilter>
         <RestLength>{filterdata?.length} Restaurants</RestLength>
         <FilterContainer>
           <Filter>
-            <button>Sort By</button>
-            <button
-              style={{
-                background: clickedFilters.includes(1)
-                  ? '#dad8d8'
-                  : 'transparent',
-              }}
-              onClick={() => filterRestaurants(1)}
-            >
-              Fast Delivery<span> X </span>
+            <button className={classes.filterBtn}>
+              {' '}
+              <p className={classes.filterText}>Sort By</p>
             </button>
-            <button
-              style={{
-                background: clickedFilters.includes(2)
-                  ? '#dad8d8'
-                  : 'transparent',
-              }}
-              onClick={() => filterRestaurants(2)}
-            >
-              Ratings 4.0+<span> X </span>
-            </button>
-            <button
-              style={{
-                background: clickedFilters.includes(3)
-                  ? '#dad8d8'
-                  : 'transparent',
-              }}
-              onClick={() => filterRestaurants(3)}
-            >
-              Pure Veg<span> X </span>
-            </button>
-            <button
-              style={{
-                background: clickedFilters.includes(4)
-                  ? '#dad8d8'
-                  : 'transparent',
-              }}
-              onClick={() => filterRestaurants(5)}
-            >
-              Rs.300-Rs.600<span> X </span>
-            </button>
-            <button
-              style={{
-                background: clickedFilters.includes(5)
-                  ? '#dad8d8'
-                  : 'transparent',
-              }}
-              onClick={() => filterRestaurants(6)}
-            >
-              Less than Rs.300<span> X </span>
-            </button>
+            {filterCategories.map((filter, index) => {
+              return (
+                <button
+                  key={index}
+                  className={clsx(
+                    classes.filterBtn,
+                    currentFilters.includes(filter) && classes.filterBtnActive
+                  )}
+                  onClick={() => addFilterHandler(filter)}
+                >
+                  <p className={classes.filterText}>{filter}</p>
+                  <IoClose />
+                </button>
+              );
+            })}
           </Filter>
         </FilterContainer>
       </SortsFilter>
@@ -188,21 +183,7 @@ const RestaurantCards = styled.div`
 `;
 const Filter = styled.div`
   display: flex;
-
-  button {
-    padding: 10px;
-    margin: 10px;
-    background: transparent;
-    border-radius: 999px;
-    border: none;
-    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
-    font-size: 13px;
-
-    cursor: pointer;
-    @media (max-width: 450px) {
-      font-size: 10px;
-    }
-  }
+  gap: 10px;
 `;
 const RestLength = styled.div`
   font-size: 3vw;

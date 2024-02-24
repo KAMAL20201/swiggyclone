@@ -1,0 +1,30 @@
+.filterBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  background-color: rgb(255, 255, 255);
+  border: 1px solid rgb(226, 226, 231);
+  padding: 8px 12px;
+  width: auto;
+  box-shadow: rgba(2, 6, 12, 0.04) 0px 2px 12px;
+  transition: background-color 0.1s ease-in 0s, border-color 0.1s ease-in 0s,
+    box-shadow 0.1s ease-in 0s, width 0.2s cubic-bezier(0.65, 0, 0.35, 1) 0s;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.filterText {
+  font-family: 'Rubik';
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+  letter-spacing: -0.3px;
+  color: rgba(2, 6, 12, 0.75);
+  margin: 0px;
+}
+
+.filterBtnActive {
+  background-color: rgb(240, 240, 245);
+  border: 1px solid rgb(54, 57, 62);
+}

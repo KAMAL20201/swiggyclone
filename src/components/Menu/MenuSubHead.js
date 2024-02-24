@@ -1,8 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
-import { restaurantCardURL} from '../../utils/utils';
+import { restaurantCardURL } from '../../utils/utils';
 function MenuSubHead(props) {
   const { RestInfo } = props;
+
+  const menuDetails = RestInfo?.cards?.filter(
+    (card) => card?.card?.card?.info?.id
+  );
+
+  const menuHeadInfo = menuDetails[0]?.card?.card?.info;
+
+  const offersDetails = RestInfo?.cards?.filter(
+    (card) => card?.card?.card?.gridElements?.infoWithStyle?.offers
+  );
+
+  const offersInfo =
+    offersDetails[0]?.card?.card?.gridElements?.infoWithStyle?.offers;
   return (
     <MenuSubHeader>
       <span>
@@ -10,40 +23,38 @@ function MenuSubHead(props) {
           height="20px"
           alt=""
           src="https://img.freepik.com/free-icon/time-quarter-hour_318-79674.jpg?size=338&ext=jpg&uid=R15594633&ga=GA1.1.1185902625.1677912760&semt=sph"
-          loading='lazy'
+          loading="lazy"
         />
-        <h4>{RestInfo?.cards[0]?.card?.card?.info?.sla?.slaString}</h4>
+        <h4>{menuHeadInfo?.sla?.slaString}</h4>
         <img
           height="20px"
           alt=""
           src="https://img.freepik.com/free-icon/rupee_318-566514.jpg?size=338&ext=jpg&uid=R15594633&ga=GA1.2.1185902625.1677912760&semt=sph"
-          loading='lazy'
+          loading="lazy"
         />
-        <h4>{RestInfo?.cards[0]?.card?.card?.info?.costForTwoMessage}</h4>
+        <h4>{menuHeadInfo?.costForTwoMessage}</h4>
       </span>
       <OffersCards>
-        {RestInfo?.cards[1].card?.card?.gridElements?.infoWithStyle?.offers?.map(
-          (item) => {
-            return (
-              <Cards key={item?.info?.offerIds}>
-                <h3>
-                  <img
-                    height="12px"
-                    alt=""
-                    src={restaurantCardURL + item?.info?.offerLogo}
-                    loading='lazy'
-                  />
-                  {item?.info?.header}
-                </h3>
-                {item?.info?.couponCode && item?.info?.description && (
-                  <span>
-                    {item?.info?.couponCode} | {item?.info?.description}
-                  </span>
-                )}
-              </Cards>
-            );
-          },
-        )}
+        {offersInfo?.map((item) => {
+          return (
+            <Cards key={item?.info?.offerIds}>
+              <h3>
+                <img
+                  height="12px"
+                  alt=""
+                  src={restaurantCardURL + item?.info?.offerLogo}
+                  loading="lazy"
+                />
+                {item?.info?.header}
+              </h3>
+              {item?.info?.couponCode && item?.info?.description && (
+                <span>
+                  {item?.info?.couponCode} | {item?.info?.description}
+                </span>
+              )}
+            </Cards>
+          );
+        })}
       </OffersCards>
     </MenuSubHeader>
   );

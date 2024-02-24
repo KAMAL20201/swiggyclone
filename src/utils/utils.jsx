@@ -52,5 +52,13 @@ export const BASE_URL = isDevEnvironment
   ? 'http://localhost:3000'
   : 'https://swiggyclone-kamal.vercel.app/';
 
-  export const restaurantCardURL =
+export const restaurantCardURL =
   'https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/';
+
+export const RESTAURANT_FILTERS = {
+  FAST_DELIVERY: 'Fast Delivery',
+  RATING_FOUR_PLUS: 'Ratings 4.0+',
+  PURE_VEG: 'Pure Veg',
+  THREE_TO_SIX_HUNDRED: 'Rs. 300-Rs. 600',
+  LESS_THAN_THREE_HUNDRED: 'Less than Rs. 300',
+};

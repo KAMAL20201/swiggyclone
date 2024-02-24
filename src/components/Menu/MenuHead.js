@@ -4,22 +4,24 @@ import styled from 'styled-components';
 function MenuHead(props) {
   const { RestMenu } = props; //RestMenu json.data
 
+  const menuDetails = RestMenu?.cards?.filter(
+    (card) => card?.card?.card?.info?.id
+  );
+
+  const menuHeadInfo = menuDetails[0]?.card?.card?.info;
   return (
     <MenuHeads>
       <RestauInfo>
-        <h3>{RestMenu?.cards[0]?.card?.card?.info?.name}</h3>
-        <h6>{RestMenu?.cards[0]?.card?.card?.info?.cuisines?.join(', ')}</h6>
+        <h3>{menuHeadInfo?.name}</h3>
+        <h6>{menuHeadInfo?.cuisines?.join(', ')}</h6>
         <h6>
-          {RestMenu?.cards[0]?.card?.card?.info?.areaName},{' '}
-          {RestMenu?.cards[0]?.card?.card?.info?.sla?.lastMileTravelString}
+          {menuHeadInfo?.areaName}, {menuHeadInfo?.sla?.lastMileTravelString}
         </h6>
-        <p>{RestMenu?.cards[0]?.card?.card?.info?.feeDetails?.message}</p>
+        <p>{menuHeadInfo?.feeDetails?.message}</p>
       </RestauInfo>
       <Rating>
-        <h3>
-          {RestMenu?.cards[0]?.card?.card?.info?.avgRatingString} &#9733;{' '}
-        </h3>
-        <p>{RestMenu?.cards[0]?.card?.card?.info?.totalRatingsString}</p>
+        <h3>{menuHeadInfo?.avgRatingString} &#9733; </h3>
+        <p>{menuHeadInfo?.totalRatingsString}</p>
       </Rating>
     </MenuHeads>
   );

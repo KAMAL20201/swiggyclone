@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { restaurantCardURL} from '../../utils/utils';
+import { restaurantCardURL } from '../../utils/utils';
 function RestauCard({
   name,
   cuisines,
@@ -26,7 +26,7 @@ function RestauCard({
         alt="card"
         src={restaurantCardURL + cloudinaryImageId}
         height="150px"
-        loading='lazy'
+        loading="lazy"
       />
 
       <ContentWrapper>

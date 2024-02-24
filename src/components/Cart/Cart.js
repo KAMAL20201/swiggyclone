@@ -139,9 +139,9 @@ function Cart() {
                 />
                 <h3 className={classes.restaurantName}>{restaurantName}</h3>
               </div>
-              {cartItems.map((cartItem) => {
+              {cartItems.map((cartItem, index) => {
                 return (
-                  <Item>
+                  <Item key={index}>
                     <p> {cartItem.name}</p>
                     <Amount>
                       <IncrementButton
