@@ -17,7 +17,7 @@ const Orders = () => {
         order_date, 
         restaurant_name, 
         restaurant_image_id,
-        order_items ( item_quantity, itemName )
+        order_items ( item_quantity, itemName, item_price )
         `
       )
       .eq('user_id', user?.id)
@@ -32,7 +32,7 @@ const Orders = () => {
 
   useEffect(() => {
     fetchPastOrders();
-  }, []);
+  }, [user]);
   return (
     <>
       <div className={classes.headerText}>Past Orders</div>

@@ -62,3 +62,17 @@ export const RESTAURANT_FILTERS = {
   THREE_TO_SIX_HUNDRED: 'Rs. 300-Rs. 600',
   LESS_THAN_THREE_HUNDRED: 'Less than Rs. 300',
 };
+
+export function formatDate(inputDate) {
+  const date = new Date(inputDate);
+  const options = {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true,
+  };
+  const formattedDate = new Intl.DateTimeFormat('en-GB', options).format(date);
+  return formattedDate.replace(',', ' |');
+}

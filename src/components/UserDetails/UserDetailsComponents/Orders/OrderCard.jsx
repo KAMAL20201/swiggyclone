@@ -1,12 +1,15 @@
 import React from 'react';
 import classes from './style.module.css';
-import { restaurantCardURL } from '../../../../utils/utils';
+import { formatDate, restaurantCardURL } from '../../../../utils/utils';
 
 const OrderCard = ({ order }) => {
   const totalPrice = order?.order_items?.reduce((acc, curr) => {
-    acc += curr.item_quantity * 100;
+    acc += curr.item_price;
     return acc;
   }, 0);
+
+  const formattedDate = formatDate(order?.order_date);
+
   return (
     <div className={classes.cardCon}>
       <div className={classes.orderDetailsCon}>
@@ -22,7 +25,9 @@ const OrderCard = ({ order }) => {
         <div className={classes.orderDetails}>
           <div className={classes.restaurantName}>{order?.restaurant_name}</div>
           <div className={classes.orderIdCon}>
-            {`ORDER #${order?.id} | ${order?.order_date}`}
+            <span>
+              ORDER #{order?.id} | {formattedDate}
+            </span>
           </div>
         </div>
       </div>

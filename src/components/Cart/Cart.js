@@ -76,6 +76,7 @@ function Cart() {
               order_id: orderId,
               itemName: cartItem?.name,
               item_quantity: cartItem?.quantity,
+              item_price: cartItem?.totalPrice / 100.0,
             },
           ])
           .select();
@@ -83,11 +84,9 @@ function Cart() {
         if (err) {
           console.log(err);
         } else {
-          setTimeout(() => {
-            navigate('/orderDone');
-            setShowProgress(false);
-            dispatch(cartActions.clearCart());
-          }, 3000); // 3 seconds delay
+          navigate('/orderDone');
+          setShowProgress(false);
+          dispatch(cartActions.clearCart());
         }
       });
     }
@@ -238,6 +237,7 @@ const Button = styled.button`
   background-color: rgb(96, 178, 70);
   color: white;
   border: none;
+  cursor: pointer;
 `;
 const Container = styled.div`
   display: flex;
