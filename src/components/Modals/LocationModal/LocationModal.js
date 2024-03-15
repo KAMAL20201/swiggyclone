@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import classes from './Location.module.css';
-import { ReactComponent as LocationIcon } from '../../../assets/LocationIcon.svg';
-import { ReactComponent as PinCodeIcon } from '../../../assets/pincodeIcon.svg';
 import { useLocationContext } from '../../../contexts/locationModalContext';
 import { City } from 'country-state-city';
 import { setUserLocation } from '../../../utils/utils';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { IoLocationOutline } from 'react-icons/io5';
+import { MdOutlineGpsFixed } from 'react-icons/md';
 
 const LocationModal = () => {
   const [inputText, setInputText] = useState('');
@@ -140,7 +140,7 @@ const LocationModal = () => {
                 >
                   <div className={classes.currentLocation}>
                     <div className={classes.currentLocationIcon}>
-                      <LocationIcon />
+                      <MdOutlineGpsFixed />
                     </div>
                     <div>
                       <p className={classes.currentLocationText}>
@@ -161,7 +161,7 @@ const LocationModal = () => {
                       >
                         <div className={classes.currentLocation}>
                           <div className={classes.currentLocationIcon}>
-                            <PinCodeIcon />
+                            <IoLocationOutline />
                           </div>
                           <div>
                             <p className={classes.currentLocationText}>
