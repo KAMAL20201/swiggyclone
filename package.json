@@ -2,6 +2,7 @@
   "name": "demo-react",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.5",
     "@supabase/supabase-js": "^2.26.0",
@@ -17,19 +18,17 @@
     "react-icons": "^4.8.0",
     "react-redux": "^8.0.7",
     "react-router-dom": "^6.8.2",
-    "react-scripts": "5.0.1",
     "styled-components": "^5.3.8",
     "universal-cookie": "^7.0.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "build": "vite build",
+    "dev": "vite --port 3000",
+    "preview": "vite preview",
     "analyze": "craco build",
-    "start": "react-scripts start",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -51,11 +50,14 @@
   },
   "devDependencies": {
     "@craco/craco": "^7.1.0",
+    "@vitejs/plugin-react": "^4.2.1",
     "depcheck": "^1.4.7",
     "eslint": "^8.56.0",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "gh-pages": "^6.0.0",
+    "vite": "^5.1.6",
+    "vite-plugin-simple-html": "^0.1.2",
     "webpack-bundle-analyzer": "^4.10.1"
   }
 }

@@ -3,12 +3,8 @@ import styled from 'styled-components';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 import { useLocation } from 'react-router-dom';
-import { ReactComponent as SwiggyLogo } from '../../assets/SwiggyLogo.svg';
-import { ReactComponent as Helpicon } from '../../assets/HelpIcon.svg';
-import { ReactComponent as SearchIcon } from '../../assets/SearchIcon.svg';
-import { ReactComponent as LoginIcon } from '../../assets/LoginIcon.svg';
-import { ReactComponent as CartIcon } from '../../assets/CartIcon.svg';
-import { ReactComponent as DownArrowIcon } from '../../assets/downarrow.svg';
+import Icons from '../Icons';
+// import { ReactComponent as DownArrowIcon } from '../../assets/downarrow.svg';
 import { useModal } from '../../contexts/signInModalContext';
 import classes from './Header.module.css';
 import { useLocationContext } from '../../contexts/locationModalContext';
@@ -51,7 +47,7 @@ function Header(props) {
     <Top>
       <Logo>
         <Link to="/">
-          <SwiggyLogo />
+          <Icons.SwiggyLogo />
         </Link>
 
         <div className={classes.locationContainer} onClick={openLocationModal}>
@@ -60,7 +56,7 @@ function Header(props) {
             {currentLocation?.slice(0, 30) + '...'}
           </span>
           <span className={classes.downArrow}>
-            <DownArrowIcon />
+            <Icons.DownArrowIcon />
           </span>
         </div>
       </Logo>
@@ -75,19 +71,19 @@ function Header(props) {
               placeholder="Search"
               onChange={handleInputChange}
             />
-            <SearchIcon />
+            <Icons.SearchIcon />
           </div>
         )}
 
         <NavLink to="/help" className={classes.navLink}>
-          <Helpicon />
+          <Icons.HelpIcon />
           <span className="offers-text">Help</span>
         </NavLink>
 
         {user?.id ? (
           <div className={classes.popoverContainer}>
             <NavLink to="/user-details" className={classes.login}>
-              <LoginIcon />
+              <Icons.LoginIcon />
               <span className={classes.SignInText}>{user?.name}</span>
             </NavLink>
             <div className={classes.popoverWrapper}>
@@ -113,7 +109,7 @@ function Header(props) {
           </div>
         ) : (
           <div className={classes.login} onClick={openModal}>
-            <LoginIcon />
+            <Icons.LoginIcon />
             <span className={classes.SignInText}>Sign In</span>
           </div>
         )}
@@ -125,7 +121,7 @@ function Header(props) {
             cartItemsQuantity > 0 && classes.cartActive
           )}
         >
-          <CartIcon />
+          <Icons.CartIcon />
           <span
             className={clsx(
               classes.cartItemsNumber,

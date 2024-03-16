@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import styled from 'styled-components';
-import { restaurantCardURL } from '../../utils/utils';
-import AddedToCart from './AddedToCart.js';
+import { restaurantCardURL } from '../../utils/utils.jsx';
+import AddedToCart from './AddedToCart.jsx';
 import { useDispatch } from 'react-redux';
 import { cartActions } from '../../store/cart-slice.js';
 import { useSelector } from 'react-redux';
 import { css } from 'styled-components';
-import { useNewCartContext } from '../../contexts/NewCartContext';
-import ItemsInCart from '../Popups/ItemsInCartPopup/ItemsInCart';
+import { useNewCartContext } from '../../contexts/NewCartContext.jsx';
+import ItemsInCart from '../Popups/ItemsInCartPopup/ItemsInCart.jsx';
 function MainFoodMenu(props) {
   const totalquantity = useSelector((state) => state.cart.totalQuantity);
   const dispatch = useDispatch();

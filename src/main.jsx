@@ -7,9 +7,11 @@ import Router from './Router';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <Provider>
-    <Router />
-  </Provider>,
+  <React.StrictMode>
+    <Provider>
+      <Router />
+    </Provider>
+  </React.StrictMode>
 );
 
 reportWebVitals();

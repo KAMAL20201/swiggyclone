@@ -44,7 +44,7 @@ export const setUserLocation = (userLocation) => {
   });
 };
 
-const deploymentEnvironment = process.env.REACT_APP_DEPLOYMENT_ENVIRONMENT;
+const deploymentEnvironment = import.meta.env.REACT_APP_DEPLOYMENT_ENVIRONMENT;
 
 export const isDevEnvironment = deploymentEnvironment === 'LOCAL';
 
