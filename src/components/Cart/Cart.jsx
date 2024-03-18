@@ -10,6 +10,8 @@ import { restaurantCardURL } from '../../utils/utils';
 import classes from './style.module.css';
 import { useModal } from '../../contexts/signInModalContext';
 import toast from 'react-hot-toast';
+import axios from 'axios';
+import { API_BASE_URL } from '../../constants/constants';
 
 function Cart() {
   const cartItem = useSelector((state) => state.cart.cartItems);
@@ -35,8 +37,26 @@ function Cart() {
   const { user } = useUserContext();
   const navigate = useNavigate();
 
-  const handleSendOrder = async () => {
+  function loadScript(src) {
+    return new Promise((resolve) => {
+      const script = document.createElement('script');
+      script.src = src;
+      script.onload = () => {
+        resolve(true);
+      };
+      script.onerror = () => {
+        resolve(false);
+      };
+      document.body.appendChild(script);
+    });
+  }
+
+  async function displayRazorpay() {
     setShowProgress(true);
+
+    const res = await loadScript(
+      'https://checkout.razorpay.com/v1/checkout.js'
+    );
 
     if (!user?.id) {
       openModal();
@@ -45,10 +65,102 @@ function Cart() {
         duration: 4000,
         position: 'bottom-center',
       });
-      setShowProgress(false);
       return;
     }
+
+    if (!res) {
+      alert('Razorpay SDK failed to load. Are you online?');
+      return;
+    }
+    const result = await axios.post(`${API_BASE_URL}/payment/orders`, {
+      amount: totalAmount,
+    });
+
+    if (!result) {
+      alert('Server error. Are you online?');
+      return;
+    }
+
+    // Getting the order details back
+    const { amount, id: order_id, currency } = result.data;
+
+    const options = {
+      key: 'rzp_test_a9qROssJTFFZN3', // Enter the Key ID generated from the Dashboard
+      amount: amount.toString(),
+      currency: currency,
+      name: 'Kamal Corp.',
+      description: 'Test Transaction',
+      // image: { logo },
+      config: {
+        display: {
+          blocks: {
+            banks: {
+              name: 'Most Used Methods',
+              instruments: [
+                {
+                  method: 'upi',
+                },
+                {
+                  method: 'card',
+                },
+                {
+                  method: 'wallet',
+                },
+              ],
+            },
+          },
+          hide: [
+            {
+              method: 'paylater',
+            },
+            {
+              method: 'netbanking',
+            },
+          ],
+          sequence: ['block.banks'],
+          preferences: {
+            show_default_blocks: true,
+          },
+        },
+      },
+
+      order_id: order_id,
+      handler: async function (response) {
+        setShowProgress(false);
+        const data = {
+          orderCreationId: order_id,
+          razorpayPaymentId: response.razorpay_payment_id,
+          razorpayOrderId: response.razorpay_order_id,
+          razorpaySignature: response.razorpay_signature,
+        };
+
+        const result = await axios.post(
+          `${API_BASE_URL}/payment/success`,
+          data
+        );
+
+        handleSendOrder();
+      },
+      prefill: {
+        name: user?.name,
+        email: user?.email,
+      },
+      notes: {
+        address: 'Kamal arora Corporate Office',
+      },
+      theme: {
+        color: '#60b246',
+      },
+    };
+
+    const paymentObject = new window.Razorpay(options);
+    paymentObject.open();
+  }
+
+  const handleSendOrder = async () => {
     //add order details in db
+
+    setShowProgress(true);
     const { data, error } = await supabase
       .from('orders')
       .insert([
@@ -161,7 +273,7 @@ function Cart() {
           )}
 
           {cartItems.length > 0 && (
-            <Button onClick={handleSendOrder}>
+            <Button onClick={displayRazorpay}>
               {showProgress ? (
                 <Progress />
               ) : (

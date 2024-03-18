@@ -1,9 +1,9 @@
 import Cookies from 'universal-cookie';
-
+import { API_BASE_URL } from '../constants/constants';
 export const getRestaurants = async (latitude, longitude) => {
   try {
     const data = await fetch(
-      `https://swiggyclone-backend-jy63.onrender.com/api/restaurants?lat=${latitude}&lng=${longitude}`
+      `${API_BASE_URL}/api/restaurants?lat=${latitude}&lng=${longitude}`
     );
     const json = await data.json();
 

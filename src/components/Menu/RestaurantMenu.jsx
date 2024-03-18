@@ -6,6 +6,7 @@ import MenuHead from './MenuHead';
 import MenuSubHead from './MenuSubHead';
 import MainFoodMenu from './MainFoodMenu';
 import { useLocationContext } from '../../contexts/locationModalContext';
+import { API_BASE_URL } from '../../constants/constants';
 
 function RestaurantMenu() {
   //to read the dynamic url
@@ -15,7 +16,7 @@ function RestaurantMenu() {
 
   async function getRestaurantMenu() {
     const response = await fetch(
-      `https://swiggyclone-backend-jy63.onrender.com/api/menu?page-type=REGULAR_MENU&complete-menu=true&lat=${latitude}&lng=${longitude}&restaurantId=${resid}&submitAction=ENTER`
+      `${API_BASE_URL}/api/menu?page-type=REGULAR_MENU&complete-menu=true&lat=${latitude}&lng=${longitude}&restaurantId=${resid}&submitAction=ENTER`
     );
     const json = await response.json();
 
