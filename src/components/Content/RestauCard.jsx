@@ -25,7 +25,7 @@ function RestauCard({
       <img
         alt="card"
         src={restaurantCardURL + cloudinaryImageId}
-        height="150px"
+        height="100px"
         loading="lazy"
       />
 
@@ -171,12 +171,8 @@ const Card = styled.div`
 
   img {
     width: 100%;
-    object-fit: contain;
-
-    @media (max-width: 600px) {
-      width: 100%;
-      object-fit: contain;
-    }
+    object-fit: cover;
+    border-radius: 0.5rem;
     @media (max-width: 450px) {
       width: 50%;
       height: 100%;
