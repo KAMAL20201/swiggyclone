@@ -1,12 +1,37 @@
-# Getting Started with Create React App
+# Getting Started with VITE
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project was Created with Vite.
+
+## Demo
+Vercel deployment Link ([Swiggy Clone](https://swiggyclone-kamal.vercel.app))
+
+## Tech Stack Used
+
+1. **React** and **Javascript** for Frontend UI.
+2. **Modular CSS** and **styled components** for styling.
+3. **Express** as backend for adding neccessary headers to **Swiggy API** to avoid CORS and Razorpay Integration.
+4. **Supabase** for User Authentication and Supabse DB for storing data.
+5. **Redux Toolkit** for storing and managing Cart Related States.
+6. Used **Context API** for managing User State and also for managing Modals State (Sign In Modal & Location Modal).
+
+
+## APIs Used
+1. **Razorpay** API for checkouts and payments ([Read Docs](https://razorpay.com/docs/api)) to know more 
+2. **MapMyIndia** reverse Geocoding API ([Read Docs](https://github.com/MapmyIndia/mapmyindia-rest-api/tree/master/mapmyindia-maps-reverse-geocoding-rest-api-example)) to know more
+
+## Cart Checkout
+You can use Razorpay test Card Details to make Payments for Demo Use. 
+| Card Network |  Card Number  | CVV | Expiry Date |
+|:-------------|:-------------:|----:|------------:|
+| Mastercard   | 5267 3181 8797 5449 | Random CVV | Any future date |
+| Visa   |4111 1111 1111 1111 | Random CVV | Any future date |
+
 
 ## Available Scripts
 
 In the project directory, you can run:
 
-### `npm start`
+### `npm run dev`
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
@@ -29,21 +54,6 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
 
 ### Code Splitting
 
