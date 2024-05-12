@@ -57,6 +57,10 @@ const ListItem = styled.li`
 const Bottom = styled.div`
   text-align: center;
   margin-top: 20px;
+
+  p {
+    color: #fff
+  }
 `;
 
 const Links = styled.div`
@@ -111,8 +115,8 @@ const Footer = () => {
                   alt="Google Play"
                   height={64}
                   width={208}
-                  src="https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_200,h_65/icon-GooglePlay_1_zixjxl"
-                  loading='lazy'
+                  src="https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/portal/m/play_store.png"
+                  loading="lazy"
                 />
               </a>
               <a href="https://apps.apple.com/in/app/swiggy-food-grocery-delivery/id989540920">
@@ -120,8 +124,8 @@ const Footer = () => {
                   alt="App Store"
                   height={64}
                   width={208}
-                  src="https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_200,h_65/icon-AppStore_lg30tv"
-                  loading='lazy'
+                  src="https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/portal/m/app_store.png"
+                  loading="lazy"
                 />
               </a>
             </Column>
